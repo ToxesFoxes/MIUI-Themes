@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<Group text="Настройки виджетов">
+		<ImagePicker default="Стандартная" id="dztx" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
+		<StringInput default="Привет" id="qmdz" summary="Надпись отображается под значком" text="Надпись"/>
+		<StringInput default="#FFFFFF" id="qm_color" summary="По умолчанию это #FFFFFF" text="Цвет текста"/>
+	</Group>
+	<Group text="Выбор виджетов">
+		<NumberChoice default="0" id="steps_charge_style" text="Количество шагов или Заряд">
+			<Item text="Заряд" value="0"/>
+			<Item text="Количество шагов" value="1"/>
+		</NumberChoice>
+		<NumberChoice default="0" id="calendar_style" text="Стиль даты">
+			<Item text="Стиль 1" value="0"/>
+			<Item text="Стиль 2" value="1"/>
+		</NumberChoice>
+		<NumberChoice default="1" id="time_weather_style" text="Стиль погоды и часов">
+			<Item text="Стиль 1" value="0"/>
+			<Item text="Стиль 2" value="1"/>
+		</NumberChoice>
+	</Group>
+	<Group text="Виджет быстрых приложений">
+		<AppPicker id="app1" text="Приложение 1"/>
+		<AppPicker id="app2" text="Приложение 2"/>
+		<AppPicker id="app3" text="Приложение 3"/>
+		<AppPicker id="app4" text="Приложение 4"/>
+	</Group>
+</Config>

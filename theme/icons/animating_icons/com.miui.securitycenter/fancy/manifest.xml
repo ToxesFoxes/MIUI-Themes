@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="0" width="182" height="182" screenWidth="1080" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231">
+    <!-- 安全中心 -->
+    <ExternalCommands>
+        <!-- 初始化 -->
+        <Trigger action="init,present,back_home_cancel" >
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(400,400)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(3401,3401)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4200,4200)"/>
+            <VariableCommand name="useQuietImage" expression="1"/>
+        </Trigger>
+        <!-- 回桌面 -->
+        <Trigger action="back_home_start">
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,0)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(3000,3000)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4000,4000)"/>
+            <VariableCommand name="useQuietImage" expression="0"/>
+        </Trigger>
+        <!-- 回到桌面 -->
+        <Trigger action="back_home_finish">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <!-- 动画部分 -->
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,400)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(3000,3401)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4000,4200)"/>
+            <!-- 动态帧率 -->
+            <AnimationCommand target="panel_framerate_controller" command="play"/>
+        </Trigger>
+    </ExternalCommands>
+    <FramerateController name="panel_framerate_controller" initPause="true" loop="false">
+        <ControlPoint frameRate="0" time="0"/>
+        <ControlPoint frameRate="60" time="1"/>
+        <ControlPoint frameRate="60" time="600"/>
+        <ControlPoint frameRate="0" time="601"/>
+    </FramerateController>
+    <Array count="3" indexName="__i">
+        <Var name="iconAni" size="3" index="#__i" type="number[]">
+            <VariableAnimation name="iconAnimation" initPause="true" loop="false">
+                <!-- #__i == 0,safeFlashLR'scale -->
+                <AniFrame value="0" time="0" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="400"/>
+                <!-- #__i == 1,safeShieldLR'scale -->
+                <AniFrame value="0.6" time="3000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="3401"/>
+                <!-- #__i == 2,safeFlashRL'y -->
+                <AniFrame value="-20" time="4000"/>
+                <AniFrame value="0" time="4200"/>
+                <Triggers>
+                    <Trigger action="end" condition="#iconAnimation.current_frame == 3401">
+                        <VariableCommand name="useQuietImage" expression="1"/>
+                    </Trigger>
+                </Triggers>
+            </VariableAnimation>
+        </Var>
+    </Array>
+    <Image x="91" y="91" align="center" alignV="center" src="safeBg.png"/>
+    <Group pivotX="91" pivotY="91" scale="#iconAni[1]">
+        <Image x="91" y="91" align="right" alignV="center" src="safeShieldL.png"/>
+        <Image x="91" y="91" align="left" alignV="center" src="safeShieldR.png"/>
+    </Group>
+    <Group pivotX="91" pivotY="70" scale="#iconAni[0]">
+        <Image x="91" y="91+#iconAni[2]*1.5-14" align="right" alignV="center" src="safeFlashL.png"/>
+        <Image x="91" y="91+#iconAni[2]*1.5+10" align="left" alignV="center" src="safeFlashR.png"/>
+    </Group>
+</Icon>

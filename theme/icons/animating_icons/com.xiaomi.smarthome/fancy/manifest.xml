@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="0" width="182" height="182" screenWidth="1080" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231">
+    <!-- 米家 -->
+    <ExternalCommands>
+        <!-- 初始化 -->
+        <Trigger action="init,present,back_home_cancel">
+            <VariableCommand name="useQuietImage" expression="1"/>
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(900,900)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(2200,2200)"/>
+        </Trigger>
+        <!-- 回桌面 -->
+        <Trigger action="back_home_start">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,0)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(1600,1600)"/>
+        </Trigger>
+        <!-- 回到桌面 -->
+        <Trigger action="back_home_finish">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <!-- 动画部分 -->
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,900)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(1600,2200)"/>
+            <!-- 动态帧率 -->
+            <AnimationCommand target="panel_framerate_controller" command="play"/>
+        </Trigger>
+    </ExternalCommands>
+    <FramerateController name="panel_framerate_controller" initPause="true" loop="false">
+        <ControlPoint frameRate="0" time="0"/>
+        <ControlPoint frameRate="60" time="1"/>
+        <ControlPoint frameRate="60" time="1200"/>
+        <ControlPoint frameRate="0" time="1201"/>
+    </FramerateController>
+    <Array count="2" indexName="__i">
+        <Var name="iconAni" size="2" index="#__i" type="number[]">
+            <VariableAnimation name="iconAnimation" initPause="true" loop="false">
+                <!-- #__i == 0,mijiaRot'rotation -->
+                <AniFrame value="0" time="0" easeType="ExpoEaseOut"/>
+                <AniFrame value="-180" time="900" />
+                <!-- #__i == 1,mijiaUp and mijiaDown'alpha & scale -->
+                <AniFrame value="0.6" time="1600" easeType="ExpoEaseOut"/>
+                <AniFrame value="1" time="2200" />
+                <Triggers>
+                    <Trigger action="end" condition="#iconAnimation.current_frame == 900">
+                        <VariableCommand name="useQuietImage" expression="1"/>
+                    </Trigger>
+                </Triggers>
+            </VariableAnimation>
+        </Var>
+    </Array>
+    <Image x="91" y="91" align="center" alignV="center" src="smartHomeBg.png"/>
+    <Group w="#screen_width" h="#screen_height" layered="true">
+        <Image name="mijiaUp_img" x="91" y="91" pivotX="#mijiaUp_img.bmp_width/2" pivotY="#mijiaUp_img.bmp_height/2" scale="0.6+#iconAni[1]*0.4" align="center" alignV="center" src="mijiaUp.png" alpha="#iconAni[1]*255"/>
+        <Image name="mijiaRot1_img" x="91" y="91" pivotX="#mijiaRot1_img.bmp_width/2" pivotY="#mijiaRot1_img.bmp_height/2" align="center" alignV="center" rotation="#iconAni[0]" src="mijiaRot1.png" xfermode="dst_out"/>
+    </Group>
+    <Group w="#screen_width" h="#screen_height" layered="true">
+        <Image name="mijiaDown_img" x="91" y="91" pivotX="#mijiaDown_img.bmp_width/2" pivotY="#mijiaDown_img.bmp_height/2" scale="0.6+#iconAni[1]*0.4" align="center" alignV="center" src="mijiaDown.png" alpha="#iconAni[1]*255"/>
+        <Image name="mijiaRot2_img" x="91" y="91" pivotX="#mijiaRot2_img.bmp_width/2" pivotY="#mijiaRot2_img.bmp_height/2" align="center" alignV="center" rotation="#iconAni[0]" src="mijiaRot2.png" xfermode="dst_out"/>
+    </Group>
+</Icon>

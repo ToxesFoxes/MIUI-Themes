@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<MIUI_Theme_Values template="LightTemplate">
+  <color name="notification_setting_menu_btn_text_color">#ffffffff</color>
+  <color name="entrance_aggregate_title_color">#ff838db8</color>
+  <color name="notification_setting_menu_text_color">#ffffffff</color>
+  <color name="notification_detail_app_name_text_color">#66000000</color>
+  <color name="notification_detail_text_text_color">#99000000</color>
+  <color name="notification_detail_title_text_color">#e6000000</color>
+  <color name="entrance_aggregate_divider_color">#0d000000</color>
+  <color name="list_container_title_title_text_color">#ffffffff</color>
+  <color name="notification_item_bg_color">#e6ffffff</color>
+</MIUI_Theme_Values>

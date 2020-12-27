@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+	<version><![CDATA[12]]></version>
+	<uiVersion><![CDATA[10]]></uiVersion>
+	<author><![CDATA[ToxesFoxes]]></author>
+	<designer><![CDATA[ToxesFoxes]]></designer>
+	<title><![CDATA[Rise]]></title>
+	<description><![CDATA[ToxesFoxes]]></description>
+	<authors>
+		<author locale="en_US"><![CDATA[ToxesFoxes]]></author>
+	</authors>
+	<designers>
+		<designer locale="en_US"><![CDATA[ToxesFoxes]]></designer>
+	</designers>
+	<titles>
+		<title locale="en_US"><![CDATA[Rise]]></title>
+	</titles>
+	<descriptions>
+		<description locale="en_US"><![CDATA[ToxesFoxes]]></description>
+	</descriptions>
+</theme>

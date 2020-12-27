@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="0" width="182" height="182" screenWidth="1080" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231" clip="true">
+    <!-- 相机 -->
+    <ExternalCommands>
+        <!-- 初始化 -->
+        <Trigger action="init,present,back_home_cancel">
+            <VariableCommand name="useQuietImage" expression="1"/>
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(500,500)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(2500,2500)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4500,4500)"/>
+            <AnimationCommand target="iconAni" targetIndex="3" command="play(6500,6500)"/>
+            <AnimationCommand target="iconAni" targetIndex="4" command="play(8500,8500)"/>
+            <AnimationCommand target="iconAni" targetIndex="5" command="play(10500,10500)"/>
+            <AnimationCommand target="iconAni" targetIndex="6" command="play(11500,11500)"/>
+            <AnimationCommand target="iconAni" targetIndex="7" command="play(12500,12500)"/>
+            <AnimationCommand target="iconAni" targetIndex="8" command="play(13501,13501)"/>
+        </Trigger>
+        <!-- 回桌面初始化 -->
+        <Trigger action="back_home_start">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,0)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(2000,2000)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4000,4000)"/>
+            <AnimationCommand target="iconAni" targetIndex="3" command="play(6000,6000)"/>
+            <AnimationCommand target="iconAni" targetIndex="4" command="play(8000,8000)"/>
+            <AnimationCommand target="iconAni" targetIndex="5" command="play(10000,10000)"/>
+            <AnimationCommand target="iconAni" targetIndex="6" command="play(11000,11000)"/>
+            <AnimationCommand target="iconAni" targetIndex="7" command="play(12000,12000)"/>
+            <AnimationCommand target="iconAni" targetIndex="8" command="play(13000,13000)"/>
+        </Trigger>
+        <!-- 回到桌面 -->
+        <Trigger action="back_home_finish">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <!-- 动画部分 -->
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,500)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(2000,2500)"/>
+            <AnimationCommand target="iconAni" targetIndex="2" command="play(4000,4500)"/>
+            <AnimationCommand target="iconAni" targetIndex="3" command="play(6000,6500)"/>
+            <AnimationCommand target="iconAni" targetIndex="4" command="play(8000,8500)"/>
+            <AnimationCommand target="iconAni" targetIndex="5" command="play(10000,10500)"/>
+            <AnimationCommand target="iconAni" targetIndex="6" command="play(11000,11500)"/>
+            <AnimationCommand target="iconAni" targetIndex="7" command="play(12000,12500)"/>
+            <AnimationCommand target="iconAni" targetIndex="8" command="play(13000,13501)"/>
+            <!-- 动态帧率 -->
+            <AnimationCommand target="panel_framerate_controller" command="play"/>
+        </Trigger>
+    </ExternalCommands>
+    <FramerateController name="panel_framerate_controller" initPause="true" loop="false">
+        <ControlPoint frameRate="0" time="0"/>
+        <ControlPoint frameRate="60" time="1"/>
+        <ControlPoint frameRate="60" time="800"/>
+        <ControlPoint frameRate="0" time="801"/>
+    </FramerateController>
+    <Array count="9" indexName="__i">
+        <Var name="iconAni" size="9" index="#__i" type="number[]">
+            <VariableAnimation name="iconAnimation" initPause="true" loop="false">
+                <!-- #__i == 0,camloop.png's scale -->
+                <AniFrame value="1.2" time="0" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="500"/>
+                <!-- #__i == 1,camShadow.png's scale -->
+                <AniFrame value="1.2" time="2000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="2500"/>
+                <!-- #__i == 2,camShadow.png's alpha -->
+                <AniFrame value="255" time="4000" easeType="CubicEaseOut"/>
+                <AniFrame value="0" time="4500"/>
+                <!-- #__i == 3,ball0.png's scale -->
+                <AniFrame value="1.74" time="6000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="6500"/>
+                <!-- #__i == 4,ball1.png's scale -->
+                <AniFrame value="1.7" time="8000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="8500"/>
+                <!-- #__i == 5,ball2.png's scale -->
+                <AniFrame value="2" time="10000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="10500"/>
+                <!-- #__i == 6,ball3.png's scale -->
+                <AniFrame value="2" time="11000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="11500"/>
+                <!-- #__i == 7,ball4.png's scale -->
+                <AniFrame value="2" time="12000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="12500"/>
+                <!-- #__i == 8,ball5.png's scale -->
+                <AniFrame value="2" time="13000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="13501"/>
+                <Triggers>
+                    <Trigger action="end" condition="#iconAnimation.current_frame == 13501">
+                        <VariableCommand name="useQuietImage" expression="1"/>
+                    </Trigger>
+                </Triggers>
+            </VariableAnimation>
+        </Var>
+    </Array>
+    <Group w="182" h="182" layered="true">
+        <Circle x="91" y="91" r="58" pivotX="0" pivotY="0" scale="#iconAni[3]" fillColor="#ffffff" strokeColor="#a7a7a7" weight="1"/>
+        <Circle x="91" y="91" r="46" pivotX="0" pivotY="0" scale="#iconAni[4]" fillColor="#1f2021"/>
+        <Circle x="91" y="91" r="44" pivotX="0" pivotY="0" scale="#iconAni[5]" fillColor="#252627"/>
+        <Circle x="91" y="91" r="31" pivotX="0" pivotY="0" scale="#iconAni[6]" fillColor="#494b4e"/>
+        <Circle x="91" y="91" r="21" pivotX="0" pivotY="0" scale="#iconAni[7]" fillColor="#212121"/>
+        <Circle x="91" y="91" r="5" pivotX="0" pivotY="0" scale="#iconAni[8]" fillColor="#565656" alpha="(14-#iconAni[8]-1)*18.21"/>
+
+        <Image x="91" y="91" align="center" alignV="center" pivotX="77" pivotY="77" scale="#iconAni[0]" src="camLoop.png"/>
+        <Image x="91" y="91" align="center" alignV="center" pivotX="77" pivotY="77" scale="#iconAni[1]" src="camShadow.png" alpha="#iconAni[2]"/>
+        <Image x="91" y="91" align="center" alignV="center" src="mask.png" xfermode="dst_in"/>  
+        <Image x="91" y="91" align="center" alignV="center" src="icon_border.png" />  
+    </Group>
+</Icon>

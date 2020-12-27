@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="1" width="182" height="182" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231">
+	<Var name="hour_angle_raw" expression="#hour12*30+#minute/2"/>
+	<Var name="minute_angle_raw" expression="#minute*6+#second/10"/>
+	<Var name="second_angle_raw" expression="#second*6"/>
+	<Image x="91" y="91" align="center" alignV="center" src="icon_bg.png"/>
+	<Image name="hand_hour" x="91" y="49" align="center" pivotX="4" pivotY="42" src="hour.png" rotation="#hour_angle_raw" antiAlias="true"/>
+	<Image name="hand_minute" x="91" y="45" align="center" pivotX="9" pivotY="46" src="minute.png" rotation="#minute_angle_raw" antiAlias="true"/>
+</Icon>

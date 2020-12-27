@@ -1,0 +1,118 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Theme",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py cleanup build_all",
+		},
+		{
+			"label": "AAAAAAAAA",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py test",
+		},
+		{
+			"label": "Build Release",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py cleanup build_release",
+		},
+		{
+			"label": "Cleanup",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py cleanup",
+		},
+		{
+			"label": "Build & Push",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py cleanup build_release push",
+		},
+		{
+			"label": "Build & Push & Apply",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py cleanup build_release push apply_theme",
+		},
+		{
+			"label": "Push",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py push"
+		},
+		{
+			"label": "Apply",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py apply_theme",
+		},
+		{
+			"label": "Launch Themes",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py launch_theme_app"
+		},
+		{
+			"label": "Stop Themes",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python task.py stop_theme_app"
+		},
+		{
+			"label": "ADB Connect",
+			"type": "shell",
+			"options": {
+				"cwd": ".\\theme_builder\\python"
+			},
+			"command": "python",
+			"args": [
+				"task.py",
+				"connectToADB",
+				"'${input:ip}:${input:port}'"
+			]
+		},
+	],
+	"inputs": [
+		{
+			"id": "ip",
+			"description": "IP:",
+			"default": "192.168.43.1",
+			"type": "promptString"
+		},
+		{
+			"id": "port",
+			"description": "Port:",
+			"default": "5555",
+			"type": "promptString"
+		},
+		{
+			"id": "path",
+			"description": "make.json path:",
+			"default": "Chisel/make.json",
+			"type": "promptString"
+		}
+	]
+}

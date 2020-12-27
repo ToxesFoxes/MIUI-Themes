@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Clock frameRate="60" scaleByDensity="false" screenWidth="1080" type="awesome" useVariableUpdater="DateTime.Minute" version="1">
+  <FramerateController initPause="true" loop="false" name="panel_framerate_controller">
+    <ControlPoint frameRate="0" time="0"/>
+    <ControlPoint frameRate="60" time="1"/>
+    <ControlPoint frameRate="60" time="600"/>
+    <ControlPoint frameRate="0" time="601"/>
+  </FramerateController>
+  <ExternalCommands>
+    <Trigger action="init,resume">
+      <AnimationCommand command="play" target="panel_framerate_controller"/>
+      <AnimationCommand command="play" target="timeAni" targetIndex="0"/>
+      <AnimationCommand command="play" delay="50" target="timeAni" targetIndex="1"/>
+      <AnimationCommand command="play" delay="100" target="timeAni" targetIndex="2"/>
+    </Trigger>
+    <Trigger action="pause">
+      <AnimationCommand command="play(0,0)" target="timeAni"/>
+    </Trigger>
+  </ExternalCommands>
+  <Array count="4" indexName="__timeAni">
+    <Var index="#__timeAni" name="timeAni" size="4" type="number[]">
+      <VariableAnimation initPause="true" loop="false">
+        <Item easeType="BackEaseOut" time="0" value="0"/>
+        <Item time="800" value="1"/>
+      </VariableAnimation>
+    </Var>
+  </Array>
+  <VariableBinders>
+    <ContentProviderBinder columns="city_name,publish_time,temperature,temperature_range,description,weather_type,wind,humidity" countName="hasweather" dependency="weather" uri="content://weather/weather" uriFormat="content://weather/daily_weather/%s" uriParas="@city_id">
+      <Variable column="weather_type" name="weather_id" type="int"/>
+      <Variable column="city_name" name="weather_location" type="string"/>
+      <Variable column="temperature" name="weather_temperature" type="string"/>
+      <Variable column="temperature" name="weather_temperature" type="int"/>
+      <Variable column="temperature_range" name="weather_temperature_range" type="string"/>
+      <Variable column="description" name="weather_description" type="string"/>
+      <Variable column="wind" name="weather_wind" type="string"/>
+      <Variable column="humidity" name="weather_humidity" type="string"/>
+      <Variable column="temperature" name="weather_temperature_str" type="string"/>
+      <Variable column="wind" name="weather_wind" type="string"/>
+      <Variable column="publish_time" name="weather_publish_time" type="long"/>
+      <Variable column="weather_type" name="weather_id1" row="1" type="int"/>
+      <Variable column="weather_type" name="weather_id2" row="2" type="int"/>
+      <Variable column="weather_type" name="weather_id3" row="3" type="int"/>
+      <Variable column="tmphighs" name="weather_temphigh1" row="1" type="int"/>
+      <Variable column="tmplows" name="weather_templow1" row="1" type="int"/>
+      <Variable column="tmphighs" name="weather_temphigh2" row="2" type="int"/>
+      <Variable column="tmplows" name="weather_templow2" row="2" type="int"/>
+      <Variable column="tmphighs" name="weather_temphigh3" row="3" type="int"/>
+      <Variable column="tmplows" name="weather_templow3" row="3" type="int"/>
+    </ContentProviderBinder>
+    <ContentProviderBinder columns="city_id" name="weather" uri="content://weather/actualWeatherData/1">
+      <Variable column="city_id" name="city_id" type="string"/>
+    </ContentProviderBinder>
+    <ContentProviderBinder columns="aqi,pm25,pm10,so2,no2,pub_time,src,spot" countName="hasweatherinfo" dependency="weather" name="weather_aqi" uriFormat="content://weatherinfo/aqi/%s" uriParas="@city_id">
+      <Variable column="aqi" name="aqi" type="int"/>
+      <Variable column="pm25" name="pm25" type="int"/>
+      <Variable column="pm10" name="pm10" type="int"/>
+      <Variable column="so2" name="so2" type="int"/>
+      <Variable column="no2" name="no2" type="int"/>
+    </ContentProviderBinder>
+  </VariableBinders>
+  <Var expression="eq(#weather_id,0)+eq(#weather_id,1)" name="has_night_icon"/>
+  <Var expression="ifelse(#has_night_icon,&apos;_&apos;+not(ge(#hour24,6)*le(#hour24,17)),&apos;&apos;)" name="icon_suffix" type="string"/>
+  <Var expression="ge(#weather_id,4)*le(#weather_id,11)" name="is_rain"/>
+  <Var expression="ge(#weather_id,12)*le(#weather_id,17)" name="is_snow"/>
+  <Var expression="ge(#weather_id,18)*le(#weather_id,21)+eq(#weather_id,23)" name="is_dust"/>
+  <Var expression="ifelse(isnull(#weather_id),1,gt(#weather_id,24),1,#weather_id)" name="icon_suffixa"/>
+  <Var expression="ifelse(#is_rain,4,#is_snow,12,#is_dust,18,#icon_suffixa)" name="icon_index"/>
+  <Image align="left" alignV="center" src="time_bg.png" x="50" y="200"/>
+  <Image align="center" alignV="center" pivotX="7" pivotY="153" rotation="(#hour12/12)*360" src="h.png" x="237" y="200"/>
+  <Image align="center" alignV="center" pivotX="7" pivotY="153" rotation="(#minute/60)*360" src="m.png" x="237" y="200"/>
+  <Image align="center" alignV="center" pivotX="7" pivotY="153" rotation="(#time_sys/1000)%60*6" src="s.png" x="237" y="200"/>
+  <Button align="left" alignV="center" h="374" w="374" x="50" y="200">
+    <Triggers>
+      <Trigger action="up">
+        <IntentCommand action="android.intent.action.MAIN" class="com.android.deskclock.DeskClockTabActivity" package="com.android.deskclock"/>
+      </Trigger>
+    </Triggers>
+  </Button>
+  <Button align="left" alignV="center" h="92" w="225" x="#view_width/2" y="120">
+    <Triggers>
+      <Trigger action="up">
+        <IntentCommand action="android.intent.action.MAIN" class="com.android.deskclock.DeskClockTabActivity" package="com.android.deskclock"/>
+      </Trigger>
+    </Triggers>
+  </Button>
+  <Image align="right" alignV="center" src="w_bg.png" x="#view_width-50" y="200"/>
+  <DateTime align="left" alignV="center" alpha="255*#timeAni[0]" color="#ffffff" fontFamily="mitype-clock" format="HH:mm" size="100" visibility="#time_format" x="150*(1-#timeAni[0])+#view_width/2" y="120"/>
+  <DateTime align="left" alignV="center" alpha="255*#timeAni[0]" color="#ffffff" fontFamily="mitype-clock" format="hh:mm" size="100" visibility="!#time_format" x="150*(1-#timeAni[0])+#view_width/2" y="120"/>
+  <DateTime align="left" alignV="center" alpha="255*#timeAni[1]" color="#ffffff" format="MM月dd日 E" size="40" x="150*(1-#timeAni[1])+#view_width/2" y="210"/>
+  <Image align="left" alignV="top" alpha="255*#timeAni[2]" src="dw.png" x="150*(1-#timeAni[2])+#view_width/2" y="260"/>
+  <Image align="center" alignV="center" alpha="255*#timeAni[2]" srcExp="&apos;weather/w_&apos;+ #icon_index+&apos;.png&apos;" x="150*(1-#timeAni[2])+#view_width-165" y="130"/>
+  <Text align="left" alignV="top" alpha="255*#timeAni[1]" color="#FFFFFF" marqueeSpeed="30" size="40" textExp="@weather_location" w="160" x="150*(1-#timeAni[1])+#view_width/2+40" y="250"/>
+  <Text align="left" alignV="top" alpha="255*#timeAni[2]" color="#FFFFFF" marqueeSpeed="30" size="40" textExp="@weather_description" w="160" x="150*(1-#timeAni[2])+#view_width/2+40" y="300"/>
+  <Text align="center" alignV="top" alpha="255*#timeAni[1]" color="#FFFFFF" fontFamily="mitype-clock" marqueeSpeed="30" size="100" textExp="@weather_temperature" w="160" x="150*(1-#timeAni[1])+#view_width-165" y="230"/>
+  <Button align="center" alignV="center" h="140" w="140" x="#view_width-165" y="130">
+    <Triggers>
+      <Trigger action="up">
+        <IntentCommand action="android.intent.action.MAIN" class="com.miui.weather2.ActivityWeatherMain" package="com.miui.weather2"/>
+      </Trigger>
+    </Triggers>
+  </Button>
+  <Button align="left" alignV="top" h="103" w="480" x="#view_width/2" y="260">
+    <Triggers>
+      <Trigger action="up">
+        <IntentCommand action="android.intent.action.MAIN" class="com.miui.weather2.ActivityWeatherMain" package="com.miui.weather2"/>
+      </Trigger>
+    </Triggers>
+  </Button>
+  <Button align="left" alignV="center" h="70" w="250" x="#view_width/2" y="210">
+    <Triggers>
+      <Trigger action="up">
+        <IntentCommand action="android.intent.action.MAIN" class="com.android.calendar.AllInOneActivity" package="com.android.calendar"/>
+      </Trigger>
+    </Triggers>
+  </Button>
+  <Button height="1" name="clock_button" width="1"/>
+</Clock>

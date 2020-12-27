@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="0" width="182" height="182" screenWidth="1080" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231" clip="true" >
+    <!-- 相册 -->
+    <ExternalCommands>
+        <!-- 初始化 -->
+        <Trigger action="init,present,back_home_cancel">
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,400)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(1000,1400)"/>
+            <VariableCommand name="useQuietImage" expression="1"/>
+        </Trigger>
+        <!-- 回桌面 -->
+        <Trigger action="back_home_start">
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,0)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(1000,1000)"/>
+            <VariableCommand name="useQuietImage" expression="0"/>
+        </Trigger>
+        <!-- 回到桌面 -->
+        <Trigger action="back_home_finish">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <!-- 动画部分 -->
+            <AnimationCommand target="iconAni" targetIndex="0" command="play(0,400)"/>
+            <AnimationCommand target="iconAni" targetIndex="1" command="play(1000,1400)"/>
+            <!-- 动态帧率 -->
+            <AnimationCommand target="panel_framerate_controller" command="play"/>
+        </Trigger>
+    </ExternalCommands>
+    <FramerateController name="panel_framerate_controller" initPause="true" loop="false">
+        <ControlPoint frameRate="0" time="0"/>
+        <ControlPoint frameRate="60" time="1"/>
+        <ControlPoint frameRate="60" time="600"/>
+        <ControlPoint frameRate="0" time="601"/>
+    </FramerateController>
+    <Array count="2" indexName="__i">
+        <Var name="iconAni" size="2" index="#__i" type="number[]">
+            <VariableAnimation name="iconAnimation"  initPause="true" loop="false">
+                <!-- #__i == 0,L&R's y -->
+                <AniFrame value="4" time="0" easeType="CubicEaseOut"/>
+                <AniFrame value="0" time="400"/>
+                <!-- #__i == 1,sun's scale&y -->
+                <AniFrame value="0" time="1000" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="1400"/>
+                <Triggers>
+                    <Trigger action="end" condition="#iconAnimation.current_frame == 1400">
+                        <VariableCommand name="useQuietImage" expression="1"/>
+                    </Trigger>
+                </Triggers>
+            </VariableAnimation>
+        </Var>
+    </Array>
+    <Group w="#screen_width" h="#screen_height" layered="true">
+        <Image x="91" y="91" align="center" alignV="center" src="albumBg.png"/>
+        <Image x="85" y="(1-#iconAni[1])*40+112" align="center" alignV="center" pivotX="23" pivotY="23" scale="0.8 + #iconAni[1]*0.2" src="albumSun.png"/>
+        <Image x="172" y="91+81+#iconAni[0]" align="right" alignV="bottom" src="albumR.png"/>
+        <Image x="10" y="91+81+#iconAni[0]" alignV="bottom" src="albumL.png"/>
+        <Image x="91" y="91" align="center" alignV="center" src="mask.png" xfermode="dst_in"/>  
+        <Image x="91" y="91" align="center" alignV="center" src="icon_border.png" />  
+    </Group>
+	
+</Icon>

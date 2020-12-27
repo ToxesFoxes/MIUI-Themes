@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Icon version="1" frameRate="0" width="182" height="182" screenWidth="1080" resDensity="480" extraResourcesDensity="320,440,480,640" extraResources="sw1536-den320:den440:1" extraScaleByDensity="320:0.6703,440:0.9231,640:1.2307" extraScales="sw1536-den320:0.9231">
+    <!-- 短信 -->
+    <ExternalCommands>
+        <!-- 初始化 -->
+        <Trigger action="init,present,back_home_cancel">
+            <VariableCommand name="useQuietImage" expression="1"/>
+            <AnimationCommand target="iconAni" command="play(400,400)"/>
+        </Trigger>
+        <!-- 回桌面初始化 -->
+        <Trigger action="back_home_start">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <AnimationCommand target="iconAni" command="play(0,0)"/>
+        </Trigger>
+        <!-- 回到桌面 -->
+        <Trigger action="back_home_finish">
+            <VariableCommand name="useQuietImage" expression="0"/>
+            <!-- 动画部分 -->
+            <AnimationCommand target="iconAni" command="play(0,400)"/>
+            <!-- 动态帧率 -->
+            <AnimationCommand target="panel_framerate_controller" command="play"/>
+        </Trigger>
+    </ExternalCommands>
+    <FramerateController name="panel_framerate_controller" initPause="true" loop="false">
+        <ControlPoint frameRate="0" time="0"/>
+        <ControlPoint frameRate="60" time="1"/>
+        <ControlPoint frameRate="60" time="700"/>
+        <ControlPoint frameRate="0" time="701"/>
+    </FramerateController>
+        <Var name="iconAni">
+            <VariableAnimation name="iconAnimation"  initPause="true" loop="false">
+                <!-- #__i == 1,缩放 -->
+                <AniFrame value="1.2" time="0" easeType="CubicEaseOut"/>
+                <AniFrame value="1" time="400"/>
+                <Triggers>
+                    <Trigger action="end" condition="#iconAnimation.current_frame == 400">
+                        <VariableCommand name="useQuietImage" expression="1"/>
+                    </Trigger>
+                </Triggers>
+            </VariableAnimation>
+        </Var>
+    <Image x="91" y="91" align="center" alignV="center" src="smsBg.png"/>
+    <Image x="91" y="91" pivotX="40" pivotY="40" scale="#iconAni" align="center" alignV="center" src="smsShape.png"/>
+</Icon>

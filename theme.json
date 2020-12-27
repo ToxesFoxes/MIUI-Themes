@@ -1,0 +1,53 @@
+{
+	"projectDir": "theme",
+
+	"description": {
+		"title": "Material",
+		"author": "ToxesFoxes",
+		"authorID": "4160708017",
+		"designer": "ToxesFoxes",
+		"description": "Cool Miui v12 Material theme",
+		"version": "12",
+		"uiVersion": "10",
+		"locales": {
+			"authors": {
+				"value_name": "author",
+				"en_US": "ToxesFoxes"
+			},
+			"designers": {
+				"value_name": "designer",
+				"en_US": "ToxesFoxes"
+			},
+			"titles": {
+				"value_name": "title",
+				"en_US": "Material"
+			},
+			"descriptions": {
+				"value_name": "description",
+				"en_US": "Cool Miui v12 Material theme"
+			}
+		}
+	},
+	"additional": {
+		"preview": "preview",
+		"wallpaper": "wallpaper"
+	},
+	"modules": {
+		"clock_2x4": "clock_2x4",
+		"com.android.systemui": "com.android.systemui",
+		"com.android.thememanager": "com.android.thememanager",
+		"com.android.updater": "com.android.updater",
+		"com.miui.gallery": "com.miui.gallery",
+		"com.miui.home": "com.miui.home",
+		"com.miui.mishare.connectivity": "com.miui.mishare.connectivity",
+		"com.miui.notification": "com.miui.notification",
+		"com.miui.personalassistant": "com.miui.personalassistant",
+		"com.miui.screenrecorder": "com.miui.screenrecorder",
+		"com.miui.touchassistant": "com.miui.touchassistant",
+		"com.xiaomi.market": "com.xiaomi.market",
+		"framework-miui-res": "framework-miui-res",
+		"framework-res": "framework-res",
+		"icons": "icons",
+		"lockscreen": "lockscreen"
+	}
+}

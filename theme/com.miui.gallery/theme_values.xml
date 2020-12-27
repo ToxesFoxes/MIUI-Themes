@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<MIUI_Theme_Values>
+	<bool name="theme_crop_share_icon">true</bool>
+</MIUI_Theme_Values>
