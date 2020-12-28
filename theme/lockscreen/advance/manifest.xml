@@ -3,7 +3,6 @@
   <!-- Определение ширины и высоты экрана -->
   <Var expression="#screen_width" name="sw" type="number"/>
   <Var expression="#screen_height" name="sh" type="number"/>
-  <Var expression="@theme_test_number" name="sucking" type="number"/>
   <!--начало-->
   <Var name="light_scale">
     <VariableAnimation initPause="true" loop="false">
@@ -40,15 +39,15 @@
       <VariableCommand expression="1" name="unlockButtonSwitch"/>
     </Trigger>
     <Trigger action="resume,pause">
-      <VariableCommand expression="0" name="SimpleLockScreen_moveX"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_moveY"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_moveA"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_moveB"/>
-      <AnimationCommand command="play(0,0)" target="SimpleLockScreen_moveAn"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_unlockA"/>
-      <AnimationCommand command="play(0,0)" target="SimpleLockScreen_unlockAn"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_moveX_SW"/>
-      <VariableCommand expression="0" name="SimpleLockScreen_moveY_SW"/>
+      <VariableCommand expression="0" name="SLS_moveX"/>
+      <VariableCommand expression="0" name="SLS_moveY"/>
+      <VariableCommand expression="0" name="SLS_moveA"/>
+      <VariableCommand expression="0" name="SLS_moveB"/>
+      <AnimationCommand command="play(0,0)" target="SLS_moveAn"/>
+      <VariableCommand expression="0" name="SLS_unlockA"/>
+      <AnimationCommand command="play(0,0)" target="SLS_unlockAn"/>
+      <VariableCommand expression="0" name="SLS_moveX_SW"/>
+      <VariableCommand expression="0" name="SLS_moveY_SW"/>
     </Trigger>
   </ExternalCommands>
   <VariableBinders>
@@ -149,10 +148,10 @@
   <!-- Данные проигрывателя : старт -->
   <ExternalCommands>
     <Trigger action="resume" condition="1">
-      <MethodCommand condition="#OddityFullscreenMusic_music_control.music_state" method="performAction" paramTypes="String" params="nameholder_init_play" target="OddityFullscreenMusic_music_init"/>
+      <MethodCommand condition="#OddityFullscreenMusic_music_control.music_state" method="performAction" paramTypes="String" params="&apos;nameholder_init_play&apos;" target="OddityFullscreenMusic_music_init"/>
     </Trigger>
     <Trigger action="pause" condition="1">
-      <MethodCommand condition="not(#OddityFullscreenMusic_music_control.music_state)" method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
+      <MethodCommand condition="not(#OddityFullscreenMusic_music_control.music_state)" method="performAction" paramTypes="String" params="&apos;OddityFullscreenMusic_ani_play&apos;" target="OddityFullscreenMusic_music_ani"/>
       <VariableCommand expression="0" name="OddityFullscreenMusic_music_visibility"/>
     </Trigger>
   </ExternalCommands>
@@ -264,258 +263,37 @@
     <!-- 2 экран -->
     <!-- <Rectangle alpha="255*0.4*#defaultScreen_x/1080" fillColor="#FFFFFF" h="#sh" w="#sw" x="0" y="0"/> -->
     <Group x="-1080+#defaultScreen_x">
-      <!-- Музыка -->
-      <Group>
-        <Group name="OddityFullscreenMusic_music_init">
-          <!-- Триггер : играть -->
-          <Triggers>
-            <Trigger action="nameholder_init_play">
-              <VariableCommand expression="1" name="OddityFullscreenMusic_music_visibility"/>
-              <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(0,600)"/>
-              <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(0,800)"/>
-              <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(0,600)"/>
-              <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(0,500)"/>
-            </Trigger>
-          </Triggers>
-        </Group>
-        <!-- Кнопка : показать проигрыватель -->
-        <Group>
-          <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfq.png" visibility="not(#OddityFullscreenMusic_music_visibility)" x="1019" y="#screen_height-65"/>
-          <Button align="center" alignV="center" h="130" visibility="1" w="130" x="1019" y="#screen_height-65">
+      <!-- Остальной экран -->
+      <Group visibility="1">
+        <!-- Аватар и текст -->
+        <Group x="#sw/2" y="400">
+          <Var expression="ifelse(strContains(@theme_avatar_image,'com.android.fileexplorer'),strReplaceAll(@theme_avatar_image,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@theme_avatar_image,'com.miui.gallery'),strReplaceAll(@theme_avatar_image,'%2F','/'), strContains(@theme_avatar_image,'com.miui.gallery'),strReplaceAll(@theme_avatar_image,'content://com.miui.gallery.open/raw//storage/emulated/0/','file:///sdcard/'),@theme_avatar_image)" name="txdz" type="string"/>
+          <!-- Дефолтная картинка -->
+          <Image align="center" alignV="center" src="left_screen/youlee.png" x="0" y="0">
+            <Mask src="left_screen/mask.png"/>
+          </Image>
+          <!-- Пользовательское фото -->
+          <Image align="center" alignV="center" h="200" srcExp="@txdz" srcType="Uri" w="200" x="0" y="0">
+            <Mask src="left_screen/mask.png"/>
+          </Image>
+          <Text align="center" alignV="center" bold="true" color="@theme_text_color" size="40" textExp="@theme_avatar_label" x="0" y="140"/>
+          <!-- Кнопка открытия настроек -->
+          <Button align="center" alignV="center" h="200" w="200" x="0" y="0">
+            <Pressed>
+              <circle align="center" alignV="center" alpha="90" fillColor="@" r="100" x="0" y="0"/>
+            </Pressed>
             <Triggers>
-              <!-- Контроллер : видимость проигрывателя -->
-              <Trigger action="up" condition="not(#OddityFullscreenMusic_music_visibility)">
-                <MethodCommand method="performAction" paramTypes="String" params="nameholder_init_play" target="OddityFullscreenMusic_music_init"/>
+              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
+                  <Extra expression="'lockstyle'" name="maml_code" type="string"/>
+                </IntentCommand>
+                <ExternCommand command="unlock"/>
               </Trigger>
             </Triggers>
           </Button>
         </Group>
-        <Group visibility="1" x="0" y="0">
-          <MusicControl alpha="#OddityFullscreenMusic_music_alpha" autoShow="true" defAlbumCover="OddityFullscreenMusic_src/mb.jpg" enableLyric="true" name="OddityFullscreenMusic_music_control" updateLyricInterval="100" visibility="#OddityFullscreenMusic_music_visibility" y="#OddityFullscreenMusic_music_y">
-            <!-- Фон -->
-            <Image src="OddityFullscreenMusic_src/b.png"/>
-            <!-- Переменные : прозрачность, положение y, разммеры x y -->
-            <Group>
-              <Var name="OddityFullscreenMusic_music_alpha">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="QuadEaseOut" time="0" value="0"/>
-                  <AniFrame easeType="CubicEaseOut" time="600" value="255"/>
-                  <AniFrame time="900" value="0"/>
-                </VariableAnimation>
-              </Var>
-              <Var name="OddityFullscreenMusic_music_y">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="BackEaseOut" time="0" value="-140"/>
-                  <AniFrame easeType="CubicEaseOut" time="800" value="0"/>
-                  <AniFrame time="1100" value="-140"/>
-                </VariableAnimation>
-              </Var>
-              <Var name="OddityFullscreenMusic_scale_x">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                  <AniFrame easeType="CubicEaseOut" time="600" value="1"/>
-                  <AniFrame time="1100" value="0.5"/>
-                </VariableAnimation>
-              </Var>
-              <Var name="OddityFullscreenMusic_scale_y">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                  <AniFrame easeType="CubicEaseOut" time="500" value="1"/>
-                  <AniFrame time="1000" value="0.5"/>
-                </VariableAnimation>
-              </Var>
-            </Group>
-            <!-- анимация -->
-            <Group name="OddityFullscreenMusic_music_ani">
-              <!-- Триггер анимации появления элементов - переменные выше -->
-              <Triggers>
-                <Trigger action="OddityFullscreenMusic_ani_play">
-                  <VariableCommand delay="500" expression="0" name="OddityFullscreenMusic_music_visibility"/>
-                  <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(600,900)"/>
-                  <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(800,1100)"/>
-                  <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(600,1100)"/>
-                  <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(500,1000)"/>
-                </Trigger>
-              </Triggers>
-            </Group>
-            <!-- Кнопка : возврат -->
-            <Group>
-              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/fh.png" x="105" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)"/>
-              <Button align="center" alignV="center" h="130" w="130" x="105" y="112+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)">
-                <Triggers>
-                  <Trigger action="up">
-                    <MethodCommand method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
-            </Group>
-            <!-- Кнопка : открыть приложение проигрывателя -->
-            <Group>
-              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/msz.png" x="975" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)"/>
-              <Button align="center" alignV="center" h="130" w="130" x="975" y="112+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)">
-                <Triggers>
-                  <Trigger action="up">
-                    <!-- <IntentCommand action="android.intent.action.MAIN" package="com.miui.player" class="com.miui.player.phone.ui.MusicSettings" /> -->
-                    <IntentCommand action="android.intent.action.MAIN" class="com.miui.player.ui.MusicBrowserActivity" condition="int(@__miui_version_code){=8" package="com.miui.player"/>
-                    <IntentCommand action="android.intent.action.MAIN" classExp="@OddityFullscreenMusic_music_control.class" condition="int(@__miui_version_code)}=9" packageExp="@OddityFullscreenMusic_music_control.package"/>
-                    <ExternCommand command="unlock"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
-            </Group>
 
-            <!-- Обложка -->
-            <Image align="center" alignV="center" centerX="460" centerY="460" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" src="OddityFullscreenMusic_src/b1.png" x="#screen_width/2" y="239"/>
-            <Group align="center" alignV="center" centerX="460" centerY="460" h="920" layered="true" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" w="920" x="#screen_width/2" y="718">
-              <Image align="center" alignV="center" h="920" srcExp="ifelse(strContains(valueholder_album_config_src,com.android.fileexplorer),strReplaceAll(valueholder_album_config_src,content://com.android.fileexplorer.myprovider/external_files/,file:///sdcard/),strContains(valueholder_album_config_src,com.miui.gallery),strReplaceAll(valueholder_album_config_src,content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F,file:///sdcard/),valueholder_album_config_src)" srcType="Uri" visibility="len(valueholder_album_config_src)*not(#OddityFullscreenMusic_music_control.music_state)" w="920" x="460" y="460"/>
-              <Image align="center" alignV="center" h="920" name="music_album_cover" w="920" x="460" y="460"/>
-              <!-- <Image x="460" y="460" w="920" h="920" align="center" alignV="center" src="OddityFullscreenMusic_src/mb.jpg" visibility="not(len(valueholder_album_config_src))*not(#OddityFullscreenMusic_music_control.music_state)" /> -->
-
-              <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/m.9.png" w="920" x="460" xfermode="dst_in" y="460"/>
-              <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/mb.9.png" w="920" x="460" y="460"/>
-            </Group>
-
-            <!-- Текст песни -->
-            <Group clip="true" x="#screen_width/2" y="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,-20,#raw_screen_height==2160,-41,#raw_screen_height==2244,-83,#raw_screen_height==2248,-85,#raw_screen_height==2280,-101,-130)">
-              <Text align="center" alignV="center" color="#b4c2bf" size="50" text="--- 歌词 ---" visibility="not(#OddityFullscreenMusic_music_control.music_state)" y="#screen_height-503"/>
-              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_last" visibility="#OddityFullscreenMusic_music_control.music_state*ifelse(#raw_screen_height==1920,0,1)" w="#sw" y="#screen_height-614"/>
-              <Text align="center" alignV="center" alpha="255" color="#1ddebc" marqueeSpeed="30" size="50" text="@OddityFullscreenMusic_music_control.lyric_current" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-540"/>
-              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_next" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-466"/>
-            </Group>
-
-            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),No music,@OddityFullscreenMusic_music_control.title)+ - +ifelse(isnull(@OddityFullscreenMusic_music_control.artist),Open music player,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,1,#raw_screen_height==2040,1,0)" w="#screen_width" x="#screen_width/2" y="1269"/>
-            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),No music,@OddityFullscreenMusic_music_control.title)" visibility="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,0,1)" w="#screen_width" x="#screen_width/2" y="1269"/>
-            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.artist),Open music player,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,0,1)" w="#screen_width" x="#screen_width/2" y="1357"/>
-            <Rectangle align="center" alignV="center" alpha="255*40/100" fillColor="#b4c2bf" h="8" w="660" x="#screen_width/2" y="#screen_height-359"/>
-            <Rectangle alignV="center" alpha="255" fillColor="#1ddebc" h="8" w="#OddityFullscreenMusic_music_control.music_position/#OddityFullscreenMusic_music_control.music_duration*660" x="#screen_width/2-330" y="#screen_height-359"/>
-            <DateTime align="left" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_position" x="#screen_width/2-460" y="#screen_height-359"/>
-            <DateTime align="right" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_duration" x="#screen_width/2+460" y="#screen_height-359"/>
-            <Var name="OddityFullscreenMusic_scale_x1">
-              <VariableAnimation initPause="true" loop="false">
-                <AniFrame easeType="BackEaseOut" time="0" value="1"/>
-                <AniFrame easeType="CubicEaseOut" time="400" value="1.3"/>
-                <AniFrame time="600" value="1"/>
-              </VariableAnimation>
-            </Var>
-            <Var name="OddityFullscreenMusic_scale_y1">
-              <VariableAnimation initPause="true" loop="false">
-                <AniFrame easeType="BackEaseOut" time="0" value="1"/>
-                <AniFrame easeType="CubicEaseOut" time="300" value="1.3"/>
-                <AniFrame time="500" value="1"/>
-              </VariableAnimation>
-            </Var>
-            <Image align="center" alignV="center" centerX="28" centerY="24" scaleX="#OddityFullscreenMusic_scale_x1" scaleY="#OddityFullscreenMusic_scale_y1" src="OddityFullscreenMusic_src/gpqsc.png" srcid="#OddityFullscreenMusic_music_control.user_rating_value" x="107" y="#screen_height-183"/>
-            <Button align="center" alignV="center" h="130" w="130" x="107" y="#screen_height-183">
-              <Triggers>
-                <Trigger action="up">
-                  <MethodCommand delay="500" method="ratingHeart" target="OddityFullscreenMusic_music_control"/>
-                  <Command target="OddityFullscreenMusic_scale_x1.animation" value="play"/>
-                  <Command target="OddityFullscreenMusic_scale_y1.animation" value="play"/>
-                </Trigger>
-              </Triggers>
-            </Button>
-            <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfqfh.png" x="983" y="#screen_height-184"/>
-            <Button align="center" alignV="center" h="130" w="130" x="983" y="#screen_height-184">
-              <Triggers>
-                <Trigger action="up">
-                  <MethodCommand method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
-                </Trigger>
-              </Triggers>
-            </Button>
-            <Button align="center" alignV="center" h="100" name="music_prev" w="100" x="#screen_width/2-240" y="#screen_height-182">
-              <Normal>
-                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
-              </Normal>
-              <Pressed>
-                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
-              </Pressed>
-            </Button>
-            <Button align="center" alignV="center" h="100" name="music_next" w="100" x="#screen_width/2+241" y="#screen_height-183">
-              <Normal>
-                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
-              </Normal>
-              <Pressed>
-                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
-              </Pressed>
-            </Button>
-            <Circle align="center" alignV="center" centerX="#OddityFullscreenMusic_btn_circle.bmp_width/2" centerY="#OddityFullscreenMusic_btn_circle.bmp_height/2" fillColor="#1ddebc" name="OddityFullscreenMusic_btn_circle" r="85" scaleX="#OddityFullscreenMusic_scale_x+#OddityFullscreenMusic_scale_x2" scaleY="#OddityFullscreenMusic_scale_y+#OddityFullscreenMusic_scale_y2" x="#screen_width/2" y="#screen_height-183"/>
-            <Var name="OddityFullscreenMusic_scale_x2">
-              <VariableAnimation initPause="true" loop="false">
-                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
-                <AniFrame time="700" value="0"/>
-              </VariableAnimation>
-            </Var>
-            <Var name="OddityFullscreenMusic_scale_y2">
-              <VariableAnimation initPause="true" loop="false">
-                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
-                <AniFrame time="750" value="0"/>
-              </VariableAnimation>
-            </Var>
-            <Button align="center" alignV="center" h="170" name="music_play" w="170" x="#screen_width/2" y="#screen_height-183">
-              <Normal>
-                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
-              </Normal>
-              <Pressed>
-                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
-              </Pressed>
-              <Triggers>
-                <Trigger action="up">
-                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,800)"/>
-                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,600)"/>
-                </Trigger>
-              </Triggers>
-            </Button>
-            <Button align="center" alignV="center" h="170" name="music_pause" w="170" x="#screen_width/2" y="#screen_height-183">
-              <Normal>
-                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
-              </Normal>
-              <Pressed>
-                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
-              </Pressed>
-              <Triggers>
-                <Trigger action="up">
-                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,700)"/>
-                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,750)"/>
-                </Trigger>
-              </Triggers>
-            </Button>
-          </MusicControl>
-        </Group>
-      </Group>
-      <!-- Остальной экран -->
-      <Group visibility="0">
-        <Image align="center" alignV="center" src="left_screen/youlee.png" x="195" y="400">
-          <Mask src="left_screen/mask.png"/>
-        </Image>
-        <Text align="left" alignV="center" alpha="255" bold="true" color="@theme_text_color" size="40" textExp="@theme_avatar_label" x="120" y="560"/>
-        <Var expression="ifelse(strContains(@theme_avatar_image,'com.android.fileexplorer'),strReplaceAll(@theme_avatar_image,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@theme_avatar_image,'com.miui.gallery'),strReplaceAll(@theme_avatar_image,'content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F','file:///sdcard/'),@theme_avatar_image)" name="txdz" type="string"/>
-        <Image align="center" alignV="center" h="200" srcExp="@txdz" srcType="Uri" w="200" x="195" y="400">
-          <Mask src="left_screen/mask.png"/>
-        </Image>
-        <Button align="center" alignV="center" h="200" w="200" x="195" y="400">
-          <Pressed>
-            <circle align="center" alignV="center" alpha="90" fillColor="#3B3B3B" r="200/2" x="#sw/2" y="310"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-              <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
-                <Extra expression="'lockstyle'" name="maml_code" type="string"/>
-              </IntentCommand>
-              <ExternCommand command="unlock"/>
-            </Trigger>
-          </Triggers>
-        </Button>
         <Group>
-          <!--Фон плагина-->
-          <!-- <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="200" w="420" x="95" y="700"/>
-        <Rectangle cornerRadius="50" fillColor="#FF3E79FF" h="200" w="420" x="95" y="920"/>
-        <Rectangle cornerRadius="50" fillColor="#FFFED022" h="200" w="890" x="95" y="1170"/>
-        <Rectangle cornerRadius="50" fillColor="#FFFED022" h="200" w="200" x="535" y="1420"/>
-        <Rectangle cornerRadius="50" fillColor="#FFFD6E53" h="200" w="200" x="785" y="1420"/>
-        <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="420" w="420" x="565" y="700"/>
-        <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="200" w="390" x="95" y="1420"/> -->
           <!--Быстрая оплата-->
           <Image align="center" alignV="center" src="left_screen/wechat.png" x="177" y="800"/>
           <Image align="center" alignV="center" src="left_screen/alipay.png" x="185" y="1020"/>
@@ -756,99 +534,338 @@
           </Button>
         </Group>
       </Group>
+      <!-- Экран Музыка -->
+      <Group>
+        <!-- Триггер : запуск анимации -->
+        <Group name="OddityFullscreenMusic_music_init">
+          <Triggers>
+            <Trigger action="nameholder_init_play">
+              <VariableCommand expression="1" name="OddityFullscreenMusic_music_visibility"/>
+              <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(0,600)"/>
+              <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(0,800)"/>
+              <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(0,600)"/>
+              <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(0,500)"/>
+            </Trigger>
+          </Triggers>
+        </Group>
+        <!-- Кнопка : показать проигрыватель -->
+        <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfq.png" visibility="not(#OddityFullscreenMusic_music_visibility)" x="1019" y="#screen_height-65"/>
+        <Button align="center" alignV="center" h="130" visibility="1" w="130" x="1019" y="#screen_height-65">
+          <!-- Триггер : видимость проигрывателя -->
+          <Triggers>
+            <Trigger action="up" condition="not(#OddityFullscreenMusic_music_visibility)">
+              <MethodCommand method="performAction" paramTypes="String" params="&apos;nameholder_init_play&apos;" target="OddityFullscreenMusic_music_init"/>
+            </Trigger>
+          </Triggers>
+        </Button>
+        <!-- Проигрыватель -->
+        <Group visibility="1" x="0" y="0">
+          <MusicControl alpha="#OddityFullscreenMusic_music_alpha" autoShow="true" defAlbumCover="OddityFullscreenMusic_src/mb.jpg" enableLyric="true" name="OddityFullscreenMusic_music_control" updateLyricInterval="100" visibility="#OddityFullscreenMusic_music_visibility" y="#OddityFullscreenMusic_music_y">
+            <!-- Фон -->
+            <Image src="OddityFullscreenMusic_src/b.png"/>
+            <!-- Переменные : прозрачность, положение y, разммеры x y -->
+            <Group>
+              <Var name="OddityFullscreenMusic_music_alpha">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="QuadEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="255"/>
+                  <AniFrame time="900" value="0"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_music_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="-140"/>
+                  <AniFrame easeType="CubicEaseOut" time="800" value="0"/>
+                  <AniFrame time="1100" value="-140"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_x">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="1"/>
+                  <AniFrame time="1100" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="500" value="1"/>
+                  <AniFrame time="1000" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_x1">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                  <AniFrame easeType="CubicEaseOut" time="400" value="1.3"/>
+                  <AniFrame time="600" value="1"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_y1">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                  <AniFrame easeType="CubicEaseOut" time="300" value="1.3"/>
+                  <AniFrame time="500" value="1"/>
+                </VariableAnimation>
+              </Var>
+            </Group>
+            <!-- Анимация -->
+            <Group name="OddityFullscreenMusic_music_ani">
+              <!-- Триггер анимации появления элементов - переменные выше -->
+              <Triggers>
+                <Trigger action="OddityFullscreenMusic_ani_play">
+                  <VariableCommand delay="500" expression="0" name="OddityFullscreenMusic_music_visibility"/>
+                  <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(600,900)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(800,1100)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(600,1100)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(500,1000)"/>
+                </Trigger>
+              </Triggers>
+            </Group>
+            <!-- Кнопка : возврат -->
+            <Group>
+              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/fh.png" x="105" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,&apos;30&apos;,#raw_screen_height==2248,&apos;30&apos;,#raw_screen_height==2280,&apos;30&apos;,#raw_screen_height==2340,&apos;30&apos;,&apos;0&apos;)"/>
+              <Button align="center" alignV="center" h="130" w="130" x="105" y="112+ifelse(#raw_screen_height==2244,&apos;30&apos;,#raw_screen_height==2248,&apos;30&apos;,#raw_screen_height==2280,&apos;30&apos;,#raw_screen_height==2340,&apos;30&apos;,&apos;0&apos;)">
+                <Triggers>
+                  <Trigger action="up">
+                    <MethodCommand method="performAction" paramTypes="String" params="&apos;OddityFullscreenMusic_ani_play&apos;" target="OddityFullscreenMusic_music_ani"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
+            </Group>
+            <!-- Кнопка : открыть приложение проигрывателя -->
+            <Group>
+              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/msz.png" x="975" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,&apos;30&apos;,#raw_screen_height==2248,&apos;30&apos;,#raw_screen_height==2280,&apos;30&apos;,#raw_screen_height==2340,&apos;30&apos;,&apos;0&apos;)"/>
+              <Button align="center" alignV="center" h="130" w="130" x="975" y="112+ifelse(#raw_screen_height==2244,&apos;30&apos;,#raw_screen_height==2248,&apos;30&apos;,#raw_screen_height==2280,&apos;30&apos;,#raw_screen_height==2340,&apos;30&apos;,&apos;0&apos;)">
+                <Triggers>
+                  <Trigger action="up">
+                    <!-- <IntentCommand action="android.intent.action.MAIN" package="com.miui.player" class="com.miui.player.phone.ui.MusicSettings" /> -->
+
+                    <IntentCommand action="android.intent.action.MAIN" class="com.miui.player.ui.MusicBrowserActivity" condition="int(@__miui_version_code){=8" package="com.miui.player"/>
+                    <IntentCommand action="android.intent.action.MAIN" classExp="@OddityFullscreenMusic_music_control.class" condition="int(@__miui_version_code)}=9" packageExp="@OddityFullscreenMusic_music_control.package"/>
+                    <ExternCommand command="unlock"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
+            </Group>
+
+            <!-- Обложка -->
+            <Group>
+              <Image align="center" alignV="center" centerX="460" centerY="460" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" src="OddityFullscreenMusic_src/b1.png" x="#screen_width/2" y="239"/>
+              <Group align="center" alignV="center" centerX="460" centerY="460" h="920" layered="true" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" w="920" x="#screen_width/2" y="718">
+                <Image align="center" alignV="center" h="920" srcExp="ifelse(strContains(valueholder_album_config_src,&apos;com.android.fileexplorer&apos;),strReplaceAll(valueholder_album_config_src,&apos;content://com.android.fileexplorer.myprovider/external_files/&apos;,&apos;file:///sdcard/&apos;),strContains(valueholder_album_config_src,&apos;com.miui.gallery&apos;),strReplaceAll(valueholder_album_config_src,&apos;content://com.miui.gallery.open/raw//storage/emulated/0/&apos;,&apos;file:///sdcard/&apos;),valueholder_album_config_src)" srcType="Uri" visibility="len(valueholder_album_config_src)*not(#OddityFullscreenMusic_music_control.music_state)" w="920" x="460" y="460"/>
+                <Image align="center" alignV="center" h="920" name="music_album_cover" w="920" x="460" y="460"/>
+                <!-- <Image x="460" y="460" w="920" h="920" align="center" alignV="center" src="OddityFullscreenMusic_src/mb.jpg" visibility="not(len(valueholder_album_config_src))*not(#OddityFullscreenMusic_music_control.music_state)" /> -->
+
+                <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/m.9.png" w="920" x="460" xfermode="dst_in" y="460"/>
+                <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/mb.9.png" w="920" x="460" y="460"/>
+              </Group>
+            </Group>
+
+            <!-- Текст песни -->
+            <Group clip="true" x="#screen_width/2" y="ifelse(#raw_screen_height==1920,&apos;0&apos;,#raw_screen_height==2040,&apos;-20&apos;,#raw_screen_height==2160,&apos;-41&apos;,#raw_screen_height==2244,&apos;-83&apos;,#raw_screen_height==2248,&apos;-85&apos;,#raw_screen_height==2280,&apos;-101&apos;,&apos;-130&apos;)">
+              <Text align="center" alignV="center" color="#b4c2bf" size="50" text="--- 歌词 ---" visibility="not(#OddityFullscreenMusic_music_control.music_state)" y="#screen_height-503"/>
+              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_last" visibility="#OddityFullscreenMusic_music_control.music_state*ifelse(#raw_screen_height==1920,&apos;0&apos;,&apos;1&apos;)" w="#sw" y="#screen_height-614"/>
+              <Text align="center" alignV="center" alpha="255" color="#1ddebc" marqueeSpeed="30" size="50" text="@OddityFullscreenMusic_music_control.lyric_current" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-540"/>
+              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_next" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-466"/>
+            </Group>
+            <!-- Название -->
+            <Group>
+              <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),&apos;No music&apos;,@OddityFullscreenMusic_music_control.title)+&apos; - &apos;+ifelse(isnull(@OddityFullscreenMusic_music_control.artist),&apos;Open music player&apos;,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,&apos;1&apos;,#raw_screen_height==2040,&apos;1&apos;,&apos;0&apos;)" w="#screen_width" x="#screen_width/2" y="1269"/>
+              <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),&apos;No music&apos;,@OddityFullscreenMusic_music_control.title)" visibility="ifelse(#raw_screen_height==1920,&apos;0&apos;,#raw_screen_height==2040,&apos;0&apos;,&apos;1&apos;)" w="#screen_width" x="#screen_width/2" y="1269"/>
+            </Group>
+            <!-- Артист -->
+            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.artist),&apos;Open music player&apos;,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,&apos;0&apos;,#raw_screen_height==2040,&apos;0&apos;,&apos;1&apos;)" w="#screen_width" x="#screen_width/2" y="1357"/>
+            <!-- Прогресс музыки и время -->
+            <Group>
+              <Rectangle align="center" alignV="center" alpha="255*40/100" fillColor="#b4c2bf" h="8" w="660" x="#screen_width/2" y="#screen_height-359"/>
+              <Rectangle alignV="center" alpha="255" fillColor="#1ddebc" h="8" w="#OddityFullscreenMusic_music_control.music_position/#OddityFullscreenMusic_music_control.music_duration*660" x="#screen_width/2-330" y="#screen_height-359"/>
+              <DateTime align="left" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_position" x="#screen_width/2-460" y="#screen_height-359"/>
+              <DateTime align="right" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_duration" x="#screen_width/2+460" y="#screen_height-359"/>
+            </Group>
+
+            <Image align="center" alignV="center" centerX="28" centerY="24" scaleX="#OddityFullscreenMusic_scale_x1" scaleY="#OddityFullscreenMusic_scale_y1" src="OddityFullscreenMusic_src/gpqsc.png" srcid="#OddityFullscreenMusic_music_control.user_rating_value" x="107" y="#screen_height-183"/>
+            <Button align="center" alignV="center" h="130" w="130" x="107" y="#screen_height-183">
+              <Triggers>
+                <Trigger action="up">
+                  <MethodCommand delay="500" method="ratingHeart" target="OddityFullscreenMusic_music_control"/>
+                  <Command target="OddityFullscreenMusic_scale_x1.animation" value="play"/>
+                  <Command target="OddityFullscreenMusic_scale_y1.animation" value="play"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfqfh.png" x="983" y="#screen_height-184"/>
+            <Button align="center" alignV="center" h="130" w="130" x="983" y="#screen_height-184">
+              <Triggers>
+                <Trigger action="up">
+                  <MethodCommand method="performAction" paramTypes="String" params="&apos;OddityFullscreenMusic_ani_play&apos;" target="OddityFullscreenMusic_music_ani"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Button align="center" alignV="center" h="100" name="music_prev" w="100" x="#screen_width/2-240" y="#screen_height-182">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
+              </Pressed>
+            </Button>
+            <Button align="center" alignV="center" h="100" name="music_next" w="100" x="#screen_width/2+241" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
+              </Pressed>
+            </Button>
+            <Circle align="center" alignV="center" centerX="#OddityFullscreenMusic_btn_circle.bmp_width/2" centerY="#OddityFullscreenMusic_btn_circle.bmp_height/2" fillColor="#1ddebc" name="OddityFullscreenMusic_btn_circle" r="85" scaleX="#OddityFullscreenMusic_scale_x+#OddityFullscreenMusic_scale_x2" scaleY="#OddityFullscreenMusic_scale_y+#OddityFullscreenMusic_scale_y2" x="#screen_width/2" y="#screen_height-183"/>
+            <Var name="OddityFullscreenMusic_scale_x2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="700" value="0"/>
+              </VariableAnimation>
+            </Var>
+            <Var name="OddityFullscreenMusic_scale_y2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="750" value="0"/>
+              </VariableAnimation>
+            </Var>
+            <Button align="center" alignV="center" h="170" name="music_play" w="170" x="#screen_width/2" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up">
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,800)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,600)"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Button align="center" alignV="center" h="170" name="music_pause" w="170" x="#screen_width/2" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up">
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,700)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,750)"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+          </MusicControl>
+        </Group>
+      </Group>
     </Group>
   </Group>
-  <Var expression="max(min(#SimpleLockScreen_moveX+int(#SimpleLockScreen_moveAn),1080),-1080)" name="defaultScreen_x"/>
-  <Var expression="#SimpleLockScreen_unlockAn+#SimpleLockScreen_moveY" name="defaultScreen_y"/>
-  <Var name="SimpleLockScreen_moveAn">
-    <VariableAnimation initPause="true" loop="false">
-      <Item easeType="QuartEaseOut" time="0" value="#SimpleLockScreen_moveA"/>
-      <Item time="500" value="#SimpleLockScreen_moveB"/>
-      <Triggers>
-        <Trigger action="end">
-          <VariableCommand expression="#SimpleLockScreen_moveB" name="SimpleLockScreen_moveA"/>
-          <IntentCommand action="android.intent.action.MAIN" class="com.android.camera.Camera" condition="#SimpleLockScreen_moveAn == -1080" package="com.android.camera">
-            <Extra expression="1" name="ShowCameraWhenLocked" type="boolean"/>
-            <Extra expression="1" name="StartActivityWhenLocked" type="boolean"/>
-          </IntentCommand>
-        </Trigger>
-      </Triggers>
-    </VariableAnimation>
-  </Var>
-  <!-- Разблокировки отскока -->
-  <Var name="SimpleLockScreen_unlockAn">
-    <VariableAnimation initPause="true" loop="false">
-      <Item easeType="SineEaseOut" time="0" value="#SimpleLockScreen_unlockA"/>
-      <Item time="200" value="0"/>
-    </VariableAnimation>
-  </Var>
-  <Var name="SimpleLockScreen_hintAn">
-    <VariableAnimation initPause="true" loop="false">
-      <Item time="0" value="0"/>
-      <Item time="300" value="178"/>
-      <Item time="1200" value="178"/>
-    </VariableAnimation>
-  </Var>
-  <Var name="SimpleLockScreen_springingAn">
-    <VariableAnimation initPause="true" loop="false">
-      <Item easeType="BounceEaseOut" time="0" value="#nameholder_springingA"/>
-      <Item time="600" value="0"/>
-    </VariableAnimation>
-  </Var>
+  <!-- Переменные -->
+  <Group>
+    <Var expression="max(min(#SLS_moveX+int(#SLS_moveAn),1080),-1080)" name="defaultScreen_x"/>
+    <Var expression="#SLS_unlockAn+#SLS_moveY" name="defaultScreen_y"/>
+    <Var name="SLS_moveAn">
+      <VariableAnimation initPause="true" loop="false">
+        <Item easeType="QuartEaseOut" time="0" value="#SLS_moveA"/>
+        <Item time="500" value="#SLS_moveB"/>
+        <Triggers>
+          <Trigger action="end">
+            <VariableCommand expression="#SLS_moveB" name="SLS_moveA"/>
+            <IntentCommand action="android.intent.action.MAIN" class="com.android.camera.Camera" condition="#SLS_moveAn == -1080" package="com.android.camera">
+              <Extra expression="1" name="ShowCameraWhenLocked" type="boolean"/>
+              <Extra expression="1" name="StartActivityWhenLocked" type="boolean"/>
+            </IntentCommand>
+          </Trigger>
+        </Triggers>
+      </VariableAnimation>
+    </Var>
+    <!-- Разблокировки отскока -->
+    <Var name="SLS_unlockAn">
+      <VariableAnimation initPause="true" loop="false">
+        <Item easeType="SineEaseOut" time="0" value="#SLS_unlockA"/>
+        <Item time="200" value="0"/>
+      </VariableAnimation>
+    </Var>
+    <Var name="SLS_hintAn">
+      <VariableAnimation initPause="true" loop="false">
+        <Item time="0" value="0"/>
+        <Item time="300" value="178"/>
+        <Item time="1200" value="178"/>
+      </VariableAnimation>
+    </Var>
+    <Var name="SLS_springingAn">
+      <VariableAnimation initPause="true" loop="false">
+        <Item easeType="BounceEaseOut" time="0" value="#nameholder_springingA"/>
+        <Item time="600" value="0"/>
+      </VariableAnimation>
+    </Var>
+  </Group>
   <!-- Динамическая частота кадров -->
-  <FramerateController initPause="true" loop="false" name="SimpleLockScreen_framerateAni">
+  <FramerateController initPause="true" loop="false" name="SLS_framerateAni">
     <ControlPoint frameRate="60" time="0"/>
     <ControlPoint frameRate="60" time="2000"/>
     <ControlPoint frameRate="30" time="2001"/>
   </FramerateController>
   <Button h="#screen_height" visibility="#unlockButtonSwitch*(#noticeDown==0)" w="1080" x="0" y="0">
     <Triggers>
+      <!-- Нажатие : касание -->
       <Trigger action="down">
-        <AnimationCommand command="play" target="SimpleLockScreen_framerateAni"/>
+        <AnimationCommand command="play" target="SLS_framerateAni"/>
       </Trigger>
+      <!-- Нажатие : движение -->
       <Trigger action="move">
-        <AnimationCommand command="play" condition="#frame_rate { 55" target="SimpleLockScreen_framerateAni"/>
-        <MultiCommand condition="#SimpleLockScreen_moveX_SW == 0 ** #SimpleLockScreen_moveY_SW == 0">
-          <VariableCommand condition="(#SimpleLockScreen_moveX_SW == 0) ** ((#touch_y-#touch_begin_y) { -50)" expression="1" name="SimpleLockScreen_moveY_SW"/>
-          <VariableCommand condition="(#SimpleLockScreen_moveY_SW == 0) ** (abs(#touch_begin_x-#touch_x) } 50)" expression="1" name="SimpleLockScreen_moveX_SW"/>
-          <VariableCommand condition="#SimpleLockScreen_moveX_SW" expression="((#touch_x } #touch_begin_x)*2-1)*50" name="nameholder_offsetX"/>
+        <AnimationCommand command="play" condition="#frame_rate { 55" target="SLS_framerateAni"/>
+        <MultiCommand condition="#SLS_moveX_SW == 0 ** #SLS_moveY_SW == 0">
+          <VariableCommand condition="(#SLS_moveX_SW == 0) ** ((#touch_y-#touch_begin_y) { -50)" expression="1" name="SLS_moveY_SW"/>
+          <VariableCommand condition="(#SLS_moveY_SW == 0) ** (abs(#touch_begin_x-#touch_x) } 50)" expression="1" name="SLS_moveX_SW"/>
+          <VariableCommand condition="#SLS_moveX_SW" expression="((#touch_x } #touch_begin_x)*2-1)*50" name="nameholder_offsetX"/>
         </MultiCommand>
-        <VariableCommand condition="#SimpleLockScreen_moveY_SW" expression="min(0,int(#touch_y-#touch_begin_y+50))" name="SimpleLockScreen_moveY"/>
-        <MultiCommand condition="#SimpleLockScreen_moveX_SW">
-          <VariableCommand expression="(#touch_begin_y { (#screen_height-(100)*2)+200) ** (int(#SimpleLockScreen_moveAn+#touch_x-(#touch_begin_x+#nameholder_offsetX)) { 0)" name="SimpleLockScreen_leftMoveSW"/>
-          <VariableCommand expression="max(-50,#SimpleLockScreen_leftMoveSW*int(#touch_x-#touch_begin_x+50))" name="nameholder_springingA"/>
-          <VariableCommand expression="int(#touch_x-(#touch_begin_x+#nameholder_offsetX))" name="SimpleLockScreen_moveX"/>
-          <VariableCommand condition="#SimpleLockScreen_leftMoveSW" expression="max(#SimpleLockScreen_moveX,0)" name="SimpleLockScreen_moveX"/>
+        <VariableCommand condition="#SLS_moveY_SW" expression="min(0,int(#touch_y-#touch_begin_y+50))" name="SLS_moveY"/>
+        <MultiCommand condition="#SLS_moveX_SW">
+          <VariableCommand expression="(#touch_begin_y { (#screen_height-(100)*2)+200) ** (int(#SLS_moveAn+#touch_x-(#touch_begin_x+#nameholder_offsetX)) { 0)" name="SLS_leftMoveSW"/>
+          <VariableCommand expression="max(-50,#SLS_leftMoveSW*int(#touch_x-#touch_begin_x+50))" name="nameholder_springingA"/>
+          <VariableCommand expression="int(#touch_x-(#touch_begin_x+#nameholder_offsetX))" name="SLS_moveX"/>
+          <VariableCommand condition="#SLS_leftMoveSW" expression="max(#SLS_moveX,0)" name="SLS_moveX"/>
         </MultiCommand>
       </Trigger>
+      <!-- Нажатие : отпускание/отмена -->
       <Trigger action="up,cancel">
-        <AnimationCommand command="play" target="SimpleLockScreen_framerateAni"/>
-        <MultiCommand condition="#SimpleLockScreen_moveY_SW">
-          <ExternCommand command="unlock" condition="#SimpleLockScreen_moveY {= -350"/>
-          <VariableCommand expression="#SimpleLockScreen_moveY {= -350" name="SimpleLockScreen_unlockSW"/>
-          <MultiCommand condition="#SimpleLockScreen_moveY } -350">
-            <VariableCommand expression="#SimpleLockScreen_moveY" name="SimpleLockScreen_unlockA"/>
-            <VariableCommand expression="0" name="SimpleLockScreen_moveY"/>
-            <AnimationCommand command="play" target="SimpleLockScreen_unlockAn"/>
+        <AnimationCommand command="play" target="SLS_framerateAni"/>
+        <!-- Вертикальная разблокировка -->
+        <MultiCommand condition="#SLS_moveY_SW">
+          <!-- Условие для высоты разблокировки -->
+          <ExternCommand command="unlock" condition="#SLS_moveY {= -@unlock_screen_offset_y"/>
+          <VariableCommand expression="#SLS_moveY {= -@unlock_screen_offset_y" name="SLS_unlockSW"/>
+          <!-- Запустить экран разблокировки -->
+          <MultiCommand condition="#SLS_moveY } -@unlock_screen_offset_y">
+            <VariableCommand expression="#SLS_moveY" name="SLS_unlockA"/>
+            <VariableCommand expression="0" name="SLS_moveY"/>
+            <AnimationCommand command="play" target="SLS_unlockAn"/>
           </MultiCommand>
         </MultiCommand>
-        <MultiCommand condition="#SimpleLockScreen_moveX_SW">
-          <VariableCommand expression="((#touch_x } #touch_begin_x)*2-1)*(abs(#SimpleLockScreen_moveX) } 200)*(#defaultScreen_x { 1080)*(#defaultScreen_x } -1080)" name="SimpleLockScreen_direction"/>
-          <MultiCommand condition="#SimpleLockScreen_moveX != 0">
-            <VariableCommand expression="#defaultScreen_x" name="SimpleLockScreen_moveA"/>
-            <VariableCommand expression="#SimpleLockScreen_moveB+#SimpleLockScreen_direction*1080" name="SimpleLockScreen_moveB"/>
-            <VariableCommand expression="0" name="SimpleLockScreen_moveX"/>
-            <AnimationCommand command="play" target="SimpleLockScreen_moveAn"/>
+
+        <MultiCommand condition="#SLS_moveX_SW">
+          <VariableCommand expression="((#touch_x } #touch_begin_x)*2-1)*(abs(#SLS_moveX) } 200)*(#defaultScreen_x { 1080)*(#defaultScreen_x } -1080)" name="SLS_direction"/>
+          <MultiCommand condition="#SLS_moveX != 0">
+            <VariableCommand expression="#defaultScreen_x" name="SLS_moveA"/>
+            <VariableCommand expression="#SLS_moveB+#SLS_direction*1080" name="SLS_moveB"/>
+            <VariableCommand expression="0" name="SLS_moveX"/>
+            <AnimationCommand command="play" target="SLS_moveAn"/>
           </MultiCommand>
-          <MultiCommand condition="#SimpleLockScreen_direction == 0 ** #touch_x { #touch_begin_x">
-            <AnimationCommand command="play(1200,0)" target="SimpleLockScreen_hintAn"/>
-            <AnimationCommand command="play" target="SimpleLockScreen_springingAn"/>
+          <MultiCommand condition="#SLS_direction == 0 ** #touch_x { #touch_begin_x">
+            <AnimationCommand command="play(1200,0)" target="SLS_hintAn"/>
+            <AnimationCommand command="play" target="SLS_springingAn"/>
             <VariableCommand expression="0" name="nameholder_springingA"/>
           </MultiCommand>
         </MultiCommand>
         <VariableCommand expression="0" name="nameholder_offsetX"/>
-        <VariableCommand condition="!#SimpleLockScreen_unlockSW" expression="0" name="SimpleLockScreen_moveY_SW"/>
-        <VariableCommand expression="0" name="SimpleLockScreen_moveX_SW"/>
+        <VariableCommand condition="!#SLS_unlockSW" expression="0" name="SLS_moveY_SW"/>
+        <VariableCommand expression="0" name="SLS_moveX_SW"/>
       </Trigger>
     </Triggers>
   </Button>
