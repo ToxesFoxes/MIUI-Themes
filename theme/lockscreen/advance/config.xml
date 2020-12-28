@@ -4,7 +4,11 @@
 		<ImagePicker default="Стандартная" id="theme_avatar_image" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
 		<StringInput default="Привет" id="theme_avatar_label" summary="Надпись отображается под значком" text="Надпись"/>
 		<StringInput default="#FFFFFF" id="theme_text_color" summary="По умолчанию #FFFFFF" text="Цвет текста"/>
-		<StringInput default="#59000000" id="theme_background_color" summary="По умолчанию #59000000" text="Фоновый цвет плиток"/>
+		<StringInput default="#59000000" id="theme_tile_background_color" summary="По умолчанию #59000000" text="Фоновый цвет тайлов"/>
+		<StringInput default="50" id="theme_tile_corner_radius" summary="По умолчанию 50" text="Закругление тайлов"/>
+	</Group>
+	<Group text="Настройки Экрана блокировки">
+		<StringInput default="350" id="unlock_screen_offset_y" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
 	</Group>
 	<Group text="Выбор виджетов">
 		<NumberChoice default="0" id="steps_charge_style" text="Количество шагов или Заряд">
@@ -25,8 +29,5 @@
 		<AppPicker id="app2" text="Приложение 2"/>
 		<AppPicker id="app3" text="Приложение 3"/>
 		<AppPicker id="app4" text="Приложение 4"/>
-	</Group>
-	<Group text="Настройки Экрана блокировки">
-		<StringInput default="350" id="unlock_screen_offset_y" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
 	</Group>
 </Config>
