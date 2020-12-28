@@ -3,6 +3,7 @@
   <!-- Определение ширины и высоты экрана -->
   <Var expression="#screen_width" name="sw" type="number"/>
   <Var expression="#screen_height" name="sh" type="number"/>
+  <Var expression="@theme_test_number" name="sucking" type="number"/>
   <!--начало-->
   <Var name="light_scale">
     <VariableAnimation initPause="true" loop="false">
@@ -147,52 +148,18 @@
   <Var const="true" name="NoticeIconXYWH" type="number[]" values="167,90,130,130"/>
   <!-- Данные проигрывателя : старт -->
   <ExternalCommands>
-    <Trigger action="resume">
-      <AnimationCommand command="play" condition="#Coolblack_music_control.music_state==1 ** #_musicAni==0" delay="1" target="_musicAni"/>
-      <AnimationCommand command="resume" condition="#Coolblack_music_control.music_state==1 ** #_musicAni!=0" delay="1" target="_musicAni"/>
-      <AnimationCommand command="play" condition="#Coolblack_music_control.music_state==1 ** #_musicShowAni==0" delay="200" target="_musicShowAni"/>
+    <Trigger action="resume" condition="1">
+      <MethodCommand condition="#OddityFullscreenMusic_music_control.music_state" method="performAction" paramTypes="String" params="nameholder_init_play" target="OddityFullscreenMusic_music_init"/>
     </Trigger>
-    <Trigger action="pause">
-      <Command condition="#Coolblack_music_control.music_state==1" target="Coolblack_music_control.visibility" value="true"/>
-      <Command condition="#Coolblack_music_control.music_state==0" target="Coolblack_music_control.visibility" value="false"/>
-      <AnimationCommand command="pause" target="_musicAni"/>
-      <AnimationCommand command="play(0,0)" condition="#Coolblack_music_control.music_state==0" target="_musicShowAni"/>
+    <Trigger action="pause" condition="1">
+      <MethodCommand condition="not(#OddityFullscreenMusic_music_control.music_state)" method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
+      <VariableCommand expression="0" name="OddityFullscreenMusic_music_visibility"/>
     </Trigger>
   </ExternalCommands>
   <VariableBinders/>
-  <!-- Поворот альбома -->
-  <Var expression="#Coolblack_music_control.music_state" threshold="1">
-    <Trigger>
-      <AnimationCommand command="play" condition="#Coolblack_music_control.music_state==1 ** #_musicAni==0" target="_musicAni"/>
-      <AnimationCommand command="resume" condition="#Coolblack_music_control.music_state==1 ** #_musicAni!=0" target="_musicAni"/>
-      <AnimationCommand command="pause" condition="#Coolblack_music_control.music_state==0" target="_musicAni"/>
-    </Trigger>
-  </Var>
-  <Var name="_musicAni">
-    <VariableAnimation initPause="true" loop="true">
-      <AniFrame time="0" value="0"/>
-      <AniFrame dtime="15000" value="360"/>
-    </VariableAnimation>
-  </Var>
-  <Var name="_musicShowAni">
-    <VariableAnimation initPause="true" loop="false">
-      <AniFrame easeType="CubicEaseInOut" time="0" value="0"/>
-      <AniFrame time="600" value="1"/>
-    </VariableAnimation>
-  </Var>
-  <!-- Время воспроизведения песни миллисекундное обновление -->
-  <Var expression="#Coolblack_music_control.music_position" threshold="1">
-    <Trigger>
-      <AnimationCommand command="play" target="musicPosition"/>
-    </Trigger>
-  </Var>
-  <Var name="musicPosition">
-    <VariableAnimation initPause="true" loop="false">
-      <AniFrame time="0" value="ifelse(#Coolblack_music_control.music_position{1000,0,#musicPosition)"/>
-      <AniFrame time="1000" value="#Coolblack_music_control.music_position"/>
-    </VariableAnimation>
-  </Var>
-  <Var const="true" expression="#screen_width - 50*2" name="MusicCoolBlackW"/>
+  <!-- 音乐 -->
+
+
   <!-- Данные проигрывателя : конец -->
   <Group h="#screen_height" layered="true" w="#screen_width">
     <Wallpaper/>
@@ -207,42 +174,44 @@
             <!-- Кнопка смены заряд/шаги -->
             <Button align="center" alignV="center" h="300" w="300" x="150" y="150">
               <Triggers>
-                <Trigger action="up" condition="(#timeAni==0) || (#timeAni==1)">
+                <Trigger action="up">
                   <VariableCommand expression="!#steps_charge_style" name="steps_charge_style" persist="true"/>
                 </Trigger>
               </Triggers>
             </Button>
             <!-- Заряд -->
             <Group visibility="#steps_charge_style == 0" x="0" y="0">
-              <Rectangle cornerRadius="50" fillColor="#BF000000" h="300" w="300" x="0" y="0"/>
+              <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="300" w="300" x="0" y="0"/>
               <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00FFFFFF" r="100" strokeAlign="center" strokeColor="#FFFFFF" weight="20" x="150" y="150"/>
               <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#FFFFFF" sweep="#battery_level/100*360" w="200" weight="20" x="150" y="150"/>
               <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#56CC89" sweep="#battery_level/100*360" w="200" weight="20" x="150" y="150" visibility="(#battery_state==1||#battery_state==3)" />
-              <Text align="center" alignV="center" color="#FFFFFF" size="40" textExp="#battery_level+'%'" x="150" y="150"/>
+              <Text align="center" alignV="center" color="@theme_text_color" size="40" textExp="#battery_level+'%'" x="150" y="150"/>
               <!-- <Image src="left_screen/battery.png" visibility="(#battery_state==1||#battery_state==3)" x="215" y="425" w="22" h="41"/> -->
             </Group>
             <!-- Подсчет шагов -->
             <Group visibility="#steps_charge_style == 1" x="0" y="0">
-              <Rectangle cornerRadius="50" fillColor="#BF000000" h="300" w="300" x="0" y="0"/>
+              <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="300" w="300" x="0" y="0"/>
               <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00FFFFFF" r="100" strokeAlign="center" strokeColor="#FFFFFF" weight="20" x="150" y="150"/>
               <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#FFFFFF" sweep="@MiSteps_steps/@MiSteps_goal*360" w="200" weight="20" x="150" y="150"/>
               <Image align="center" alignV="center" src="charge/shoes.png" x="150" y="110"/>
               <Rectangle align="center" alignV="center" alpha="255*0.7" fillColor="#FFFFFF" h="2" w="62" x="150" y="152"/>
-              <Text align="center" alignV="center" color="#FFFFFF" size="30" textExp="@MiSteps_steps" x="150" y="174"/>
+              <Text align="center" alignV="center" color="@theme_text_color" size="30" textExp="@MiSteps_steps" x="150" y="174"/>
             </Group>
           </Group>
           <!-- Календарь -->
           <Group h="200" w="300" x="350" y="0">
             <Group visibility="#calendar_style == 0">
-              <Rectangle cornerRadius="50" fillColor="#BF000000" h="200" w="300" x="0" y="0"/>
-              <DateTime color="#FFFFFF" fontFamily="mitype-clock" format="E" size="90" x="155" y="43"/>
-              <DateTime color="#FFFFFF" format="dd.MM" size="50" x="26" y="36" w="130"/>
-              <DateTime color="#FFFFFF" format="yyyy" size="50" x="19" y="100" w="130"/>
+              <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="200" w="300" x="0" y="0"/>
+              <DateTime align="right" alignV="center" color="@theme_text_color" fontFamily="mitype-clock" format="E" size="90" x="275" y="100"/>
+              <Group x="20" y="36">
+                <DateTime align="center" alignV="center" color="@theme_text_color" format="dd.MM" size="45" x="64" y="28" w="128"/>
+                <DateTime align="center" alignV="center" color="@theme_text_color" format="yyyy" size="45" x="64" y="100" w="128"/>
+              </Group>
             </Group>
             <Group visibility="#calendar_style == 1">
-              <Rectangle cornerRadius="50" fillColor="#BF000000" h="200" w="300" x="0" y="0"/>
-              <DateTime color="#FFFFFF" format="EEEE" fontFamily="mitype-clock" size="36" x="22" y="107"/>
-              <DateTime color="#FFFFFF" format="dd.MM.yyyy" size="50" x="22" y="43"/>
+              <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="200" w="300" x="0" y="0"/>
+              <DateTime color="@theme_text_color" format="EEEE" fontFamily="mitype-clock" size="36" x="22" y="107"/>
+              <DateTime color="@theme_text_color" format="dd.MM.yyyy" size="50" x="22" y="43"/>
             </Group>
           </Group>
           <!-- Погода и часы -->
@@ -250,15 +219,15 @@
             <Group visibility="#time_weather_style == 0">
               <!-- Погода -->
               <Group x="350" y="0">
-                <Rectangle cornerRadius="50" fillColor="#BF000000" h="550" w="230" x="0" y="0"/>
+                <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="550" w="230" x="0" y="0"/>
                 <Image srcExp="'weather/w_'+ #icon_index+'.png'" x="40" y="20"/>
-                <Text align="left" alignV="top" color="#FFFFFF" marqueeSpeed="30" size="40" textExp="@weather_location" w="200" x="15" y="218"/>
-                <Text align="left" alignV="top" color="#FFFFFF" marqueeSpeed="30" size="40" textExp="@weather_description" w="200" x="15" y="300"/>
-                <Text align="left" alignV="top" color="#FFFFFF" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="200" x="15" y="410"/>
+                <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_location" w="200" x="15" y="218"/>
+                <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_description" w="200" x="15" y="300"/>
+                <Text align="left" alignV="top" color="@theme_text_color" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="200" x="15" y="410"/>
               </Group>
               <!-- Часы -->
               <Group x="0" y="250">
-                <Rectangle cornerRadius="50" fillColor="#BF000000" h="300" w="300" x="0" y="0"/>
+                <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="300" w="300" x="0" y="0"/>
                 <Image src="clock/time_bg.png" x="34" y="34"/>
                 <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#hour12*30+#minute/2" src="clock/h.png" x="150" y="150"/>
                 <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#minute*6+#second/10" src="clock/m.png" x="150" y="150"/>
@@ -268,15 +237,15 @@
             <Group visibility="#time_weather_style == 1">
               <!-- Погода -->
               <Group x="0" y="250">
-                <Rectangle cornerRadius="50" fillColor="#BF000000" h="300" w="550" x="0" y="0"/>
+                <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="300" w="550" x="0" y="0"/>
                 <Image srcExp="'weather/w_'+ #icon_index+'.png'" x="380" y="20"/>
-                <Text align="left" alignV="top" color="#FFFFFF" marqueeSpeed="30" size="40" textExp="@weather_location" w="335" x="24" y="90"/>
-                <Text align="left" alignV="top" color="#FFFFFF" marqueeSpeed="30" size="45" textExp="@weather_description" w="335" x="24" y="33"/>
-                <Text align="right" alignV="top" color="#FFFFFF" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="250" x="530" y="170"/>
+                <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_location" w="335" x="24" y="90"/>
+                <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="45" textExp="@weather_description" w="335" x="24" y="33"/>
+                <Text align="right" alignV="top" color="@theme_text_color" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="250" x="530" y="170"/>
               </Group>
               <!-- Часы -->
               <Group x="350" y="0">
-                <Rectangle cornerRadius="50" fillColor="#BF000000" h="200" w="200" x="0" y="0"/>
+                <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="200" w="200" x="0" y="0"/>
                 <Image src="clock/time_bg.png" x="22" y="22" w="155" h="155"/>
                 <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#hour12*30+#minute/2" src="clock/h.png" x="100" y="100" h="138" w="4"/>
                 <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#minute*6+#second/10" src="clock/m.png" x="100" y="100" h="138" w="4"/>
@@ -286,355 +255,506 @@
           </Group>
           <!-- Час -->
           <Group x="0" y="350">
-            <Rectangle cornerRadius="50" fillColor="#BF000000" h="200" w="300" x="0" y="0"/>
-            <DateTime color="#FFFFFF" fontFamily="mitype-clock" format="HH:mm" size="90" x="29" y="43"/>
+            <Rectangle cornerRadius="50" fillColor="@theme_background_color" h="200" w="300" x="0" y="0"/>
+            <DateTime align="center" alignV="center" color="@theme_text_color" fontFamily="mitype-clock" format="HH:mm" size="90" x="149" y="99"/>
           </Group>
         </Group>
       </Group>
-      <!-- Музыка -->
-      <MusicControl alignV="bottom" autoShow="true" clip="true" enableLyric="true" enableProgress="true" h="210" name="Coolblack_music_control" updateLyricInterval="200" visibility="1" w="210 + (#MusicCoolBlackW - 210)*#_musicShowAni" x="50" y="#screen_height - 160">
-        <Image h="210" src="MusicCoolBlack_src/musicBg.9.png" w="210 + (#MusicCoolBlackW - 210)*#_musicShowAni"/>
-        <Image align="center" alignV="center" src="MusicCoolBlack_src/shadow.png" x="105" y="105"/>
-        <!-- Обложка альбома -->
-        <Group align="center" alignV="center" h="130" layered="true" pivotX="65" pivotY="65" rotation="#_musicAni" w="130" x="105" y="105">
-          <Image h="130" name="music_album_cover" w="130"/>
-          <Image h="130" src="MusicCoolBlack_src/album_cover.png" w="130" xfermodeNum="10"/>
-        </Group>
-        <Button align="center" alignV="center" h="130" w="130" x="105" y="105">
-          <Triggers>
-            <Trigger action="up">
-              <AnimationCommand command="play" condition="#_musicShowAni == 0" target="_musicShowAni"/>
-              <AnimationCommand command="play(-1,0)" condition="#_musicShowAni == 1" target="_musicShowAni"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!-- Название -->
-        <Text alignV="center" bold="true" color="#000000" marqueeSpeed="30" size="45" textExp="ifelse(len(@Coolblack_music_control.lyric_next),@Coolblack_music_control.title+' - '+@Coolblack_music_control.artist,len(@Coolblack_music_control.title),@Coolblack_music_control.title,'')" w="#MusicCoolBlackW - 620" x="210" y="75"/>
-        <!-- Автор -->
-        <Text alignV="center" color="#999999" marqueeSpeed="30" size="36" textExp="ifelse(len(@Coolblack_music_control.artist)==0,'',len(@Coolblack_music_control.lyric_next),ifelse(eqs(@Coolblack_music_control.lyric_current,''),@Coolblack_music_control.lyric_last,@Coolblack_music_control.lyric_current),@Coolblack_music_control.artist)" w="#MusicCoolBlackW - 620" x="210" y="141"/>
-        <!-- Кнопка : назад -->
-        <Button align="center" alignChildren="true" alignV="center" h="200" w="120" x="#MusicCoolBlackW - 336" y="105">
-          <Image align="center" alignV="center" src="MusicCoolBlack_src/prev.png" x="60" y="100"/>
-          <Triggers>
-            <Trigger action="down">
-              <MethodCommand method="onButtonDown" paramTypes="String" params="'music_prev'" target="Coolblack_music_control"/>
-            </Trigger>
-            <Trigger action="up">
-              <MethodCommand method="onButtonUp" paramTypes="String" params="'music_prev'" target="Coolblack_music_control"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!-- Кнопка : играть -->
-        <Button align="center" alignChildren="true" alignV="center" h="200" visibility="#Coolblack_music_control.music_state == 0" w="120" x="#MusicCoolBlackW - 207" y="105">
-          <Image align="center" alignV="center" src="MusicCoolBlack_src/play.png" x="60" y="100"/>
-          <Triggers>
-            <Trigger action="down">
-              <MethodCommand method="onButtonDown" paramTypes="String" params="'music_play'" target="Coolblack_music_control"/>
-            </Trigger>
-            <Trigger action="up">
-              <MethodCommand method="onButtonUp" paramTypes="String" params="'music_play'" target="Coolblack_music_control"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!-- Кнопка : пауза -->
-        <Button align="center" alignChildren="true" alignV="center" h="200" visibility="#Coolblack_music_control.music_state == 1" w="120" x="#MusicCoolBlackW - 207" y="105">
-          <Image align="center" alignV="center" src="MusicCoolBlack_src/pause.png" x="60" y="100"/>
-          <Triggers>
-            <Trigger action="down">
-              <MethodCommand method="onButtonDown" paramTypes="String" params="'music_pause'" target="Coolblack_music_control"/>
-            </Trigger>
-            <Trigger action="up">
-              <MethodCommand method="onButtonUp" paramTypes="String" params="'music_pause'" target="Coolblack_music_control"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!-- Индикатор воспроизведения -->
-        <Arc align="center" alignV="center" cap="round" close="false" h="102" startAngle="-90" strokeAlign="center" strokeColor="#000000" sweep="360*#musicPosition/#Coolblack_music_control.music_duration" w="102" weight="8" x="#MusicCoolBlackW - 207" y="105"/>
-        <!-- Кнопка : вперёд -->
-        <Button align="center" alignChildren="true" alignV="center" h="200" w="120" x="#MusicCoolBlackW - 78" y="105">
-          <Image align="center" alignV="center" src="MusicCoolBlack_src/next.png" x="60" y="100"/>
-          <Triggers>
-            <Trigger action="down">
-              <MethodCommand method="onButtonDown" paramTypes="String" params="'music_next'" target="Coolblack_music_control"/>
-            </Trigger>
-            <Trigger action="up">
-              <MethodCommand method="onButtonUp" paramTypes="String" params="'music_next'" target="Coolblack_music_control"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-      </MusicControl>
     </Group>
     <!-- 2 экран -->
     <!-- <Rectangle alpha="255*0.4*#defaultScreen_x/1080" fillColor="#FFFFFF" h="#sh" w="#sw" x="0" y="0"/> -->
     <Group x="-1080+#defaultScreen_x">
-      <Image align="center" alignV="center" src="left_screen/youlee.png" x="195" y="400">
-        <Mask src="left_screen/mask.png"/>
-      </Image>
-      <Text align="left" alignV="center" alpha="255" bold="true" color="@qm_color" size="40" textExp="@qmdz" x="120" y="560"/>
-      <Var expression="ifelse(strContains(@dztx,'com.android.fileexplorer'),strReplaceAll(@dztx,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@dztx,'com.miui.gallery'),strReplaceAll(@dztx,'content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F','file:///sdcard/'),@dztx)" name="txdz" type="string"/>
-      <Image align="center" alignV="center" h="200" srcExp="@txdz" srcType="Uri" w="200" x="195" y="400">
-        <Mask src="left_screen/mask.png"/>
-      </Image>
-      <Button align="center" alignV="center" h="200" w="200" x="195" y="400">
-        <Pressed>
-          <circle align="center" alignV="center" alpha="90" fillColor="#3B3B3B" r="200/2" x="#sw/2" y="310"/>
-        </Pressed>
-        <Triggers>
-          <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-            <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
-              <Extra expression="'lockstyle'" name="maml_code" type="string"/>
-            </IntentCommand>
-            <ExternCommand command="unlock"/>
-          </Trigger>
-        </Triggers>
-      </Button>
+      <!-- Музыка -->
       <Group>
-        <!--Фон плагина-->
-        <!-- <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="200" w="420" x="95" y="700"/>
+        <Group name="OddityFullscreenMusic_music_init">
+          <!-- Триггер : играть -->
+          <Triggers>
+            <Trigger action="nameholder_init_play">
+              <VariableCommand expression="1" name="OddityFullscreenMusic_music_visibility"/>
+              <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(0,600)"/>
+              <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(0,800)"/>
+              <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(0,600)"/>
+              <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(0,500)"/>
+            </Trigger>
+          </Triggers>
+        </Group>
+        <!-- Кнопка : показать проигрыватель -->
+        <Group>
+          <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfq.png" visibility="not(#OddityFullscreenMusic_music_visibility)" x="1019" y="#screen_height-65"/>
+          <Button align="center" alignV="center" h="130" visibility="1" w="130" x="1019" y="#screen_height-65">
+            <Triggers>
+              <!-- Контроллер : видимость проигрывателя -->
+              <Trigger action="up" condition="not(#OddityFullscreenMusic_music_visibility)">
+                <MethodCommand method="performAction" paramTypes="String" params="nameholder_init_play" target="OddityFullscreenMusic_music_init"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+        </Group>
+        <Group visibility="1" x="0" y="0">
+          <MusicControl alpha="#OddityFullscreenMusic_music_alpha" autoShow="true" defAlbumCover="OddityFullscreenMusic_src/mb.jpg" enableLyric="true" name="OddityFullscreenMusic_music_control" updateLyricInterval="100" visibility="#OddityFullscreenMusic_music_visibility" y="#OddityFullscreenMusic_music_y">
+            <!-- Фон -->
+            <Image src="OddityFullscreenMusic_src/b.png"/>
+            <!-- Переменные : прозрачность, положение y, разммеры x y -->
+            <Group>
+              <Var name="OddityFullscreenMusic_music_alpha">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="QuadEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="255"/>
+                  <AniFrame time="900" value="0"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_music_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="-140"/>
+                  <AniFrame easeType="CubicEaseOut" time="800" value="0"/>
+                  <AniFrame time="1100" value="-140"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_x">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="1"/>
+                  <AniFrame time="1100" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="OddityFullscreenMusic_scale_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="500" value="1"/>
+                  <AniFrame time="1000" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+            </Group>
+            <!-- анимация -->
+            <Group name="OddityFullscreenMusic_music_ani">
+              <!-- Триггер анимации появления элементов - переменные выше -->
+              <Triggers>
+                <Trigger action="OddityFullscreenMusic_ani_play">
+                  <VariableCommand delay="500" expression="0" name="OddityFullscreenMusic_music_visibility"/>
+                  <Command delay="0" target="OddityFullscreenMusic_music_alpha.animation" value="play(600,900)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_music_y.animation" value="play(800,1100)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x.animation" value="play(600,1100)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y.animation" value="play(500,1000)"/>
+                </Trigger>
+              </Triggers>
+            </Group>
+            <!-- Кнопка : возврат -->
+            <Group>
+              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/fh.png" x="105" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)"/>
+              <Button align="center" alignV="center" h="130" w="130" x="105" y="112+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)">
+                <Triggers>
+                  <Trigger action="up">
+                    <MethodCommand method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
+            </Group>
+            <!-- Кнопка : открыть приложение проигрывателя -->
+            <Group>
+              <Image align="center" alignV="center" src="OddityFullscreenMusic_src/msz.png" x="975" y="112+#OddityFullscreenMusic_music_y+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)"/>
+              <Button align="center" alignV="center" h="130" w="130" x="975" y="112+ifelse(#raw_screen_height==2244,30,#raw_screen_height==2248,30,#raw_screen_height==2280,30,#raw_screen_height==2340,30,0)">
+                <Triggers>
+                  <Trigger action="up">
+                    <!-- <IntentCommand action="android.intent.action.MAIN" package="com.miui.player" class="com.miui.player.phone.ui.MusicSettings" /> -->
+                    <IntentCommand action="android.intent.action.MAIN" class="com.miui.player.ui.MusicBrowserActivity" condition="int(@__miui_version_code){=8" package="com.miui.player"/>
+                    <IntentCommand action="android.intent.action.MAIN" classExp="@OddityFullscreenMusic_music_control.class" condition="int(@__miui_version_code)}=9" packageExp="@OddityFullscreenMusic_music_control.package"/>
+                    <ExternCommand command="unlock"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
+            </Group>
+
+            <!-- Обложка -->
+            <Image align="center" alignV="center" centerX="460" centerY="460" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" src="OddityFullscreenMusic_src/b1.png" x="#screen_width/2" y="239"/>
+            <Group align="center" alignV="center" centerX="460" centerY="460" h="920" layered="true" scaleX="#OddityFullscreenMusic_scale_x" scaleY="#OddityFullscreenMusic_scale_y" w="920" x="#screen_width/2" y="718">
+              <Image align="center" alignV="center" h="920" srcExp="ifelse(strContains(valueholder_album_config_src,com.android.fileexplorer),strReplaceAll(valueholder_album_config_src,content://com.android.fileexplorer.myprovider/external_files/,file:///sdcard/),strContains(valueholder_album_config_src,com.miui.gallery),strReplaceAll(valueholder_album_config_src,content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F,file:///sdcard/),valueholder_album_config_src)" srcType="Uri" visibility="len(valueholder_album_config_src)*not(#OddityFullscreenMusic_music_control.music_state)" w="920" x="460" y="460"/>
+              <Image align="center" alignV="center" h="920" name="music_album_cover" w="920" x="460" y="460"/>
+              <!-- <Image x="460" y="460" w="920" h="920" align="center" alignV="center" src="OddityFullscreenMusic_src/mb.jpg" visibility="not(len(valueholder_album_config_src))*not(#OddityFullscreenMusic_music_control.music_state)" /> -->
+
+              <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/m.9.png" w="920" x="460" xfermode="dst_in" y="460"/>
+              <Image align="center" alignV="center" h="920" src="OddityFullscreenMusic_src/mb.9.png" w="920" x="460" y="460"/>
+            </Group>
+
+            <!-- Текст песни -->
+            <Group clip="true" x="#screen_width/2" y="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,-20,#raw_screen_height==2160,-41,#raw_screen_height==2244,-83,#raw_screen_height==2248,-85,#raw_screen_height==2280,-101,-130)">
+              <Text align="center" alignV="center" color="#b4c2bf" size="50" text="--- 歌词 ---" visibility="not(#OddityFullscreenMusic_music_control.music_state)" y="#screen_height-503"/>
+              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_last" visibility="#OddityFullscreenMusic_music_control.music_state*ifelse(#raw_screen_height==1920,0,1)" w="#sw" y="#screen_height-614"/>
+              <Text align="center" alignV="center" alpha="255" color="#1ddebc" marqueeSpeed="30" size="50" text="@OddityFullscreenMusic_music_control.lyric_current" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-540"/>
+              <Text align="center" alignV="center" alpha="255" color="#b4c2bf" marqueeSpeed="30" size="45" text="@OddityFullscreenMusic_music_control.lyric_next" visibility="#OddityFullscreenMusic_music_control.music_state" w="#sw" y="#screen_height-466"/>
+            </Group>
+
+            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),No music,@OddityFullscreenMusic_music_control.title)+ - +ifelse(isnull(@OddityFullscreenMusic_music_control.artist),Open music player,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,1,#raw_screen_height==2040,1,0)" w="#screen_width" x="#screen_width/2" y="1269"/>
+            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.title),No music,@OddityFullscreenMusic_music_control.title)" visibility="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,0,1)" w="#screen_width" x="#screen_width/2" y="1269"/>
+            <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@OddityFullscreenMusic_music_control.artist),Open music player,@OddityFullscreenMusic_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,0,#raw_screen_height==2040,0,1)" w="#screen_width" x="#screen_width/2" y="1357"/>
+            <Rectangle align="center" alignV="center" alpha="255*40/100" fillColor="#b4c2bf" h="8" w="660" x="#screen_width/2" y="#screen_height-359"/>
+            <Rectangle alignV="center" alpha="255" fillColor="#1ddebc" h="8" w="#OddityFullscreenMusic_music_control.music_position/#OddityFullscreenMusic_music_control.music_duration*660" x="#screen_width/2-330" y="#screen_height-359"/>
+            <DateTime align="left" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_position" x="#screen_width/2-460" y="#screen_height-359"/>
+            <DateTime align="right" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#OddityFullscreenMusic_music_control.music_duration" x="#screen_width/2+460" y="#screen_height-359"/>
+            <Var name="OddityFullscreenMusic_scale_x1">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                <AniFrame easeType="CubicEaseOut" time="400" value="1.3"/>
+                <AniFrame time="600" value="1"/>
+              </VariableAnimation>
+            </Var>
+            <Var name="OddityFullscreenMusic_scale_y1">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                <AniFrame easeType="CubicEaseOut" time="300" value="1.3"/>
+                <AniFrame time="500" value="1"/>
+              </VariableAnimation>
+            </Var>
+            <Image align="center" alignV="center" centerX="28" centerY="24" scaleX="#OddityFullscreenMusic_scale_x1" scaleY="#OddityFullscreenMusic_scale_y1" src="OddityFullscreenMusic_src/gpqsc.png" srcid="#OddityFullscreenMusic_music_control.user_rating_value" x="107" y="#screen_height-183"/>
+            <Button align="center" alignV="center" h="130" w="130" x="107" y="#screen_height-183">
+              <Triggers>
+                <Trigger action="up">
+                  <MethodCommand delay="500" method="ratingHeart" target="OddityFullscreenMusic_music_control"/>
+                  <Command target="OddityFullscreenMusic_scale_x1.animation" value="play"/>
+                  <Command target="OddityFullscreenMusic_scale_y1.animation" value="play"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Image align="center" alignV="center" src="OddityFullscreenMusic_src/bfqfh.png" x="983" y="#screen_height-184"/>
+            <Button align="center" alignV="center" h="130" w="130" x="983" y="#screen_height-184">
+              <Triggers>
+                <Trigger action="up">
+                  <MethodCommand method="performAction" paramTypes="String" params="OddityFullscreenMusic_ani_play" target="OddityFullscreenMusic_music_ani"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Button align="center" alignV="center" h="100" name="music_prev" w="100" x="#screen_width/2-240" y="#screen_height-182">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
+              </Pressed>
+            </Button>
+            <Button align="center" alignV="center" h="100" name="music_next" w="100" x="#screen_width/2+241" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
+              </Pressed>
+            </Button>
+            <Circle align="center" alignV="center" centerX="#OddityFullscreenMusic_btn_circle.bmp_width/2" centerY="#OddityFullscreenMusic_btn_circle.bmp_height/2" fillColor="#1ddebc" name="OddityFullscreenMusic_btn_circle" r="85" scaleX="#OddityFullscreenMusic_scale_x+#OddityFullscreenMusic_scale_x2" scaleY="#OddityFullscreenMusic_scale_y+#OddityFullscreenMusic_scale_y2" x="#screen_width/2" y="#screen_height-183"/>
+            <Var name="OddityFullscreenMusic_scale_x2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="700" value="0"/>
+              </VariableAnimation>
+            </Var>
+            <Var name="OddityFullscreenMusic_scale_y2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="750" value="0"/>
+              </VariableAnimation>
+            </Var>
+            <Button align="center" alignV="center" h="170" name="music_play" w="170" x="#screen_width/2" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up">
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,800)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,600)"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+            <Button align="center" alignV="center" h="170" name="music_pause" w="170" x="#screen_width/2" y="#screen_height-183">
+              <Normal>
+                <Image align="center" alignV="center" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Normal>
+              <Pressed>
+                <Image align="center" alignV="center" alpha="127" src="OddityFullscreenMusic_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up">
+                  <Command delay="0" target="OddityFullscreenMusic_scale_x2.animation" value="play(0,700)"/>
+                  <Command delay="0" target="OddityFullscreenMusic_scale_y2.animation" value="play(0,750)"/>
+                </Trigger>
+              </Triggers>
+            </Button>
+          </MusicControl>
+        </Group>
+      </Group>
+      <!-- Остальной экран -->
+      <Group visibility="0">
+        <Image align="center" alignV="center" src="left_screen/youlee.png" x="195" y="400">
+          <Mask src="left_screen/mask.png"/>
+        </Image>
+        <Text align="left" alignV="center" alpha="255" bold="true" color="@theme_text_color" size="40" textExp="@theme_avatar_label" x="120" y="560"/>
+        <Var expression="ifelse(strContains(@theme_avatar_image,'com.android.fileexplorer'),strReplaceAll(@theme_avatar_image,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@theme_avatar_image,'com.miui.gallery'),strReplaceAll(@theme_avatar_image,'content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F','file:///sdcard/'),@theme_avatar_image)" name="txdz" type="string"/>
+        <Image align="center" alignV="center" h="200" srcExp="@txdz" srcType="Uri" w="200" x="195" y="400">
+          <Mask src="left_screen/mask.png"/>
+        </Image>
+        <Button align="center" alignV="center" h="200" w="200" x="195" y="400">
+          <Pressed>
+            <circle align="center" alignV="center" alpha="90" fillColor="#3B3B3B" r="200/2" x="#sw/2" y="310"/>
+          </Pressed>
+          <Triggers>
+            <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+              <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
+                <Extra expression="'lockstyle'" name="maml_code" type="string"/>
+              </IntentCommand>
+              <ExternCommand command="unlock"/>
+            </Trigger>
+          </Triggers>
+        </Button>
+        <Group>
+          <!--Фон плагина-->
+          <!-- <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="200" w="420" x="95" y="700"/>
         <Rectangle cornerRadius="50" fillColor="#FF3E79FF" h="200" w="420" x="95" y="920"/>
         <Rectangle cornerRadius="50" fillColor="#FFFED022" h="200" w="890" x="95" y="1170"/>
         <Rectangle cornerRadius="50" fillColor="#FFFED022" h="200" w="200" x="535" y="1420"/>
         <Rectangle cornerRadius="50" fillColor="#FFFD6E53" h="200" w="200" x="785" y="1420"/>
         <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="420" w="420" x="565" y="700"/>
         <Rectangle cornerRadius="50" fillColor="#FF00BCA7" h="200" w="390" x="95" y="1420"/> -->
-        <!--Быстрая оплата-->
-        <Image align="center" alignV="center" src="left_screen/wechat.png" x="177" y="800"/>
-        <Image align="center" alignV="center" src="left_screen/alipay.png" x="185" y="1020"/>
-        <Button align="center" alignV="center" h="180" w="180" x="319" y="800">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/scanner.png" x="319" y="800"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/scanner.png" x="319" y="800"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.tencent.mm.plugin.scanner.ui.BaseScanUI" package="com.tencent.mm"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="80" w="80" x="444" y="800">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/wechat_pay.png" x="444" y="802"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/wechat_pay.png" x="444" y="802"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.tencent.mm.plugin.offline.ui.WalletOfflineEntranceUI" package="com.tencent.mm"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="80" w="80" x="319" y="1020">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/scanner.png" x="319" y="1020"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/scanner.png" x="319" y="1020"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.alipay.mobile.scan.as.main.MainCaptureActivity" package="com.eg.android.AlipayGphone"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="80" w="80" x="444" y="1020">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/ali_pay.png" x="444" y="1020"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/ali_pay.png" x="444" y="1020"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.eg.android.AlipayGphone.FastStartActivity" package="com.eg.android.AlipayGphone"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!--Быстрое применение-->
-        <Button align="center" alignV="center" h="150" w="150" x="195" y="1270">
-          <Image align="center" alignV="center" h="150" src="left_screen/dialer.png" visibility="eqs(@app1.package,'')*eqs(@app1.class,'')" w="150" x="195" y="1270"/>
-          <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app1.package,@app1.class" srcType="ApplicationIcon" w="150" x="195" y="1270">
-            <Mask h="150" src="left_screen/dialer.png" w="150" x="195" y="1270"/>
-          </Image>
-          <Triggers>
-            <Trigger action="up">
-              <IntentCommand action="android.intent.action.MAIN" class="com.android.contacts.activities.TwelveKeyDialer" id="app1" package="com.android.contacts"/>
-              <ExternCommand command="unlock"/>
-            </Trigger>
-          </Triggers>
-          <Pressed/>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="425" y="1270">
-          <Image align="center" alignV="center" h="150" src="left_screen/message.png" visibility="eqs(@app2.package,'')*eqs(@app2.class,'')" w="150" x="425" y="1270"/>
-          <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app2.package,@app2.class" srcType="ApplicationIcon" w="150" x="425" y="1270">
-            <Mask h="150" src="left_screen/message.png" w="150" x="425" y="1270"/>
-          </Image>
-          <Triggers>
-            <Trigger action="up">
-              <IntentCommand action="android.intent.action.MAIN" class="com.android.mms.ui.MmsTabActivity" id="app2" package="com.android.mms"/>
-              <ExternCommand command="unlock"/>
-            </Trigger>
-          </Triggers>
-          <Pressed/>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="655" y="1270">
-          <Image align="center" alignV="center" h="150" src="left_screen/gallery.png" visibility="eqs(@app3.package,'')*eqs(@app3.class,'')" w="150" x="655" y="1270"/>
-          <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app3.package,@app3.class" srcType="ApplicationIcon" w="150" x="655" y="1270">
-            <Mask h="150" src="left_screen/gallery.png" w="150" x="655" y="1270"/>
-          </Image>
-          <Triggers>
-            <Trigger action="up">
-              <IntentCommand action="android.intent.action.MAIN" class="com.miui.gallery.activity.HomePageActivity" id="app3" package="com.miui.gallery"/>
-              <ExternCommand command="unlock"/>
-            </Trigger>
-          </Triggers>
-          <Pressed/>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="885" y="1270">
-          <Image align="center" alignV="center" h="150" src="left_screen/browser.png" visibility="eqs(@app4.package,'')*eqs(@app4.class,'')" w="150" x="885" y="1270"/>
-          <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app4.package,@app4.class" srcType="ApplicationIcon" w="150" x="885" y="1270">
-            <Mask h="150" src="left_screen/browser.png" w="150" x="867" y="1270"/>
-          </Image>
-          <Triggers>
-            <Trigger action="up">
-              <IntentCommand action="android.intent.action.MAIN" class="com.android.browser.BrowserActivity" id="app4" package="com.android.browser"/>
-              <ExternCommand command="unlock"/>
-            </Trigger>
-          </Triggers>
-          <Pressed/>
-        </Button>
-        <Button align="center" alignV="center" h="200" w="390" x="290" y="1520">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/mijia.png" x="290" y="1520"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/mijia.png" x="290" y="1520"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.xiaomi.smarthome.SmartHomeMainActivity" package="com.xiaomi.smarthome"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="200" w="200" x="885" y="1520">
-          <Normal>
-            <Image align="center" alignV="center" alpha="255" src="left_screen/cam.png" x="885" y="1520"/>
-          </Normal>
-          <Pressed>
-            <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/cam.png" x="885" y="1520"/>
-          </Pressed>
-          <Triggers>
-            <Trigger action="up">
-              <ExternCommand command="unlock"/>
-              <IntentCommand action="android.intent.action.MAIN" class="com.android.camera.Camera" package="com.android.camera"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <!--Быстрое переключение-->
-        <Button align="center" alignV="center" h="150" w="150" x="665" y="784">
-          <Image align="center" alignV="center" src="left_screen/ring_off.png" visibility="ifelse(#ring_mode==0,1,0)" x="665" y="784"/>
-          <Image align="center" alignV="center" src="left_screen/ring_on.png" visibility="ifelse(#ring_mode}0,1,0)" x="665" y="784"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="铃声：开" visibility="ifelse(#ring_mode}0,1,0)" x="665" y="875"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="铃声：关" visibility="ifelse(#ring_mode==0,1,0)" x="665" y="875"/>
-          <Triggers>
-            <Trigger action="up">
-              <Command target="RingMode" value="normal,silent"/>
-            </Trigger>
-            <Trigger action="down">
-              <VariableCommand expression="1" name="noticeDown"/>
-            </Trigger>
-            <Trigger action="up,cancel">
-              <VariableCommand expression="0" name="noticeDown"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="885" y="784">
-          <Image align="center" alignV="center" src="left_screen/wifi_off.png" visibility="ifelse(#wifi_state==0,1,0)" x="885" y="784"/>
-          <Image align="center" alignV="center" src="left_screen/wifi_on.png" visibility="ifelse(#wifi_state}0,1,0)" x="885" y="784"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="WiFi：开" visibility="ifelse(#wifi_state}0,1,0)" x="885" y="875"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="WiFi：关" visibility="ifelse(#wifi_state==0,1,0)" x="885" y="875"/>
-          <Triggers>
-            <Trigger action="up">
-              <Command target="Wifi" value="toggle"/>
-            </Trigger>
-            <Trigger action="down">
-              <VariableCommand expression="1" name="noticeDown"/>
-            </Trigger>
-            <Trigger action="up,cancel">
-              <VariableCommand expression="0" name="noticeDown"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="665" y="984">
-          <Image align="center" alignV="center" src="left_screen/sig_off.png" visibility="ifelse(#data_state==0,1,0)" x="665" y="984"/>
-          <Image align="center" alignV="center" src="left_screen/sig_on.png" visibility="ifelse(#data_state}0,1,0)" x="665" y="984"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="流量：开" visibility="ifelse(#data_state}0,1,0)" x="665" y="1075"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="流量：关" visibility="ifelse(#data_state==0,1,0)" x="665" y="1075"/>
-          <Triggers>
-            <Trigger action="up">
-              <Command target="Data" value="toggle"/>
-            </Trigger>
-            <Trigger action="down">
-              <VariableCommand expression="1" name="noticeDown"/>
-            </Trigger>
-            <Trigger action="up,cancel">
-              <VariableCommand expression="0" name="noticeDown"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Button align="center" alignV="center" h="150" w="150" x="885" y="984">
-          <Image align="center" alignV="center" src="left_screen/bluetooth_off.png" visibility="ifelse(#bluetooth_state==0,1,0)" x="885" y="984"/>
-          <Image align="center" alignV="center" src="left_screen/bluetooth_on.png" visibility="ifelse(#bluetooth_state}0,1,0)" x="885" y="984"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="蓝牙：开" visibility="ifelse(#bluetooth_state}0,1,0)" x="885" y="1075"/>
-          <Text align="center" alignV="center" color="#FFFFFF" size="30" text="蓝牙：关" visibility="ifelse(#bluetooth_state==0,1,0)" x="885" y="1075"/>
-          <Triggers>
-            <Trigger action="up">
-              <Command target="Bluetooth" value="toggle"/>
-            </Trigger>
-            <Trigger action="down">
-              <VariableCommand expression="1" name="noticeDown"/>
-            </Trigger>
-            <Trigger action="up,cancel">
-              <VariableCommand expression="0" name="noticeDown"/>
-            </Trigger>
-          </Triggers>
-        </Button>
-        <Var name="flash_ani">
-          <VariableAnimation initPause="true" loop="false">
-            <AniFrame easeType="QuintEaseOut" time="0" value="1"/>
-            <AniFrame easeType="QuintEaseOut" time="300" value="1.1"/>
-            <AniFrame time="600" value="1"/>
-          </VariableAnimation>
-        </Var>
-        <Button align="center" alignV="center" h="200" pivotX="100" pivotY="100" scale="#flash_ani" w="200" x="635" y="1520">
-          <Image align="center" alignV="center" src="left_screen/light_off.png" visibility="#lightSwitch==0" x="635" y="1520"/>
-          <Image align="center" alignV="center" src="left_screen/light_on.png" visibility="#lightSwitch==1" x="635" y="1520"/>
-          <Triggers>
-            <Trigger action="up">
-              <VariableCommand expression="!(#lightSwitch)" name="lightSwitch"/>
-              <IntentCommand action="miui.intent.action.TOGGLE_TORCH" broadcast="true">
-                <Extra expression="ifelse(int(@__miui_version_code)}=8,#lightSwitch,1)" name="miui.intent.extra.IS_ENABLE" type="boolean"/>
-              </IntentCommand>
-            </Trigger>
-            <Trigger action="double">
-              <VariableCommand expression="!(#lightSwitch)" name="lightSwitch"/>
-              <IntentCommand action="miui.intent.action.TOGGLE_TORCH" broadcast="true">
-                <Extra expression="ifelse(int(@__miui_version_code)}=8,#lightSwitch,1)" name="miui.intent.extra.IS_ENABLE" type="boolean"/>
-              </IntentCommand>
-            </Trigger>
-            <Trigger action="down">
-              <VariableCommand expression="0" name="noticeDown"/>
-              <AnimationCommand command="play" target="flash_ani"/>
-            </Trigger>
-          </Triggers>
-        </Button>
+          <!--Быстрая оплата-->
+          <Image align="center" alignV="center" src="left_screen/wechat.png" x="177" y="800"/>
+          <Image align="center" alignV="center" src="left_screen/alipay.png" x="185" y="1020"/>
+          <Button align="center" alignV="center" h="180" w="180" x="319" y="800">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/scanner.png" x="319" y="800"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/scanner.png" x="319" y="800"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.tencent.mm.plugin.scanner.ui.BaseScanUI" package="com.tencent.mm"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="80" w="80" x="444" y="800">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/wechat_pay.png" x="444" y="802"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/wechat_pay.png" x="444" y="802"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.tencent.mm.plugin.offline.ui.WalletOfflineEntranceUI" package="com.tencent.mm"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="80" w="80" x="319" y="1020">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/scanner.png" x="319" y="1020"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/scanner.png" x="319" y="1020"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.alipay.mobile.scan.as.main.MainCaptureActivity" package="com.eg.android.AlipayGphone"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="80" w="80" x="444" y="1020">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/ali_pay.png" x="444" y="1020"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/ali_pay.png" x="444" y="1020"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.eg.android.AlipayGphone.FastStartActivity" package="com.eg.android.AlipayGphone"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <!--Быстрое применение-->
+          <Button align="center" alignV="center" h="150" w="150" x="195" y="1270">
+            <Image align="center" alignV="center" h="150" src="left_screen/dialer.png" visibility="eqs(@app1.package,'')*eqs(@app1.class,'')" w="150" x="195" y="1270"/>
+            <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app1.package,@app1.class" srcType="ApplicationIcon" w="150" x="195" y="1270">
+              <Mask h="150" src="left_screen/dialer.png" w="150" x="195" y="1270"/>
+            </Image>
+            <Triggers>
+              <Trigger action="up">
+                <IntentCommand action="android.intent.action.MAIN" class="com.android.contacts.activities.TwelveKeyDialer" id="app1" package="com.android.contacts"/>
+                <ExternCommand command="unlock"/>
+              </Trigger>
+            </Triggers>
+            <Pressed/>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="425" y="1270">
+            <Image align="center" alignV="center" h="150" src="left_screen/message.png" visibility="eqs(@app2.package,'')*eqs(@app2.class,'')" w="150" x="425" y="1270"/>
+            <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app2.package,@app2.class" srcType="ApplicationIcon" w="150" x="425" y="1270">
+              <Mask h="150" src="left_screen/message.png" w="150" x="425" y="1270"/>
+            </Image>
+            <Triggers>
+              <Trigger action="up">
+                <IntentCommand action="android.intent.action.MAIN" class="com.android.mms.ui.MmsTabActivity" id="app2" package="com.android.mms"/>
+                <ExternCommand command="unlock"/>
+              </Trigger>
+            </Triggers>
+            <Pressed/>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="655" y="1270">
+            <Image align="center" alignV="center" h="150" src="left_screen/gallery.png" visibility="eqs(@app3.package,'')*eqs(@app3.class,'')" w="150" x="655" y="1270"/>
+            <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app3.package,@app3.class" srcType="ApplicationIcon" w="150" x="655" y="1270">
+              <Mask h="150" src="left_screen/gallery.png" w="150" x="655" y="1270"/>
+            </Image>
+            <Triggers>
+              <Trigger action="up">
+                <IntentCommand action="android.intent.action.MAIN" class="com.miui.gallery.activity.HomePageActivity" id="app3" package="com.miui.gallery"/>
+                <ExternCommand command="unlock"/>
+              </Trigger>
+            </Triggers>
+            <Pressed/>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="885" y="1270">
+            <Image align="center" alignV="center" h="150" src="left_screen/browser.png" visibility="eqs(@app4.package,'')*eqs(@app4.class,'')" w="150" x="885" y="1270"/>
+            <Image align="center" alignV="center" h="150" srcFormat="%s,%s" srcParas="@app4.package,@app4.class" srcType="ApplicationIcon" w="150" x="885" y="1270">
+              <Mask h="150" src="left_screen/browser.png" w="150" x="867" y="1270"/>
+            </Image>
+            <Triggers>
+              <Trigger action="up">
+                <IntentCommand action="android.intent.action.MAIN" class="com.android.browser.BrowserActivity" id="app4" package="com.android.browser"/>
+                <ExternCommand command="unlock"/>
+              </Trigger>
+            </Triggers>
+            <Pressed/>
+          </Button>
+          <Button align="center" alignV="center" h="200" w="390" x="290" y="1520">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/mijia.png" x="290" y="1520"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/mijia.png" x="290" y="1520"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.xiaomi.smarthome.SmartHomeMainActivity" package="com.xiaomi.smarthome"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="200" w="200" x="885" y="1520">
+            <Normal>
+              <Image align="center" alignV="center" alpha="255" src="left_screen/cam.png" x="885" y="1520"/>
+            </Normal>
+            <Pressed>
+              <Image align="center" alignV="center" alpha="255*0.7" src="left_screen/cam.png" x="885" y="1520"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up">
+                <ExternCommand command="unlock"/>
+                <IntentCommand action="android.intent.action.MAIN" class="com.android.camera.Camera" package="com.android.camera"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <!--Быстрое переключение-->
+          <Button align="center" alignV="center" h="150" w="150" x="665" y="784">
+            <Image align="center" alignV="center" src="left_screen/ring_off.png" visibility="ifelse(#ring_mode==0,1,0)" x="665" y="784"/>
+            <Image align="center" alignV="center" src="left_screen/ring_on.png" visibility="ifelse(#ring_mode}0,1,0)" x="665" y="784"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="铃声：开" visibility="ifelse(#ring_mode}0,1,0)" x="665" y="875"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="铃声：关" visibility="ifelse(#ring_mode==0,1,0)" x="665" y="875"/>
+            <Triggers>
+              <Trigger action="up">
+                <Command target="RingMode" value="normal,silent"/>
+              </Trigger>
+              <Trigger action="down">
+                <VariableCommand expression="1" name="noticeDown"/>
+              </Trigger>
+              <Trigger action="up,cancel">
+                <VariableCommand expression="0" name="noticeDown"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="885" y="784">
+            <Image align="center" alignV="center" src="left_screen/wifi_off.png" visibility="ifelse(#wifi_state==0,1,0)" x="885" y="784"/>
+            <Image align="center" alignV="center" src="left_screen/wifi_on.png" visibility="ifelse(#wifi_state}0,1,0)" x="885" y="784"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="WiFi：开" visibility="ifelse(#wifi_state}0,1,0)" x="885" y="875"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="WiFi：关" visibility="ifelse(#wifi_state==0,1,0)" x="885" y="875"/>
+            <Triggers>
+              <Trigger action="up">
+                <Command target="Wifi" value="toggle"/>
+              </Trigger>
+              <Trigger action="down">
+                <VariableCommand expression="1" name="noticeDown"/>
+              </Trigger>
+              <Trigger action="up,cancel">
+                <VariableCommand expression="0" name="noticeDown"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="665" y="984">
+            <Image align="center" alignV="center" src="left_screen/sig_off.png" visibility="ifelse(#data_state==0,1,0)" x="665" y="984"/>
+            <Image align="center" alignV="center" src="left_screen/sig_on.png" visibility="ifelse(#data_state}0,1,0)" x="665" y="984"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="流量：开" visibility="ifelse(#data_state}0,1,0)" x="665" y="1075"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="流量：关" visibility="ifelse(#data_state==0,1,0)" x="665" y="1075"/>
+            <Triggers>
+              <Trigger action="up">
+                <Command target="Data" value="toggle"/>
+              </Trigger>
+              <Trigger action="down">
+                <VariableCommand expression="1" name="noticeDown"/>
+              </Trigger>
+              <Trigger action="up,cancel">
+                <VariableCommand expression="0" name="noticeDown"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Button align="center" alignV="center" h="150" w="150" x="885" y="984">
+            <Image align="center" alignV="center" src="left_screen/bluetooth_off.png" visibility="ifelse(#bluetooth_state==0,1,0)" x="885" y="984"/>
+            <Image align="center" alignV="center" src="left_screen/bluetooth_on.png" visibility="ifelse(#bluetooth_state}0,1,0)" x="885" y="984"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="蓝牙：开" visibility="ifelse(#bluetooth_state}0,1,0)" x="885" y="1075"/>
+            <Text align="center" alignV="center" color="#FFFFFF" size="30" text="蓝牙：关" visibility="ifelse(#bluetooth_state==0,1,0)" x="885" y="1075"/>
+            <Triggers>
+              <Trigger action="up">
+                <Command target="Bluetooth" value="toggle"/>
+              </Trigger>
+              <Trigger action="down">
+                <VariableCommand expression="1" name="noticeDown"/>
+              </Trigger>
+              <Trigger action="up,cancel">
+                <VariableCommand expression="0" name="noticeDown"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+          <Var name="flash_ani">
+            <VariableAnimation initPause="true" loop="false">
+              <AniFrame easeType="QuintEaseOut" time="0" value="1"/>
+              <AniFrame easeType="QuintEaseOut" time="300" value="1.1"/>
+              <AniFrame time="600" value="1"/>
+            </VariableAnimation>
+          </Var>
+          <Button align="center" alignV="center" h="200" pivotX="100" pivotY="100" scale="#flash_ani" w="200" x="635" y="1520">
+            <Image align="center" alignV="center" src="left_screen/light_off.png" visibility="#lightSwitch==0" x="635" y="1520"/>
+            <Image align="center" alignV="center" src="left_screen/light_on.png" visibility="#lightSwitch==1" x="635" y="1520"/>
+            <Triggers>
+              <Trigger action="up">
+                <VariableCommand expression="!(#lightSwitch)" name="lightSwitch"/>
+                <IntentCommand action="miui.intent.action.TOGGLE_TORCH" broadcast="true">
+                  <Extra expression="ifelse(int(@__miui_version_code)}=8,#lightSwitch,1)" name="miui.intent.extra.IS_ENABLE" type="boolean"/>
+                </IntentCommand>
+              </Trigger>
+              <Trigger action="double">
+                <VariableCommand expression="!(#lightSwitch)" name="lightSwitch"/>
+                <IntentCommand action="miui.intent.action.TOGGLE_TORCH" broadcast="true">
+                  <Extra expression="ifelse(int(@__miui_version_code)}=8,#lightSwitch,1)" name="miui.intent.extra.IS_ENABLE" type="boolean"/>
+                </IntentCommand>
+              </Trigger>
+              <Trigger action="down">
+                <VariableCommand expression="0" name="noticeDown"/>
+                <AnimationCommand command="play" target="flash_ani"/>
+              </Trigger>
+            </Triggers>
+          </Button>
+        </Group>
       </Group>
     </Group>
   </Group>

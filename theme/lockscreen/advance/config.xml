@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
 	<Group text="Настройки виджетов">
-		<ImagePicker default="Стандартная" id="dztx" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
-		<StringInput default="Привет" id="qmdz" summary="Надпись отображается под значком" text="Надпись"/>
-		<StringInput default="#FFFFFF" id="qm_color" summary="По умолчанию это #FFFFFF" text="Цвет текста"/>
+		<ImagePicker default="Стандартная" id="theme_avatar_image" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
+		<StringInput default="Привет" id="theme_avatar_label" summary="Надпись отображается под значком" text="Надпись"/>
+		<StringInput default="#FFFFFF" id="theme_text_color" summary="По умолчанию #FFFFFF" text="Цвет текста"/>
+		<StringInput default="#BF000000" id="theme_background_color" summary="По умолчанию #BF000000" text="Фоновый цвет плиток"/>
 	</Group>
 	<Group text="Выбор виджетов">
 		<NumberChoice default="0" id="steps_charge_style" text="Количество шагов или Заряд">
