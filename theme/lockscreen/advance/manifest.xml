@@ -182,14 +182,6 @@
         <Group x="90" y="250">
           <!-- Заряд и подсчёт шагов -->
           <Group>
-            <!-- Кнопка смены заряд/шаги -->
-            <!-- <Button align="center" alignV="center" h="300" w="300" x="150" y="150">
-              <Triggers>
-                <Trigger action="up">
-                  <VariableCommand expression="!#steps_charge_style" name="steps_charge_style" persist="true"/>
-                </Trigger>
-              </Triggers>
-            </Button> -->
             <!-- Заряд -->
             <Group visibility="#steps_charge_style == 0" x="0" y="0">
               <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="300" w="300" x="0" y="0"/>
