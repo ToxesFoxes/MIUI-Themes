@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Lockscreen frameRate="60" frameRateBatteryLow="20" frameRateCharging="60" screenWidth="1080" version="1">
+  <FramerateController initPause="true" loop="false" name="SLS_framerateAni">
+    <ControlPoint frameRate="60" time="0"/>
+    <ControlPoint frameRate="60" time="2000"/>
+    <ControlPoint frameRate="30" time="2001"/>
+  </FramerateController>
   <!-- Определение ширины и высоты экрана -->
   <Var expression="#screen_width" name="sw" type="number"/>
   <Var expression="#screen_height" name="sh" type="number"/>
@@ -156,45 +161,68 @@
     </Trigger>
   </ExternalCommands>
   <VariableBinders/>
-  <!-- 音乐 -->
 
 
   <!-- Данные проигрывателя : конец -->
   <Group h="#screen_height" layered="true" w="#screen_width">
+    <Wallpaper/>
+    <Var name="unlockPosition" type="number" expression="(#defaultScreen_y/@unlock_screen_offset_y)*(-1)"/>
+    <Var name="unlockComplete" expression="ifelse(#unlockPosition}1, 1, 0)"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_text_color" h="15" w="ifelse((#unlockPosition*(#sw/1.25){(#sw/1.5)) ** (#unlockComplete==0), #unlockPosition*(#sw/1.25), (#sw/1.5))" x="#sw/2" y="#sh-20" alpha="64"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_text_color" h="15" w="ifelse((#unlockPosition*(#sw){(#sw/1.5)) ** (#unlockComplete==0), #unlockPosition*(#sw), (#sw/1.5))" x="#sw/2" y="#sh-20" alpha="64"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_text_color" h="15" w="ifelse((#unlockPosition*(#sw/0.75){(#sw/1.5)) ** (#unlockComplete==0), #unlockPosition*(#sw/0.75), (#sw/1.5))" x="#sw/2" y="#sh-20" alpha="64"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_text_color" h="15" w="ifelse((#unlockPosition*(#sw/0.5){(#sw/1.5)) ** (#unlockComplete==0), #unlockPosition*(#sw/0.5), (#sw/1.5))" x="#sw/2" y="#sh-20" alpha="64"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="15" w="ifelse((#unlockPosition*(#sw/0.25){(#sw/1.5)) ** (#unlockComplete==0), #unlockPosition*(#sw/0.25), (#sw/1.5))" x="#sw/2" y="#sh-20"/>
+    <Rectangle align="center" alignV="center" cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_text_color" h="15" w="ifelse(#unlockComplete==0, #unlockPosition*(#sw/1.5), (#sw/1.5))" x="#sw/2" y="#sh-20"/>
     <Group y="#defaultScreen_y">
-      <Wallpaper/>
       <!-- 1 экран -->
       <!-- Тут должны были быть уведомления -->
       <!-- Виджеты -->
-      <Group x="#defaultScreen_x" y="#defaultScreen_y/4">
+      <Group x="#defaultScreen_x" y="#defaultScreen_y/@unlock_screen_offset_y">
         <Group x="90" y="250">
           <!-- Заряд и подсчёт шагов -->
           <Group>
             <!-- Кнопка смены заряд/шаги -->
-            <Button align="center" alignV="center" h="300" w="300" x="150" y="150">
+            <!-- <Button align="center" alignV="center" h="300" w="300" x="150" y="150">
               <Triggers>
                 <Trigger action="up">
                   <VariableCommand expression="!#steps_charge_style" name="steps_charge_style" persist="true"/>
                 </Trigger>
               </Triggers>
-            </Button>
+            </Button> -->
             <!-- Заряд -->
             <Group visibility="#steps_charge_style == 0" x="0" y="0">
               <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="300" w="300" x="0" y="0"/>
-              <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00FFFFFF" r="100" strokeAlign="center" strokeColor="#FFFFFF" weight="20" x="150" y="150"/>
-              <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#FFFFFF" sweep="#battery_level/100*360" w="200" weight="20" x="150" y="150"/>
+              <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00000000" r="100" strokeAlign="center" strokeColor="#BF000000" weight="20" x="150" y="150"/>
+              <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="@theme_text_color" sweep="#battery_level/100*360" w="200" weight="20" x="150" y="150"/>
               <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#56CC89" sweep="#battery_level/100*360" w="200" weight="20" x="150" y="150" visibility="(#battery_state==1||#battery_state==3)" />
               <Text align="center" alignV="center" color="@theme_text_color" size="40" textExp="#battery_level+'%'" x="150" y="150"/>
+              <Button cornerRadiusExp="@theme_tile_corner_radius" h="300" w="300" x="0" y="0">
+                <Triggers>
+                  <Trigger action="up">
+                    <IntentCommand action="android.intent.action.MAIN" class="com.miui.powercenter.PowerMainActivity" package="com.miui.securitycenter"/>
+                    <ExternCommand command="unlock"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
               <!-- <Image src="left_screen/battery.png" visibility="(#battery_state==1||#battery_state==3)" x="215" y="425" w="22" h="41"/> -->
             </Group>
             <!-- Подсчет шагов -->
             <Group visibility="#steps_charge_style == 1" x="0" y="0">
               <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="300" w="300" x="0" y="0"/>
-              <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00FFFFFF" r="100" strokeAlign="center" strokeColor="#FFFFFF" weight="20" x="150" y="150"/>
-              <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="#FFFFFF" sweep="@MiSteps_steps/@MiSteps_goal*360" w="200" weight="20" x="150" y="150"/>
+              <Circle align="center" alignV="center" alpha="255*0.5" cap="round" fillColor="#00000000" r="100" strokeAlign="center" strokeColor="#BF000000" weight="20" x="150" y="150"/>
+              <Arc align="center" alignV="center" cap="round" close="false" fillColor="#00000000" h="200" startAngle="-90" strokeAlign="center" strokeColor="@theme_text_color" sweep="@MiSteps_steps/@MiSteps_goal*360" w="200" weight="20" x="150" y="150"/>
               <Image align="center" alignV="center" src="widgets/steps/shoes.png" x="150" y="110"/>
-              <Rectangle align="center" alignV="center" alpha="255*0.7" fillColor="#FFFFFF" h="2" w="62" x="150" y="152"/>
+              <Rectangle align="center" alignV="center" alpha="255*0.7" fillColor="@theme_text_color" h="2" w="62" x="150" y="152"/>
               <Text align="center" alignV="center" color="@theme_text_color" size="30" textExp="@MiSteps_steps" x="150" y="174"/>
+              <Button cornerRadiusExp="@theme_tile_corner_radius" h="300" w="300" x="0" y="0">
+                <Triggers>
+                  <Trigger action="up">
+                    <IntentCommand action="android.intent.action.MAIN" class="com.mi.health.exercise.ui.ExerciseHomeActivity" package="com.mi.health"/>
+                    <ExternCommand command="unlock"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
             </Group>
           </Group>
           <!-- Календарь -->
@@ -206,6 +234,14 @@
                 <DateTime align="center" alignV="center" color="@theme_text_color" format="dd.MM" size="45" x="64" y="28" w="128"/>
                 <DateTime align="center" alignV="center" color="@theme_text_color" format="yyyy" size="45" x="64" y="100" w="128"/>
               </Group>
+              <Button cornerRadiusExp="@theme_tile_corner_radius" h="200" w="200" x="0" y="0">
+                <Triggers>
+                  <Trigger action="up">
+                    <IntentCommand action="android.intent.action.MAIN" class="com.android.calendar.AllInOneActivity" package="com.android.calendar"/>
+                    <ExternCommand command="unlock"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
             </Group>
             <Group visibility="#calendar_style == 1">
               <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="200" w="300" x="0" y="0"/>
@@ -223,14 +259,30 @@
                 <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_location" w="200" x="15" y="218"/>
                 <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_description" w="200" x="15" y="300"/>
                 <Text align="left" alignV="top" color="@theme_text_color" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="200" x="15" y="410"/>
+                <Button cornerRadiusExp="@theme_tile_corner_radius" h="550" w="230" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <IntentCommand action="android.intent.action.MAIN" class="com.miui.weather2.ActivityWeatherMain" package="com.miui.weather2"/>
+                      <ExternCommand command="unlock"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
               </Group>
               <!-- Часы -->
               <Group x="0" y="250">
                 <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="300" w="300" x="0" y="0"/>
-                <Image src="widgets/clock/time_bg.png" x="34" y="34"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#hour12*30+#minute/2" src="widgets/clock/h.png" x="150" y="150"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#minute*6+#second/10" src="widgets/clock/m.png" x="150" y="150"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#second*6" src="widgets/clock/s.png" x="150" y="150"/>
+                <Image srcExp="'widgets/clock/'+ @time_clock_style +'/time_bg.png'" x="34" y="34"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#hour12*30+#minute/2" srcExp="'widgets/clock/'+ @time_clock_style +'/h.png'" x="150" y="150"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#minute*6+#second/10" srcExp="'widgets/clock/'+ @time_clock_style +'/m.png'" x="150" y="150"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="4" centerY="206/2" rotation="#second*6" srcExp="'widgets/clock/'+ @time_clock_style +'/s.png'" x="150" y="150"/>
+                <Button cornerRadiusExp="@theme_tile_corner_radius" h="300" w="300" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <IntentCommand action="android.intent.action.MAIN" class="com.android.deskclock.DeskClockTabActivity" package="com.android.deskclock"/>
+                      <ExternCommand command="unlock"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
               </Group>
             </Group>
             <Group visibility="#time_weather_style == 1">
@@ -241,14 +293,30 @@
                 <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="40" textExp="@weather_location" w="335" x="24" y="90"/>
                 <Text align="left" alignV="top" color="@theme_text_color" marqueeSpeed="30" size="45" textExp="@weather_description" w="335" x="24" y="33"/>
                 <Text align="right" alignV="top" color="@theme_text_color" fontFamily="mitype-clock" marqueeSpeed="30" size="80" textExp="@weather_temperature" w="250" x="530" y="170"/>
+                <Button cornerRadiusExp="@theme_tile_corner_radius" h="300" w="550" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <IntentCommand action="android.intent.action.MAIN" class="com.miui.weather2.ActivityWeatherMain" package="com.miui.weather2"/>
+                      <ExternCommand command="unlock"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
               </Group>
               <!-- Часы -->
               <Group x="350" y="0">
                 <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="200" w="200" x="0" y="0"/>
-                <Image src="widgets/clock/time_bg.png" x="22" y="22" w="155" h="155"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#hour12*30+#minute/2" src="widgets/clock/h.png" x="100" y="100" h="138" w="4"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#minute*6+#second/10" src="widgets/clock/m.png" x="100" y="100" h="138" w="4"/>
-                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#second*6" src="widgets/clock/s.png" x="100" y="100" h="138" w="4"/>
+                <Image srcExp="'widgets/clock/'+ @time_clock_style +'/time_bg.png'" x="22" y="22" w="155" h="155"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#hour12*30+#minute/2" srcExp="'widgets/clock/'+ @time_clock_style +'/h.png'" x="100" y="100" h="138" w="4"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#minute*6+#second/10" srcExp="'widgets/clock/'+ @time_clock_style +'/m.png'" x="100" y="100" h="138" w="4"/>
+                <Image align="center" alignV="center" antiAlias="true" centerX="2" centerY="138/2" rotation="#second*6" srcExp="'widgets/clock/'+ @time_clock_style +'/s.png'" x="100" y="100" h="138" w="4"/>
+                <Button cornerRadiusExp="@theme_tile_corner_radius" h="200" w="200" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <IntentCommand action="android.intent.action.MAIN" class="com.android.deskclock.DeskClockTabActivity" package="com.android.deskclock"/>
+                      <ExternCommand command="unlock"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
               </Group>
             </Group>
           </Group>
@@ -256,18 +324,27 @@
           <Group x="0" y="350">
             <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="200" w="300" x="0" y="0"/>
             <DateTime align="center" alignV="center" color="@theme_text_color" fontFamily="mitype-clock" format="HH:mm" size="90" x="149" y="99"/>
+            <Button cornerRadiusExp="@theme_tile_corner_radius" h="200" w="200" x="0" y="0">
+              <Triggers>
+                <Trigger action="up">
+                  <IntentCommand action="android.intent.action.MAIN" class="com.android.deskclock.DeskClockTabActivity" package="com.android.deskclock"/>
+                  <ExternCommand command="unlock"/>
+                </Trigger>
+              </Triggers>
+            </Button>
           </Group>
         </Group>
       </Group>
       <!-- 2 экран -->
       <!-- <Rectangle alpha="255*0.4*#defaultScreen_x/1080" fillColor="#FFFFFF" h="#sh" w="#sw" x="0" y="0"/> -->
-      <Group x="-1080+#defaultScreen_x" y="#defaultScreen_y">
+      <Group x="-1080+#defaultScreen_x" y="#defaultScreen_y/@unlock_screen_offset_y">
         <!-- Остальной экран -->
         <Group visibility="1">
           <!-- Аватар и текст -->
           <Group x="#sw/2" y="400">
             <Var expression="ifelse(strContains(@theme_avatar_image,'com.android.fileexplorer'),strReplaceAll(@theme_avatar_image,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@theme_avatar_image,'com.miui.gallery'),strReplaceAll(@theme_avatar_image,'content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F','file:///sdcard/'),@theme_avatar_image)" name="txdz" type="string"/>
             <!-- Дефолтная картинка -->
+            <Circle align="center" alignV="center" cap="round" fillColor="@theme_tile_background_color" r="100" weight="20" x="0" y="0"/>
             <Image align="center" alignV="center" src="widgets/other/user.png" x="0" y="0" h="200" w="200">
               <Mask src="widgets/other/mask.png"/>
             </Image>
@@ -480,17 +557,91 @@
         </Group>
         <!-- Экран Музыка -->
         <Group>
-          <!-- Триггер : запуск анимации -->
-          <Group name="music_player_music_init">
-            <Triggers>
-              <Trigger action="nameholder_init_play">
-                <VariableCommand expression="1" name="music_player_music_visibility"/>
-                <Command delay="0" target="music_player_music_alpha.animation" value="play(0,600)"/>
-                <Command delay="0" target="music_player_music_y.animation" value="play(0,800)"/>
-                <Command delay="0" target="music_player_scale_x.animation" value="play(0,600)"/>
-                <Command delay="0" target="music_player_scale_y.animation" value="play(0,500)"/>
-              </Trigger>
-            </Triggers>
+          <!-- Анимации -->
+          <Group>
+            <!-- Переменные : прозрачность, положение y, разммеры x y -->
+            <Group>
+              <Var name="music_player_music_alpha">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="QuadEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="255"/>
+                  <AniFrame time="900" value="0"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="music_player_music_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="-140"/>
+                  <AniFrame easeType="CubicEaseOut" time="800" value="0"/>
+                  <AniFrame time="1100" value="-140"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="music_player_scale_x">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="600" value="1"/>
+                  <AniFrame time="1100" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="music_player_scale_y">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                  <AniFrame easeType="CubicEaseOut" time="500" value="1"/>
+                  <AniFrame time="1000" value="0.5"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="music_player_scale_x1">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                  <AniFrame easeType="CubicEaseOut" time="400" value="1.3"/>
+                  <AniFrame time="600" value="1"/>
+                </VariableAnimation>
+              </Var>
+              <Var name="music_player_scale_y1">
+                <VariableAnimation initPause="true" loop="false">
+                  <AniFrame easeType="BackEaseOut" time="0" value="1"/>
+                  <AniFrame easeType="CubicEaseOut" time="300" value="1.3"/>
+                  <AniFrame time="500" value="1"/>
+                </VariableAnimation>
+              </Var>
+            </Group>
+            <Group name="music_player_music_ani">
+              <!-- Триггер анимации появления элементов - переменные выше -->
+              <Triggers>
+                <Trigger action="music_player_ani_play">
+                  <VariableCommand delay="500" expression="0" name="music_player_music_visibility"/>
+                  <Command delay="0" target="music_player_music_alpha.animation" value="play(600,900)"/>
+                  <Command delay="0" target="music_player_music_y.animation" value="play(800,1100)"/>
+                  <Command delay="0" target="music_player_scale_x.animation" value="play(600,1100)"/>
+                  <Command delay="0" target="music_player_scale_y.animation" value="play(500,1000)"/>
+                </Trigger>
+              </Triggers>
+            </Group>
+            <Group name="music_player_music_init">
+              <!-- Триггер : запуск анимации -->
+              <Triggers>
+                <Trigger action="nameholder_init_play">
+                  <VariableCommand expression="1" name="music_player_music_visibility"/>
+                  <Command delay="0" target="music_player_music_alpha.animation" value="play(0,600)"/>
+                  <Command delay="0" target="music_player_music_y.animation" value="play(0,800)"/>
+                  <Command delay="0" target="music_player_scale_x.animation" value="play(0,600)"/>
+                  <Command delay="0" target="music_player_scale_y.animation" value="play(0,500)"/>
+                </Trigger>
+              </Triggers>
+            </Group>
+            <Var name="music_player_scale_x2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="700" value="0"/>
+              </VariableAnimation>
+            </Var>
+            <Var name="music_player_scale_y2">
+              <VariableAnimation initPause="true" loop="false">
+                <AniFrame easeType="BackEaseOut" time="0" value="0"/>
+                <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
+                <AniFrame time="750" value="0"/>
+              </VariableAnimation>
+            </Var>
           </Group>
           <!-- Кнопка : показать проигрыватель -->
           <Image align="center" alignV="center" src="music_player_src/music_on.png" visibility="not(#music_player_music_visibility)" x="1019" y="#screen_height-65"/>
@@ -506,65 +657,7 @@
           <Group visibility="1" x="0" y="0">
             <MusicControl alpha="#music_player_music_alpha" autoShow="true" defAlbumCover="music_player_src/album.jpg" enableLyric="true" name="music_player_music_control" updateLyricInterval="100" visibility="#music_player_music_visibility" y="#music_player_music_y">
               <!-- Фон -->
-              <!-- <Image src="music_player_src/b.png"/> -->
-              <!-- Переменные : прозрачность, положение y, разммеры x y -->
-              <Group>
-                <Var name="music_player_music_alpha">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="QuadEaseOut" time="0" value="0"/>
-                    <AniFrame easeType="CubicEaseOut" time="600" value="255"/>
-                    <AniFrame time="900" value="0"/>
-                  </VariableAnimation>
-                </Var>
-                <Var name="music_player_music_y">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="BackEaseOut" time="0" value="-140"/>
-                    <AniFrame easeType="CubicEaseOut" time="800" value="0"/>
-                    <AniFrame time="1100" value="-140"/>
-                  </VariableAnimation>
-                </Var>
-                <Var name="music_player_scale_x">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                    <AniFrame easeType="CubicEaseOut" time="600" value="1"/>
-                    <AniFrame time="1100" value="0.5"/>
-                  </VariableAnimation>
-                </Var>
-                <Var name="music_player_scale_y">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                    <AniFrame easeType="CubicEaseOut" time="500" value="1"/>
-                    <AniFrame time="1000" value="0.5"/>
-                  </VariableAnimation>
-                </Var>
-                <Var name="music_player_scale_x1">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="BackEaseOut" time="0" value="1"/>
-                    <AniFrame easeType="CubicEaseOut" time="400" value="1.3"/>
-                    <AniFrame time="600" value="1"/>
-                  </VariableAnimation>
-                </Var>
-                <Var name="music_player_scale_y1">
-                  <VariableAnimation initPause="true" loop="false">
-                    <AniFrame easeType="BackEaseOut" time="0" value="1"/>
-                    <AniFrame easeType="CubicEaseOut" time="300" value="1.3"/>
-                    <AniFrame time="500" value="1"/>
-                  </VariableAnimation>
-                </Var>
-              </Group>
-              <!-- Анимация -->
-              <Group name="music_player_music_ani">
-                <!-- Триггер анимации появления элементов - переменные выше -->
-                <Triggers>
-                  <Trigger action="music_player_ani_play">
-                    <VariableCommand delay="500" expression="0" name="music_player_music_visibility"/>
-                    <Command delay="0" target="music_player_music_alpha.animation" value="play(600,900)"/>
-                    <Command delay="0" target="music_player_music_y.animation" value="play(800,1100)"/>
-                    <Command delay="0" target="music_player_scale_x.animation" value="play(600,1100)"/>
-                    <Command delay="0" target="music_player_scale_y.animation" value="play(500,1000)"/>
-                  </Trigger>
-                </Triggers>
-              </Group>
+              <Rectangle cornerRadiusExp="@theme_tile_corner_radius" fillColor="@theme_tile_background_color" h="2340" w="1080" x="0" y="0"/>
               <!-- Кнопка : возврат -->
               <Group>
                 <Image align="center" alignV="center" src="music_player_src/music_return.png" x="105" y="112+#music_player_music_y+ifelse(#raw_screen_height==2244,&apos;30&apos;,#raw_screen_height==2248,&apos;30&apos;,#raw_screen_height==2280,&apos;30&apos;,#raw_screen_height==2340,&apos;30&apos;,&apos;0&apos;)"/>
@@ -583,7 +676,6 @@
                   <Triggers>
                     <Trigger action="up">
                       <!-- <IntentCommand action="android.intent.action.MAIN" package="com.miui.player" class="com.miui.player.phone.ui.MusicSettings" /> -->
-
                       <IntentCommand action="android.intent.action.MAIN" class="com.miui.player.ui.MusicBrowserActivity" condition="int(@__miui_version_code){=8" package="com.miui.player"/>
                       <IntentCommand action="android.intent.action.MAIN" classExp="@music_player_music_control.class" condition="int(@__miui_version_code)}=9" packageExp="@music_player_music_control.package"/>
                       <ExternCommand command="unlock"/>
@@ -599,12 +691,10 @@
                   <Image align="center" alignV="center" h="920" srcExp="ifelse(strContains(valueholder_album_config_src,&apos;com.android.fileexplorer&apos;),strReplaceAll(valueholder_album_config_src,&apos;content://com.android.fileexplorer.myprovider/external_files/&apos;,&apos;file:///sdcard/&apos;),strContains(valueholder_album_config_src,&apos;com.miui.gallery&apos;),strReplaceAll(valueholder_album_config_src,&apos;content://com.miui.gallery.open/raw//storage/emulated/0/&apos;,&apos;file:///sdcard/&apos;),valueholder_album_config_src)" srcType="Uri" visibility="len(valueholder_album_config_src)*not(#music_player_music_control.music_state)" w="920" x="460" y="460"/>
                   <Image align="center" alignV="center" h="920" name="music_album_cover" w="920" x="460" y="460"/>
                   <!-- <Image x="460" y="460" w="920" h="920" align="center" alignV="center" src="music_player_src/mb.jpg" visibility="not(len(valueholder_album_config_src))*not(#music_player_music_control.music_state)" /> -->
-
                   <Image align="center" alignV="center" h="920" src="music_player_src/m.9.png" w="920" x="460" xfermode="dst_in" y="460"/>
                   <Image align="center" alignV="center" h="920" src="music_player_src/mb.9.png" w="920" x="460" y="460"/>
                 </Group>
               </Group>
-
               <!-- Текст песни -->
               <Group clip="true" x="#screen_width/2" y="ifelse(#raw_screen_height==1920,&apos;0&apos;,#raw_screen_height==2040,&apos;-20&apos;,#raw_screen_height==2160,&apos;-41&apos;,#raw_screen_height==2244,&apos;-83&apos;,#raw_screen_height==2248,&apos;-85&apos;,#raw_screen_height==2280,&apos;-101&apos;,&apos;-130&apos;)">
                 <Text align="center" alignV="center" color="#b4c2bf" size="50" text="--- 歌词 ---" visibility="not(#music_player_music_control.music_state)" y="#screen_height-503"/>
@@ -621,30 +711,40 @@
               <Text align="center" alignV="center" color="#495150" marqueeSpeed="30" size="50" textExp="ifelse(isnull(@music_player_music_control.artist),&apos;Open music player&apos;,@music_player_music_control.artist)" visibility="ifelse(#raw_screen_height==1920,&apos;0&apos;,#raw_screen_height==2040,&apos;0&apos;,&apos;1&apos;)" w="#screen_width" x="#screen_width/2" y="1357"/>
               <!-- Прогресс музыки и время -->
               <Group>
+                <!-- фон полоски -->
                 <Rectangle align="center" alignV="center" alpha="255*40/100" fillColor="#b4c2bf" h="8" w="660" x="#screen_width/2" y="#screen_height-359"/>
+                <!-- прогресс полоски -->
                 <Rectangle alignV="center" alpha="255" fillColor="#1ddebc" h="8" w="#music_player_music_control.music_position/#music_player_music_control.music_duration*660" x="#screen_width/2-330" y="#screen_height-359"/>
+                <!-- Позиция -->
                 <DateTime align="left" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#music_player_music_control.music_position" x="#screen_width/2-460" y="#screen_height-359"/>
+                <!-- Длительность -->
                 <DateTime align="right" alignV="center" alpha="255" color="#b4c2bf" format="mm:ss" size="25" value="#music_player_music_control.music_duration" x="#screen_width/2+460" y="#screen_height-359"/>
               </Group>
-
-              <Image align="center" alignV="center" centerX="28" centerY="24" scaleX="#music_player_scale_x1" scaleY="#music_player_scale_y1" src="music_player_src/music_like.png" srcid="#music_player_music_control.user_rating_value" x="107" y="#screen_height-183"/>
-              <Button align="center" alignV="center" h="130" w="130" x="107" y="#screen_height-183">
-                <Triggers>
-                  <Trigger action="up">
-                    <MethodCommand delay="500" method="ratingHeart" target="music_player_music_control"/>
-                    <Command target="music_player_scale_x1.animation" value="play"/>
-                    <Command target="music_player_scale_y1.animation" value="play"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
-              <Image align="center" alignV="center" src="music_player_src/music_off.png" x="983" y="#screen_height-184"/>
-              <Button align="center" alignV="center" h="130" w="130" x="983" y="#screen_height-184">
-                <Triggers>
-                  <Trigger action="up">
-                    <MethodCommand method="performAction" paramTypes="String" params="&apos;music_player_ani_play&apos;" target="music_player_music_ani"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
+              <!-- Кнопка : Нравится/Не нравится -->
+              <Group x="107" y="#screen_height-183">
+                <Image align="center" alignV="center" centerX="28" centerY="24" scaleX="#music_player_scale_x1" scaleY="#music_player_scale_y1" src="music_player_src/music_like.png" srcid="#music_player_music_control.user_rating_value" x="0" y="0"/>
+                <Button align="center" alignV="center" h="130" w="130" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <MethodCommand delay="500" method="ratingHeart" target="music_player_music_control"/>
+                      <Command target="music_player_scale_x1.animation" value="play"/>
+                      <Command target="music_player_scale_y1.animation" value="play"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
+              </Group>
+              <!-- Закрыть проигрыватель -->
+              <Group x="983" y="#screen_height-184">
+                <Image align="center" alignV="center" src="music_player_src/music_off.png" x="0" y="0"/>
+                <Button align="center" alignV="center" h="130" w="130" x="0" y="0">
+                  <Triggers>
+                    <Trigger action="up">
+                      <MethodCommand method="performAction" paramTypes="String" params="&apos;music_player_ani_play&apos;" target="music_player_music_ani"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
+              </Group>
+              <!-- Кнопка : прошлый трек -->
               <Button align="center" alignV="center" h="100" name="music_prev" w="100" x="#screen_width/2-240" y="#screen_height-182">
                 <Normal>
                   <Image align="center" alignV="center" src="music_player_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
@@ -653,6 +753,7 @@
                   <Image align="center" alignV="center" alpha="127" src="music_player_src/music_prev.png" x="#screen_width/2-240" y="#screen_height-182"/>
                 </Pressed>
               </Button>
+              <!-- Кнопка : следующий трек -->
               <Button align="center" alignV="center" h="100" name="music_next" w="100" x="#screen_width/2+241" y="#screen_height-183">
                 <Normal>
                   <Image align="center" alignV="center" src="music_player_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
@@ -661,35 +762,25 @@
                   <Image align="center" alignV="center" alpha="127" src="music_player_src/music_next.png" x="#screen_width/2+241" y="#screen_height-183"/>
                 </Pressed>
               </Button>
-              <Circle align="center" alignV="center" centerX="#music_player_btn_circle.bmp_width/2" centerY="#music_player_btn_circle.bmp_height/2" fillColor="#1ddebc" name="music_player_btn_circle" r="85" scaleX="#music_player_scale_x+#music_player_scale_x2" scaleY="#music_player_scale_y+#music_player_scale_y2" x="#screen_width/2" y="#screen_height-183"/>
-              <Var name="music_player_scale_x2">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                  <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
-                  <AniFrame time="700" value="0"/>
-                </VariableAnimation>
-              </Var>
-              <Var name="music_player_scale_y2">
-                <VariableAnimation initPause="true" loop="false">
-                  <AniFrame easeType="BackEaseOut" time="0" value="0"/>
-                  <AniFrame easeType="CubicEaseOut" time="350" value="0.19"/>
-                  <AniFrame time="750" value="0"/>
-                </VariableAnimation>
-              </Var>
-              <Button align="center" alignV="center" h="170" name="music_play" w="170" x="#screen_width/2" y="#screen_height-183">
-                <Normal>
-                  <Image align="center" alignV="center" src="music_player_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
-                </Normal>
-                <Pressed>
-                  <Image align="center" alignV="center" alpha="127" src="music_player_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
-                </Pressed>
-                <Triggers>
-                  <Trigger action="up">
-                    <Command delay="0" target="music_player_scale_x2.animation" value="play(0,800)"/>
-                    <Command delay="0" target="music_player_scale_y2.animation" value="play(0,600)"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
+              <!-- Кнопка : играть -->
+              <Group>
+                <Circle align="center" alignV="center" centerX="#music_player_btn_circle.bmp_width/2" centerY="#music_player_btn_circle.bmp_height/2" fillColor="#1ddebc" name="music_player_btn_circle" r="85" scaleX="#music_player_scale_x+#music_player_scale_x2" scaleY="#music_player_scale_y+#music_player_scale_y2" x="#screen_width/2" y="#screen_height-183"/>
+                <Button align="center" alignV="center" h="170" name="music_play" w="170" x="#screen_width/2" y="#screen_height-183">
+                  <Normal>
+                    <Image align="center" alignV="center" src="music_player_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+                  </Normal>
+                  <Pressed>
+                    <Image align="center" alignV="center" alpha="127" src="music_player_src/music_play.png" x="#screen_width/2" y="#screen_height-183"/>
+                  </Pressed>
+                  <Triggers>
+                    <Trigger action="up">
+                      <Command delay="0" target="music_player_scale_x2.animation" value="play(0,800)"/>
+                      <Command delay="0" target="music_player_scale_y2.animation" value="play(0,600)"/>
+                    </Trigger>
+                  </Triggers>
+                </Button>
+              </Group>
+              <!-- Кнопка : пауза -->
               <Button align="center" alignV="center" h="170" name="music_pause" w="170" x="#screen_width/2" y="#screen_height-183">
                 <Normal>
                   <Image align="center" alignV="center" src="music_player_src/music_pause.png" x="#screen_width/2" y="#screen_height-183"/>
@@ -751,11 +842,7 @@
     </Var>
   </Group>
   <!-- Динамическая частота кадров -->
-  <FramerateController initPause="true" loop="false" name="SLS_framerateAni">
-    <ControlPoint frameRate="60" time="0"/>
-    <ControlPoint frameRate="60" time="2000"/>
-    <ControlPoint frameRate="30" time="2001"/>
-  </FramerateController>
+
   <Button h="#screen_height" visibility="#unlockButtonSwitch*(#noticeDown==0)" w="1080" x="0" y="0">
     <Triggers>
       <!-- Нажатие : касание -->
