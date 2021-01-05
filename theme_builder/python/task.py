@@ -89,7 +89,7 @@ def task(name, lock=None):
     return decorator
 
 
-THEME_LOC = "/sdcard/MIUI/theme/"
+THEME_LOC = get_theme_config().get_value("pushDir")
 THEME_NAME = get_theme_config().get_value("projectDir")+".mtz"
 THEME_VERSION = "20.11.3_1604391099"
 
