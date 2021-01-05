@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
+	<Group text="Глобальные настройки">
+		<CheckBox text="Тёмный режим" summary="Изменяет цвет иконок для тёмного режима" id="theme_dark_mode" default="0"/>
+	</Group>
 	<Group text="Настройки Профиля">
-		<ImagePicker default="Стандартная" id="theme_avatar_image" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
-		<StringInput default="Привет" id="theme_avatar_label" summary="Надпись отображается под значком" text="Надпись"/>
+		<ImagePicker default="Стандартная" id="theme_user_image" summary="Оптимальный размер 200x200 и квадратная форма, иначе значок будет искажен" text="Значок"/>
+		<StringInput default="Привет" id="theme_user_label_1" text="Надпись 1"/>
+		<StringInput default="Пользователь" id="theme_user_label_2" text="Надпись 2"/>
+		<CheckBox text="Показать панель пользователя" summary="Показывает или полностью скрывает панель пользователя" id="theme_user_panel_hide" default="1"/>
 	</Group>
 	<Group text="Настройки Тайлов">
 		<StringInput default="#FFFFFF" id="theme_text_color" summary="По умолчанию #FFFFFF" text="Цвет текста"/>
@@ -11,11 +16,13 @@
 	</Group>
 	<Group text="Настройки Экрана блокировки">
 		<StringInput default="350" id="unlock_screen_offset_y" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
+		<StringInput default="Положи на место!" id="unlock_screen_warn_text" summary="Предупреждающее сообщение над полоской разблокировки экрана" text="Предупреждение"/>
+		<StringInput default="50" id="unlock_screen_warn_text_size" summary="По умолчанию 50" text="Размер шрифта предупреждения"/>
 	</Group>
 	<Group text="Настройки виджетов">
 		<StringChoice default="light" id="time_clock_style" text="Стиль часов">
-			<Item text="Тёмный" value="light"/>
-			<Item text="Светлый" value="dark"/>
+			<Item text="Светлый" value="light"/>
+			<Item text="Тёмный" value="dark"/>
 		</StringChoice>
 	</Group>
 	<Group text="Выбор виджетов">
@@ -37,5 +44,9 @@
 		<AppPicker id="app2" text="Приложение 2"/>
 		<AppPicker id="app3" text="Приложение 3"/>
 		<AppPicker id="app4" text="Приложение 4"/>
+	</Group>
+	<Group text="DEBUG">
+		<CheckBox text="Данные музыки" summary="отображает данные проигрывателя на экране блокировки" id="dbg_theme_music_data" default="0"/>
+		<CheckBox text="Окно данных" summary="" id="dbg_theme_music_data" default="0"/>
 	</Group>
 </Config>
