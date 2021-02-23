@@ -43,7 +43,7 @@ class ThemeConfig(BaseConfig):
 # search for theme.json
 theme_config = None
 for i in range(0, 4):
-    theme_file = os.path.join("../" * i, "theme.json")
+    theme_file = os.path.join("../" * i, "themes.json")
     if os.path.isfile(theme_file):
         theme_config = ThemeConfig(theme_file)
         break
@@ -52,4 +52,4 @@ if theme_config is None:
 
 
 if __name__ == '__main__':
-    print(theme_config.get_value("projectDir"))
+    print(theme_config.get_value("project_name"))

@@ -1,0 +1,49 @@
+{
+	"root_directory": "themes",
+	"push_directory": "/sdcard/",
+	"project_name": "material_theme",
+	"project_list": {
+		"material_theme": {
+			"modules": {
+				"clock_2x4": "clock_2x4",
+				"com.android.thememanager": "com.android.thememanager",
+				"com.miui.gallery": "com.miui.gallery",
+				"com.miui.home": "com.miui.home",
+				"com.miui.notification": "com.miui.notification",
+				"icons": "icons",
+				"lockscreen": "lockscreen"
+			},
+			"description": {
+				"version": "12",
+				"uiVersion": "10",
+				"title": "Material",
+				"locales": {
+					"titles": {
+						"value_name": "title",
+						"en_US": "Material"
+					},
+					"designers": {
+						"value_name": "designer",
+						"en_US": "ToxesFoxes"
+					},
+					"descriptions": {
+						"value_name": "description",
+						"en_US": "Cool Miui v12 Material theme"
+					},
+					"authors": {
+						"value_name": "author",
+						"en_US": "ToxesFoxes"
+					}
+				},
+				"designer": "ToxesFoxes",
+				"description": "Cool Miui v12 Material theme",
+				"authorID": "4160708017",
+				"author": "ToxesFoxes"
+			},
+			"additional": {
+				"wallpaper": "wallpaper",
+				"preview": "preview"
+			}
+		}
+	}
+}
