@@ -39,17 +39,30 @@ class ThemeConfig(BaseConfig):
                 paths.append(path)
         return paths
 
+    def getCurrentThemeJSON(self, root_dir, project_folder):
+        theme_config = None
+        for i in range(0, 4):
+            theme_file = os.path.join(
+                "../" * i, root_dir + "/" + project_folder + "/" + "theme.json"
+            )
+            if os.path.isfile(theme_file):
+                theme_config = ThemeConfig(theme_file)
+                break
+        if theme_config is None:
+            raise RuntimeError("failed to find theme.json")
+        return theme_config
 
+
+themes_config = None
 # search for theme.json
-theme_config = None
 for i in range(0, 4):
-    theme_file = os.path.join("../" * i, "themes.json")
-    if os.path.isfile(theme_file):
-        theme_config = ThemeConfig(theme_file)
+    themes_file = os.path.join("../" * i, "themes.json")
+    if os.path.isfile(themes_file):
+        themes_config = ThemeConfig(themes_file)
         break
-if theme_config is None:
-    raise RuntimeError("failed to find theme.json")
+if themes_config is None:
+    raise RuntimeError("failed to find themes.json")
 
 
-if __name__ == '__main__':
-    print(theme_config.get_value("project_name"))
+if __name__ == "__main__":
+    print(themes_config.get_value("current_project"))

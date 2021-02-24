@@ -14,16 +14,16 @@ locked_tasks = {}
 devnull = open(os.devnull, "w")
 
 
-def get_theme_config():
+def get_themes_config():
     global theme_config
     if theme_config is None:
-        from theme_config import theme_config as config
+        from theme_config import themes_config as config
 
         theme_config = config
     return theme_config
 
 
-CONFIG = get_theme_config()
+CONFIG = get_themes_config()
 
 
 def lock_task(name, silent=True):
@@ -98,14 +98,15 @@ THEME_DEST_LOC = CONFIG.get("push_directory")
 # print(THEME_DEST_LOC)
 THEME_LIST = CONFIG.get("project_list")
 THEMES_ROOT = CONFIG.get("root_directory")
-THEME_NAME = CONFIG.get("project_name")
+THEME_NAME = CONFIG.get("project_folder")
+THEME_CFG = CONFIG.getCurrentThemeJSON(THEMES_ROOT, THEME_NAME)
+# print(THEME_CFG)
 THEME_OUT_NAME = THEME_NAME + ".mtz"
 THEME_VERSION = "20.11.3_1604391099"
 # print(THEMES_ROOT)
-THEME_CURRENT = THEME_LIST[THEME_NAME]
-THEME_MODULES = THEME_CURRENT["modules"]
-THEME_ADDITIONAL = THEME_CURRENT["additional"]
-THEME_DESCRIPTION = THEME_CURRENT["description"]
+THEME_MODULES = THEME_CFG.get("modules")
+THEME_ADDITIONAL = THEME_CFG.get("additional")
+THEME_DESCRIPTION = THEME_CFG.get("description")
 
 
 def task_assemble_zip(input_name, output_name, extension):
@@ -128,8 +129,10 @@ def test():
 def task_build_modules():
     for input_name in THEME_MODULES:
         output_name = THEME_MODULES[input_name]
-        print(THEMES_ROOT + "/" + THEME_NAME + "/" + input_name)
-        task_assemble_zip(THEMES_ROOT + "/" + THEME_NAME + "/" + input_name, output_name, "")
+        print("Building: " + input_name)
+        task_assemble_zip(
+            THEMES_ROOT + "/" + THEME_NAME + "/" + input_name, output_name, ""
+        )
     return 0
 
 
@@ -139,6 +142,7 @@ def task_build_additional():
         output_name = THEME_ADDITIONAL[input_name]
         input_dir = CONFIG.get_path(THEMES_ROOT + "/" + THEME_NAME + "/" + input_name)
         output_dir = CONFIG.get_path("output/" + THEME_NAME + "/" + output_name)
+        print("Building additional: " + input_name)
         copy_directory(input_dir, output_dir)
     return 0
 
@@ -148,6 +152,7 @@ def task_build_info():
     filename = "description.xml"
     output_dir = CONFIG.get_path("output/" + THEME_NAME + "/" + filename)
     file_data = open(output_dir, "w")
+    print(THEME_DESCRIPTION['description']+" by "+THEME_DESCRIPTION['author'])
     file_data.write(build_description(THEME_DESCRIPTION))
     return 0
 

@@ -1,0 +1,42 @@
+{
+    "additional": {
+        "preview": "preview",
+        "wallpaper": "wallpaper"
+    },
+    "description": {
+        "author": "ToxesFoxes",
+        "description": "Cool Miui v12 Material theme",
+        "designer": "ToxesFoxes",
+		"authorID": "4160708017",
+        "locales": {
+            "authors": {
+                "en_US": "ToxesFoxes",
+                "value_name": "author"
+            },
+            "descriptions": {
+                "en_US": "Cool Miui v12 Material theme",
+                "value_name": "description"
+            },
+            "designers": {
+                "en_US": "ToxesFoxes",
+                "value_name": "designer"
+            },
+            "titles": {
+                "en_US": "Material",
+                "value_name": "title"
+            }
+        },
+        "title": "Material",
+        "uiVersion": "10",
+        "version": "12"
+    },
+    "modules": {
+        "clock_2x4": "clock_2x4",
+        "com.android.thememanager": "com.android.thememanager",
+        "com.miui.gallery": "com.miui.gallery",
+        "com.miui.home": "com.miui.home",
+        "com.miui.notification": "com.miui.notification",
+        "icons": "icons",
+        "lockscreen": "lockscreen"
+    }
+}
