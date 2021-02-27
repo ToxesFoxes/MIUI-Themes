@@ -9,7 +9,6 @@
   <!-- Определение ширины и высоты экрана -->
   <Var expression="#screen_width" name="sw" type="number"/>
   <Var expression="#screen_height" name="sh" type="number"/>
-  <Var expression="#screen_height" name="sh" type="number"/>
   <!--начало-->
   <ExternalCommands>
     <Trigger action="resume">
