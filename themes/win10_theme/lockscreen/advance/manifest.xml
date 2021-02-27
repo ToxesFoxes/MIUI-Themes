@@ -65,6 +65,11 @@
       <Group x="30" y="#sh - (#app_margin * 3)">
         <Group x="#sys_app0P[0]" y="#sys_app0P[1] - (#app_margin * 0)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Windows-light.png"/>
+          <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
+            <Pressed>
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" alpha="255*0.5" align="center" alignV="center" src="resources/apps/windows/Windows-dark.png"/>
+            </Pressed>
+          </Button>
         </Group>
         <Group x="#sys_app1P[0]" y="#sys_app1P[1] - (#app_margin * 1)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/User.png"/>
