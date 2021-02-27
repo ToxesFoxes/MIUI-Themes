@@ -24,6 +24,7 @@ def get_themes_config():
 
 
 CONFIG = get_themes_config()
+ADB = theme_config.get_adb()
 
 
 def lock_task(name, silent=True):
@@ -152,7 +153,7 @@ def task_build_info():
     filename = "description.xml"
     output_dir = CONFIG.get_path("output/" + THEME_NAME + "/" + filename)
     file_data = open(output_dir, "w")
-    print(THEME_DESCRIPTION['description']+" by "+THEME_DESCRIPTION['author'])
+    print(THEME_DESCRIPTION["description"] + " by " + THEME_DESCRIPTION["author"])
     file_data.write(build_description(THEME_DESCRIPTION))
     return 0
 
@@ -209,9 +210,9 @@ def task_connect_to_adb():
 
     from subprocess import call
 
-    call([theme_config.get_adb(), "disconnect"], stdout=devnull, stderr=devnull)
-    call([theme_config.get_adb(), "tcpip", port], stdout=devnull, stderr=devnull)
-    result = call([theme_config.get_adb(), "connect", ip])
+    call([ADB, "disconnect"], stdout=devnull, stderr=devnull)
+    call([ADB, "tcpip", port], stdout=devnull, stderr=devnull)
+    result = call([ADB, "connect", ip])
     return result
 
 
@@ -221,7 +222,7 @@ def task_launch_theme_app():
 
     result = call(
         [
-            theme_config.get_adb(),
+            ADB,
             "shell",
             "monkey",
             "-p",
@@ -246,7 +247,7 @@ def task_stop_theme_app():
 
     result = call(
         [
-            theme_config.get_adb(),
+            ADB,
             "shell",
             "am",
             "force-stop",
@@ -281,9 +282,7 @@ def task_apply_theme():
     progress = 0
     print_progress_bar(progress, 7, suffix="", length=50)
 
-    result = call(
-        [theme_config.get_adb(), "shell", command], stdout=devnull, stderr=devnull
-    )
+    result = call([ADB, "shell", command], stdout=devnull, stderr=devnull)
     if result != 0:
         print(
             '\033[91mno devices/emulators found, try to use task "Connect to ADB"\033[0m'
