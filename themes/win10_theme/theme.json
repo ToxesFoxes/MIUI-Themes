@@ -1,0 +1,36 @@
+{
+	"additional": {
+		"preview": "preview",
+		"wallpaper": "wallpaper"
+	},
+	"description": {
+		"author": "ToxesFoxes",
+		"description": "Windows Theme for Miui v12",
+		"designer": "ToxesFoxes",
+		"authorID": "4160708017",
+		"locales": {
+			"authors": {
+				"en_US": "ToxesFoxes",
+				"value_name": "author"
+			},
+			"descriptions": {
+				"en_US": "Windows Theme for Miui v12",
+				"value_name": "description"
+			},
+			"designers": {
+				"en_US": "ToxesFoxes",
+				"value_name": "designer"
+			},
+			"titles": {
+				"en_US": "Material",
+				"value_name": "title"
+			}
+		},
+		"title": "Material",
+		"uiVersion": "10",
+		"version": "12"
+	},
+	"modules": {
+		"lockscreen": "lockscreen"
+	}
+}

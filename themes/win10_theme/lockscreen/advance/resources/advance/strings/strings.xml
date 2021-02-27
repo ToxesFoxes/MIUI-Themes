@@ -1,0 +1,377 @@
+<strings>
+<!-- 界面一 -->
+    <string name="app1_name" value="日历"/>
+    <string name="app2_name" value="计算器"/>
+    <string name="app3_name" value="录音机"/>
+    <string name="app4_name" value="视频"/>
+    <string name="app5_name" value="邮箱"/>
+    <string name="app6_name" value="微信"/>
+    <string name="app7_name" value="文件管理"/>
+    <string name="app8_name" value="相册"/>
+    <string name="app13_name" value="小爱同学"/>
+    <string name="app14_name" value="音乐"/>
+    <string name="app15_name" value="时钟"/>
+    <string name="app16_name" value="手机QQ"/>
+    <string name="app17_name" value="TIM"/>
+    <string name="app18_name" value="指南针"/>
+    <string name="app19_name" value="安全中心"/>
+    <string name="app20_name" value="相机"/>
+    <string name="app21_name" value="设置"/>
+    <string name="app22_name" value="拨号"/>
+    <string name="app23_name" value="短信"/>
+    <string name="app24_name" value="浏览器"/>
+
+<!-- 界面二 -->
+    <string name="menu_gb" value="关闭"/>
+    <string name="menu_sj" value="时间"/>
+    <string name="menu_tx" value="头像"/>
+    <string name="menu_yd" value="布局"/>
+    <!-- <string name="menu_tool" value="工具"/> -->
+    <string name="menu_game" value="游戏"/>
+    <string name="nli" value=" NNNN"/>
+    <string name="nli2" value="农历 NNNN"/>
+
+    <string name="ring_jy" value="静音"/>
+    <string name="ring_zd" value="震动"/>
+    <string name="ring_xl" value="响铃"/>
+
+    <string name="bt_off" value="蓝牙"/>
+    <string name="bt_on" value="蓝牙已开"/>
+    <string name="bt_half" value="开启中"/>
+	
+    <string name="wifi_off" value="WLAN"/>
+    <string name="wifi_on" value="WIFI已开"/>
+    <string name="wifi_half" value="开启中"/>
+    <string name="wifi_problem" value="WIFI..."/>
+	
+    <string name="data_off" value="数据"/>
+    <string name="data_on" value="数据已开"/>
+	
+    <string name="mmdd" value="M月d日"/>
+    <string name="ampma" value="上午"/>
+    <string name="ampmp" value="下午"/>
+
+
+
+
+
+
+    <string name="smsdef" value="主人,您有未读短信%d条。"/>
+    <string name="phodef" value="主人,您有未接电话%d个。"/>
+    <string name="jiesuo_times" value="次"/>
+    <string name="jiesuo" value="解锁："/>
+    <string name="share" value="分享到空间"/>
+    <string name="dkmsmiao" value="d天k小时m分s秒"/>
+    <string name="kmsmiao" value="k小时m分s秒"/>
+    <string name="msmiao" value="m分s秒"/>
+    <string name="smiao" value="s秒"/>
+    <string name="kaiji" value="开机："/>
+
+    
+    <string name="addcity" value="请添加城市"/>
+    <string name="texttdef" value="今日事,今日毕."/>
+    <string name="zuijin" value="最近："/>
+
+    <string name="wz_yincag" value="隐藏内容"/>
+    <string name="wz_doubledx" value="双击短信"/>
+    <string name="wz_huobo" value="点此回拨"/>
+
+
+
+
+
+    <string name="music_qqmusic" value="QQ音乐"/>
+    <string name="music_ttpod" value="阿里星球"/>
+    <string name="music_kugou" value="酷狗音乐"/>
+    <string name="music_kuwo" value="酷我音乐"/>
+    <string name="music_netease" value="网易音乐"/>
+    <string name="music_netease2" value="网易云音乐"/>
+    <string name="music_qianqian" value="千千静听"/>
+    <string name="music_tingmp3" value="百度音乐"/>
+    <string name="music_duomi" value="多米音乐"/>
+    <string name="music_xiami" value="虾米音乐"/>
+    <string name="music_migu" value="咪咕音乐"/>
+    <string name="music_fm" value="电台"/>
+    <string name="music_xmlyfm" value="喜马拉雅"/>
+    <string name="music_doubanfm" value="豆瓣FM"/>
+    <string name="music_qingtingfm" value="蜻蜓FM"/>
+    <string name="music_music" value="打开音乐"/>
+	
+	
+	
+    <string name="gequshibie" value="歌曲识别"/>
+    <string name="music_light_on" value="播放已常亮"/>
+    <string name="music_light_off" value="常亮已关闭"/>
+	
+    <string name="chosesoft" value="选择歌曲识别软件"/>
+    <string name="soft1" value="QQ音乐(识曲+控制)"/>
+    <string name="nosoft1" value="QQ音乐(未安装)"/>
+    <string name="soft2" value="阿里星球(识曲)"/>
+    <string name="nosoft2" value="阿里星球(未安装)"/>
+    <string name="soft3" value="酷狗音乐(公测)"/>
+    <string name="nosoft3" value="酷狗音乐(未安装)"/>
+    <string name="selfapp" value="自定义识曲软件"/>
+	
+	
+	
+    <string name="music_paus" value="[已暂停]"/>
+    <string name="no_title" value="暂无歌曲目录"/>
+    <string name="no_geci" value="暂无歌词"/>
+	
+   
+    <string name="main_app" value=" "/>
+    <string name="main_music" value=" "/>
+	 <string name="main_main" value=" "/>
+    <string name="main_weather" value=" "/>
+    <string name="main_tool" value=" "/>
+	
+    <string name="main_set" value=" "/>
+	
+	
+	
+	
+	
+	
+	
+	<string name="Clear" value="晴"/>
+    <string name="Cloudy" value="多云"/>
+    <string name="Hazy" value="阴"/>
+    <string name="Foggy" value="雾"/>
+    <string name="Severe_rainstorm" value="特大暴雨"/>
+    <string name="Rainstorm" value="大暴雨"/>
+    <string name="Very_heavy_rainfall" value="暴雨"/>
+    <string name="Thunderstorm" value="雷阵雨"/>
+    <string name="Shower" value="阵雨"/>
+    <string name="Heavy_rainfall" value="大雨"/>
+    <string name="Rain" value="中雨"/>
+    <string name="Drizzle" value="小雨"/>
+    <string name="Sleet" value="雨夹雪"/>
+    <string name="Snowstorm" value="暴雪"/>
+    <string name="Patches_of_snowfall" value="阵雪"/>
+    <string name="Heavy_snowfall" value="大雪"/>
+    <string name="Snowfall" value="中雪"/>
+    <string name="Light_snowfall" value="小雪"/>
+    <string name="Strong_sandstorm" value="强沙尘暴"/>
+    <string name="Sandstorm" value="沙尘暴"/>
+    <string name="Light_sandstorm" value="沙尘"/>
+    <string name="Sandstorm" value="扬沙"/>
+    <string name="Hail" value="冰雹"/>
+    <string name="Floating_Dust" value="浮尘"/>
+    <string name="Haze" value="霾"/>
+	
+    <string name="dmhm" value="M月d日 EEE . HH:mm"/>
+    <!-- <string name="weafabu" value="d日 H:m发布"/> -->
+	
+    <string name="youz" value="优"/>
+    <string name="liangh" value="良"/>
+    <string name="qingd" value="轻度污染"/>
+    <string name="zhongd1" value="中度污染"/>
+    <string name="zhongd2" value="重度污染"/>
+    <string name="yanz" value="严重污染"/>
+	
+			
+			
+			
+			
+			
+    <string name="youz1" value="可多参加户外活动呼吸新鲜空气"/>
+    <string name="liangh1" value="除少数特别容易过敏的人群外，其他人群可以正常进行室外活动。"/>
+    <string name="qingd1" value="敏感人群需减少体力消耗较大的户外活动"/>
+    <string name="zhongd11" value="敏感人群应尽量减少外出，一般人群适当减少户外运动"/>
+    <string name="zhongd21" value="敏感人群应停止户外运动，一般人群尽量减少户外运动"/>
+    <string name="yanz1" value="除有特殊需要的人群外，尽量不要留在室外"/>
+	
+	
+	
+	
+    <string name="wz_unknow" value="未知"/>
+	
+    <string name="tqerror" value="点击此处下拉刷新天气,可能发布时间太久或时间不正确"/>
+	
+    <string name="chyabyizs" value="穿衣指数"/>
+    <string name="cy1" value="着装:轻棉织物制作的短衣、短裙、薄短裙、短裤"/>
+    <string name="cy2" value="着装:棉麻面料的衬衫、薄长裙、薄T恤"/>
+    <string name="cy3" value="着装:单层棉麻面料的短套装、T恤衫、薄牛仔衫裤、休闲服"/>
+    <string name="cy4" value="着装:套装、夹衣、风衣、休闲装、夹克衫、西装、薄毛衣"/>
+    <string name="cy5" value="着装:风衣、大衣、夹大衣、外套、毛衣、毛套装、西装、防寒服 "/>
+    <string name="cy6" value="着装:毛衣、风衣、毛套装、西服套装"/>
+    <string name="cy7" value="着装:棉衣、冬大衣、皮夹克、厚外套、手套、羽绒服、皮袄"/>
+    <string name="cy8" value="着装:棉衣、冬大衣、皮夹克、厚外套、手套、羽绒服、皮袄"/>
+	
+	<string name="cy1j" value="一级、炎热"/>
+	<string name="cy2j" value="二级、热舒适"/>
+	<string name="cy3j" value="三级、 舒适"/>
+	<string name="cy4j" value="四级、凉舒适"/>
+	<string name="cy5j" value="五级、温凉"/>
+	<string name="cy6j" value="六级、凉"/>
+	<string name="cy7j" value="七级、 冷"/>
+	<string name="cy8j" value="八级、寒冷"/>
+	<string name="w_ts" value="天气提醒："/>
+	
+	
+	
+	
+    <string name="wz_today" value="今天"/>
+    <string name="wz_tomor" value="明天"/>
+    <string name="wz_tomorAfter" value="后天"/>
+	
+	
+    <string name="yuyintqing" value="正在语音播报天气"/>
+    <string name="novolon" value="没声音？点我！! "/>
+	
+	
+    <string name="nojieri" value="暂无节日"/>
+	
+    <string name="chund" value="春节"/>
+    <string name="yuanxiaod" value="元宵节"/>
+    <string name="longtaitoud" value="龙抬头"/>
+    <string name="duanwud" value="端午节"/>
+    <string name="huobad" value="火把节"/>
+    <string name="qingrend" value="七夕节"/>
+    <string name="zhongyuand" value="中元节"/>
+    <string name="zhongqiud" value="中秋节"/>
+    <string name="chongyangd" value="重阳节"/>
+    <string name="xiayuand" value="下元节"/>
+    <string name="labad" value="腊八节"/>
+    <string name="xiaoniand" value="小年"/>
+    <string name="chuxid" value="除夕"/>
+    <string name="yuandd" value="元旦节"/>
+    <string name="iqingrend" value="情人节(西方)"/>
+    <string name="nvbiaob" value="女性表白日"/>
+    <string name="aierd" value="爱耳日"/>
+    <string name="nvsjie" value="女生节"/>
+    <string name="ifunvd" value="妇女节(国际)"/>
+    <string name="zhishud" value="植树节"/>
+    <string name="ishuid" value="世界水日"/>
+    <string name="ijiehed" value="世界预防结核日"/>
+    <string name="iyurend" value="愚人节(西方)"/>
+    <string name="qingmd" value="清明节"/>
+    <string name="iweisd" value="世界卫生日"/>
+    <string name="idiqiud" value="世界地球日"/>
+    <string name="laodd" value="劳动节"/>
+    <string name="ixiaocd" value="世界防治哮喘日"/>
+    <string name="qingniand" value="青年节"/>
+    <string name="iloveu" value="520情人节"/>
+    <string name="wanghd" value="网络红人节"/>
+    <string name="ihongshid" value="世界红十字日"/>
+    <string name="iwuyand" value="世界无烟日"/>
+    <string name="iertongd" value="国际儿童节"/>
+    <string name="ihuanjingd" value="世界环境日"/>
+    <string name="aiyand" value="爱眼日"/>
+    <string name="ijindud" value="国际禁毒日"/>
+    <string name="jiandangd" value="建党节"/>
+    <string name="irenkoud" value="世界人口日"/>
+    <string name="jianjund" value="建军节"/>
+    <string name="jiaoshid" value="教师节"/>
+    <string name="aiyad" value="爱牙日"/>
+    <string name="guoqingd" value="国庆节"/>
+    <string name="idongwud" value="世界动物日"/>
+    <string name="maimengd" value="卖萌日"/>
+    <string name="imangrend" value="世界盲人日"/>
+    <string name="iliangshid" value="世界粮食日"/>
+    <string name="iwansd" value="万圣节(西方)"/>
+    <string name="jizhed" value="记者日"/>
+    <string name="xiaofangd" value="消防宣传日"/>
+    <string name="guanggund" value="光棍节"/>
+    <string name="iaizid" value="世界防治艾滋病日"/>
+    <string name="ichanjid" value="国际残疾人日"/>
+    <string name="izuqiud" value="世界足球日"/>
+    <string name="nanjingtsd" value="南京屠杀公祭日"/>
+    <string name="ipingand" value="平安夜(西方)"/>
+    <string name="ishengdand" value="圣诞节(西方)"/>
+	
+    <string name="muqind" value="母亲节"/>
+    <string name="fuqind" value="父亲节"/>
+	
+	
+    <string name="wz_eventList" value="日程列表:"/>
+	
+	
+	
+	
+    <string name="do_back" value="返回"/>
+    <string name="wz_lsm1" value="屏幕朝下时打开屏幕手电"/>
+    <string name="wz_lsm2" value="( 音量加  +  菜单键  = 高亮屏幕 [需关闭自动亮度])"/>
+    <string name="wz_on" value="开"/>
+    <string name="wz_off" value="关"/>
+    <string name="wz_3dIsm" value="使用方法：\n图片(1~73张),\n将大小为360x640的图片\n放到SD卡3dimg文件夹下,\n并批量命名为\n“a1.jpg、...、a73.jpg”即可。\n(同应用商店的FYUSE)制作教程链接："/>
+    <string name="wz_sdjc" value="MIUI论坛--从SD卡设置图片教程"/>
+	
+    <string name="clock_bt" value="电量:%d%%"/>
+    <string name="ymdn" value="yyyy年MM月dd日 NNNN"/>
+	
+    <string name="tap1" value="计次1"/>
+    <string name="tap2" value="计次2"/>
+    <string name="tap3" value="计次3"/>
+    <string name="tap4" value="计次4"/>
+    <string name="tap5" value="计次5"/>
+    <string name="tap6" value="计次6"/>
+    <string name="tap7" value="计次7"/>
+    <string name="tap8" value="计次8"/>
+    <string name="tap9" value="计次9"/>
+    <string name="tap10" value="计次10"/>
+    <string name="startfrom" value="开始于yyyy/MM/dd HH:mm:ss"/>
+    <string name="miaob_err" value="您有修改系统时间！\n(计时后的时间小于计时前的时间)"/>
+    <string name="miaob_max" value="最多计数10次"/>
+	
+	
+    <string name="wz_scrled" value="多用手电"/>
+    <string name="wz_nigclock" value="电子时钟"/>
+    <string name="wz_3dpics" value="3D 图册"/>
+    <string name="wz_miaob" value="高级秒表"/>
+    <string name="wz_fuwoc" value="计算器"/>
+	<!-- <string name="wz_fuwoc2" value="向左滑动更多设置 ←"/> -->
+    <string name="wz_data" value="用户数据"/>
+    <string name="do_start" value="开始"/>
+    <string name="do_pause" value="暂停"/>
+    <string name="do_tap" value="计次"/>
+    <string name="do_jixu" value="继续"/>
+    <string name="do_clear" value="重置"/>
+	
+    <string name="wz_miao" value="秒"/>
+    <string name="wz_hmiao" value="毫秒"/>
+    <string name="wz_fen" value="分"/>
+    <string name="wz_shi" value="时"/>
+    <string name="wz_tian" value="天"/>
+    <string name="wz_nodata" value="无数据"/>
+    <string name="wz_nolevel1" value="会员ID：【非会员，暂时无法查看】"/>
+    <string name="wz_nolevel2" value="会员总数：【非会员，暂时无法查看】"/>
+	
+    <string name="wz_mbjilu" value="yyyy/MM/dd HH:mm:ss"/>
+	
+	
+	
+    <string name="wz_mbsm" value="注：解锁、关机、切换主题不影响计时、以‘按下’为准精确计时。"/>
+	
+	
+	
+	<!-- 通知界面 -->
+    <string name="mmddee" value="M月d日 EEE"/>
+	
+    <string name="do_ecall" value="紧急呼叫"/>
+    <string name="wz_pressc" value="长按清空"/>
+	
+	
+    <string name="wz_mmsms" value="短信:%d"/>
+    <string name="wz_mmcall" value="电话:%d"/>
+	
+    <string name="wz_mmT" value="密码正确"/>
+    <string name="wz_mmF" value="密码错误"/>
+    <string name="inputm" value="已输入"/>
+    <string name="inputm2" value="位"/>
+    <string name="do_hide" value="隐藏"/>
+	
+    <string name="do_sliderR" value="右滑解锁"/>
+    <string name="do_sliderU" value="上滑解锁"/>
+    <string name="unlock_up" value="上滑解锁"/>
+    <string name="applft_name" value="↑拨号"/>
+    <string name="apprit_name" value="相机↑"/>
+	  <string name="apprit_name2" value="←"/>
+    <string name="shuoming1" value=" "/>
+	
+    <string name="diy" value=" "/>
+    <string name="shuoming2" value=""/>
+	
+    <string name="beczdata" value=""/>
+<string name="language" value="zh_CN"/>
+</strings>

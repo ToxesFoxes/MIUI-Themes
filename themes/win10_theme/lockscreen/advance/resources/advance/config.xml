@@ -1,0 +1,476 @@
+﻿<Config>
+
+	<Group text="锁屏设置图标与提示">
+		
+		<CheckBox text="设置图标显示开\关" summary="默认开启，关闭后不显示锁屏首页右上角设置图标，但点击仍然可显示设置功能" id="sztb" default="1"/>
+		<CheckBox text="锁屏卡片操作提示" summary="默认开启，提醒卡片功能需要双击打开。关闭后不显示操作提示" id="jsts" default="1"/>
+	
+	</Group>
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	<!-- <Group text="锁屏语音记事设置"> -->
+		
+		<!-- <CheckBox text="锁屏首页顶部语音记事文字开\关" summary="默认开启，长按底部圆点并说出你的话，顶部即可记录文字。" id="yywz" default="1"/> -->
+	<!-- <NumberInput text="语音记事文字大小" summary="默认：60" id="yywzdx" default="60"/> -->
+	
+	<!-- <NumberChoice text="语音记事文字颜色方式" id="csys" default="1" > -->
+			<!-- <Item text="红蓝绿变色" value="1" /> -->
+			<!-- <Item text="显示单色，可在下方选择单色" value="2" /> -->
+		<!-- </NumberChoice> -->
+		
+		 <!-- <StringChoice text="语音记事文字颜色（单色）" summary="默认：蓝色，上方关闭变色后有效" id="yywzys" default="#0000ff"> -->
+			<!-- <Item value="#ffffff" text="白色"/> -->
+			<!-- <Item value="#95ffffff" text="浅白色"/> -->
+			<!-- <Item value="#000000" text="黑色"/> -->
+			<!-- <Item value="#95000000" text="浅黑色"/> -->
+			<!-- <Item value="#ff0000" text="红色"/> -->
+			<!-- <Item value="#ff9c00" text="橙色"/> -->
+			<!-- <Item value="#fff000" text="黄色"/> -->
+			<!-- <Item value="#00ff00" text="绿色"/> -->
+			<!-- <Item value="#00ffff" text="青色"/> -->
+			<!-- <Item value="#3eb8eb" text="淡蓝色"/> -->
+			<!-- <Item value="#0000ff" text="蓝色"/> -->
+			<!-- <Item value="#00a2ff" text="天蓝色"/> -->
+			<!-- <Item value="#ff00ff" text="紫色"/> -->
+		<!-- </StringChoice> -->
+		
+	<!-- </Group> -->
+	
+	
+	<!-- <Group text=""></Group> -->
+	<!-- <Group text=""></Group> -->
+	<!-- <Group text=""></Group> -->
+	<!-- <Group text=""></Group> -->
+	<!-- <Group text=""></Group> -->
+	<!-- <Group text=""></Group> -->
+	
+	<Group text="锁屏壁纸设置">
+	<!-- <NumberChoice text="固定壁纸丨系统壁纸" id="bzxs" default="1" > -->
+    <!-- <Item text="显示固定壁纸" value="1" /> -->
+	<!-- <Item text="显示系统壁纸（用户可换壁纸）" value="2" /> -->
+  <!-- </NumberChoice> -->
+        <CheckBox text="锁屏系统壁纸显示开关" summary="默认显示主题自带壁纸。关闭后显示用户设置的壁纸，默认状态请设置白色或浅色壁纸，锁屏捷径页右上角开启深色模式后，请设置黑色或深色的壁纸。" id="bzxs" default="1"/>
+		<CheckBox text="自动高斯模糊化锁屏系统壁纸" summary="开启后自动模糊化锁屏壁纸，显示内容更突出。锁屏系统壁纸显示开关关闭后有效" id="wallpaper_blur" default="0"/>
+		
+
+	</Group>
+	
+	
+	
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	<Group text="锁屏时钟设置">
+	 <NumberInput text="数字时钟大小调整" summary="默认：180，图片时钟不能调整" id="shuf" default="180"/>
+	<NumberInput text="锁屏时钟左右位置调整" summary="向右移动请填正数，向左移动请填负数" id="szwzx" default="0"/>
+	<NumberInput text="锁屏时钟上下位置调整" summary="向下移动请填正数，向上移动请填负数" id="szwzy" default="0"/>
+	
+	 <NumberChoice text="首页时钟显示位置" id="rlsz" default="2" >
+			<Item text="显示在顶部（请下调卡片位置）" value="1" />
+			<Item text="显示在日历卡片上" value="2" />
+		</NumberChoice>
+	</Group>
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text="【注】卡片功能请双击打开，显示卡片数请根据自己手机长度选择"></Group>
+	
+	<Group text="锁屏卡片设置">
+	 <NumberChoice text="首页卡片背景显示方式" id="kpbj" default="1" >
+			<Item text="显示彩色背景" value="1" />
+			<Item text="显示白色背景" value="2" />
+		</NumberChoice>
+		
+		<NumberInput text="所有卡片整体位置上下调节" summary="向下移动请填正数，向上移动请填负数" id="kpwz" default="-300"/>
+	<CheckBox text="卡片1：日历卡片开\关" summary="默认开启，双击可进入系统日历APP，关闭后不显示日历卡片，其他卡片自动占位" id="kp1" default="1"/>
+	
+	<CheckBox text="卡片2：计步卡片开\关" summary="默认开启，双击可进入小米运动APP，关闭后不显示计步卡片，其他卡片自动占位" id="kp2" default="1"/>
+	<CheckBox text="卡片3：天气卡片开\关" summary="默认开启，双击可进入系统天气APP，关闭后不显示天气卡片，其他卡片自动占位" id="kp3" default="1"/>
+	<CheckBox text="卡片4：支付卡片开\关" summary="默认开启，双击可进入对应快速支付，关闭后不显示支付卡片，其他卡片自动占位" id="kp4" default="1"/>
+	
+	 <CheckBox text="卡片5：快速拨号卡片开\关" summary= "默认关闭，开启后可快速拨号，无需解锁，号码请在下方自定义。关闭后其他卡片自动占位" id="kp5" default="0"/>
+	
+	<CheckBox text="卡片6：快捷功能卡片开\关" summary= "默认开启，可使用快捷功能：米pay、浏览器、手电筒、相机、遥控器、米家。关闭后其他卡片自动占位" id="kp6" default="1"/>
+		 
+		 
+		<StringInput text="【快速拨号1名称】" summary="默认：快速拨号1" id="call1" default="快速拨号1"/>
+		<StringInput text="【快速拨号1电话号码】" summary="默认：无 请输入电话号码" id="call1no" default=""/>
+		<StringInput text="【快速拨号2名称】" summary="默认：快速拨号2" id="call2" default="快速拨号2"/>
+		<StringInput text="【快速拨号2电话号码】" summary="默认：无 请输入电话号码" id="call2no" default=""/>
+		
+		<StringInput text="【快速拨号3名称】" summary="默认：快速拨号3" id="call3" default="快速拨号3"/>
+		<StringInput text="【快速拨号3电话号码】" summary="默认：无 请输入电话号码" id="call3no" default=""/>
+		<StringInput text="【快速拨号4名称】" summary="默认：快速拨号4" id="call4" default="快速拨号4"/>
+		<StringInput text="【快速拨号4电话号码】" summary="默认：无 请输入电话号码" id="call4no" default=""/>
+		
+		 <NumberChoice text="卡片6中显示Mipay丨小爱同学丨自定义网址" id="mpllq" default="1" >
+			<Item text="显示Mipay功能" value="1" />
+			<Item text="显示小爱同学语音对话" value="2" />
+			<Item text="显示自定义网址功能（下方输入网址）" value="3" />
+		</NumberChoice>
+		<StringInput text="卡片6中自定义网站名称" summary="默认：百度一下" id="wordz" default="百度一下" />
+		<StringInput text="卡片6中自定义网址内容" summary="默认：http://baidu.com" id="wordo" default="http://baidu.com" />
+		
+		
+		<NumberChoice text="卡片6中显示遥控器丨米家" id="ykqmj" default="2" >
+			<Item text="显示万能遥控器" value="1" />
+			<Item text="显示小爱同学语音对话" value="2" />
+			<Item text="显示米家" value="3" />
+		</NumberChoice>
+	</Group>
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+ <Group text="自定义锁屏运营商">
+		<CheckBox text="锁屏商标符号显示开关" summary="默认关闭，开启前请先关闭系统自带的运营商，在设置-通知和状态栏-锁屏时显示运营商名称（关闭）" id="spsbfh" default="0"/>
+		<NumberChoice text="商标符号样式选择" id="sbfh" default="2" >
+			<Item text="1 中国联通丨中国移动" value="1" />
+			<Item text="2 中国联通丨中国电信" value="2" />
+			<Item text="3 中国电信丨中国联通" value="3" />
+			<Item text="4 中国移动丨中国电信" value="4" />
+			<Item text="5 中国电信丨中国移动" value="5" />
+			<Item text="6 中国联通" value="6" />
+			<Item text="7 中国移动" value="7" />
+			<Item text="8 中国电信" value="8" />
+			<Item text="9 显示自己的商标（看下方设置）" value="9" />
+		</NumberChoice>
+	<ImagePicker text="选择手机内部的商标符号（请先在上方选择第9）" summary="商标符号图片大小建议为500x60，可联系作者定制你需要的格式" id="mysb"/>
+	<NumberInput  text="商标符号大小调节（等比缩放）" summary="默认320" id="i1_w2" default="320"/>
+	<NumberInput text="商标符号左右位置调整" summary="向右偏移请填正数，向左偏移请填负数" id="weix_11" default="10"/>
+	<NumberInput text="商标符号上下位置调整" summary="向下偏移请填正数，向上偏移请填负数" id="weiy_11" default="10"/>
+	</Group>
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+		<Group text="锁屏通知设置">
+		 <NumberInput text="锁屏通知标题大小" summary="默认：42" id="shuh" default="42"/>
+		<NumberInput text="锁屏通知内容大小" summary="默认：42" id="shug" default="42"/>  
+	  
+	  <NumberChoice text="锁屏通知背景显示方式" id="tzbj" default="1" >
+			<Item text="显示彩色背景，一条通知一种颜色" value="1" />
+			<Item text="显示纯色背景，下方可自定义颜色" value="2" />
+		</NumberChoice>
+		
+	
+	<StringChoice text="锁屏通知背景颜色选择" summary="默认：白色" id="tzbjys" default="#ffffff">
+			<Item value="#ffffff" text="白色"/>
+			<Item value="#50ffffff" text="半透明白色"/>
+			<Item value="#000000" text="黑色"/>
+			<Item value="#80000000" text="半透明黑色"/>
+			<Item value="#ff0000" text="红色"/>
+			<Item value="#ff9c00" text="橙色"/>
+			<Item value="#fff000" text="黄色"/>
+			<Item value="#00ff00" text="绿色"/>
+			<Item value="#00ffff" text="青色"/>
+			<Item value="#0000ff" text="蓝色"/>
+			<Item value="#00a2ff" text="天蓝色"/>
+			<Item value="#ff00ff" text="紫色"/>
+		</StringChoice>
+		<StringChoice text="锁屏通知文字颜色选择" summary="默认：白色" id="wzys10" default="#ffffff">
+			<Item value="#ffffff" text="白色"/>
+			<Item value="#99ffffff" text="浅白色"/>
+			<Item value="#000000" text="黑色"/>
+			<Item value="#99000000" text="浅黑色"/>
+			<Item value="#ff0000" text="红色"/>
+			<Item value="#ff9c00" text="橙色"/>
+			<Item value="#fff000" text="黄色"/>
+			<Item value="#00ff00" text="绿色"/>
+			<Item value="#00ffff" text="青色"/>
+			<Item value="#0000ff" text="蓝色"/>
+			<Item value="#00a2ff" text="天蓝色"/>
+			<Item value="#ff00ff" text="紫色"/>
+		</StringChoice>
+	</Group>
+	
+	
+
+
+		<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	<Group text="锁屏首页快捷键设置" >
+
+	
+		 <CheckBox text="快捷键总开关" summary="开启后锁屏彩色圆图标显示小爱语音对话、微信支付、支付宝支付、自定义程序" id="zwkjj" default="1"/>
+		 
+		 
+		  <NumberChoice text="快捷键是否保持解锁前状态" id="jiyi" default="2" >
+			<Item text="保持解锁前状态（常显）" value="1" />
+			<Item text="不保持解锁前状态（点击展开快捷键）" value="2" />
+			
+		</NumberChoice>
+		
+		 <CheckBox text="快捷键开屏动画显示开关" summary="默认开启，开屏显示快捷键动画，以提醒可显示快捷功能（常显示无效）" id="kpdh" default="1"/>
+		 <!-- <NumberChoice text="【快捷键功能选择】" id="kjfs" default="1" > -->
+			<!-- <Item text="固定快捷功能（显示小爱语音和快捷支付）" value="1" /> -->
+			<!-- <Item text="自定义程序（下方可自定义）" value="2" /> -->
+			
+		<!-- </NumberChoice> -->
+		
+		
+  
+  
+	<AppPicker text="自定义程序1" summary="（默认：电话）点击自定义程序" id="app_3" />
+	<AppPicker text="自定义程序2" summary="（默认：微信）点击自定义程序" id="app_1" />
+	<AppPicker text="自定义程序3" summary="（默认：QQ）点击自定义程序" id="app_2" />	
+	<AppPicker text="自定义程序4" summary="（默认：短信）点击自定义程序" id="app_4" />	
+
+	
+		
+		<NumberInput text="快捷图标大小调整" summary="默认：140" id="kjtbdx" default="140"/>
+	
+		<NumberInput text="程序图标上下位置调整" summary="向下偏移请填正数，向上偏移请填负数" id="kjjwz" default="0"/>
+		
+		
+		<NumberInput text="快捷键启动位置上下调整" summary="向下偏移请填正数，向上偏移请填负数。" id="kjjwz2" default="0"/>
+		 <CheckBox text="底部圆形快捷键头像开关" summary="默认开启，请在下方选择图片作为头像" id="toux" default="1"/>
+		<ImagePicker text="选择底部圆形快捷键头像" summary="建议使用方形图片，否则变形。" id="zdytx"/>
+		
+	</Group>
+	
+
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+	
+	
+	
+	
+	<Group text="锁屏文字">
+    <StringInput text="自定义解锁提示" summary="默认：上滑解锁，要修改请编辑内容，空格为不显示" id="shjs" default="上滑解锁" />
+	
+  
+	</Group>
+	
+
+
+		<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text="▪▪▪锁屏日历界面设置">
+        <NumberInput text="锁屏日历界面整体位置上下调节" summary="向下移动请填正数，向上移动请填负数" id="rlwz" default="-50"/>
+		<CheckBox text="锁屏日历界面倒计时显示开\关" summary="默认开启，显示倒计时功能（如果要显示正计时，请设置日期在今天以前）。小屏手机建议关闭，位置不够" id="rldjs" default="1" />
+        <StringInput text="倒计时名称" summary="默认：高考" id="djs_mc" default="高考" />
+        <NumberInput text="年" summary="默认：2020" id="djs_n" default="2020" />
+        <NumberInput text="月" summary="默认：6" id="djs_y" default="6" />
+        <NumberInput text="日" summary="默认：7" id="djs_r" default="7" />
+        <NumberInput text="时" id="djs_s" default="9" />
+        <NumberInput text="分" id="djs_f" default="0" />
+        <NumberChoice text="是否显示时分" id="DJSSFM_g" default="1">
+            <Item value="1" text="显示时分" />
+            <Item value="2" text="不显示时分" />
+        </NumberChoice>
+        <CheckBox text="锁屏日历界面日程显示开\关" summary="默认开启，显示最近日程功能。小屏手机建议关闭，位置不够" id="rlrc" default="1" />
+    </Group>
+	
+		<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	<Group text="▪▪▪便界面签设置">
+		 <NumberChoice text="锁屏便签真实内容显示" id="bqyc" default="2" >
+			<Item text="显示6条真实便签内容" value="1" />
+			<Item text="显示6条虚假便签内容" value="2" />
+			
+		</NumberChoice>
+  
+ 
+		
+  
+	</Group>
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<!-- <Group text="锁屏便签丨倒计时"> -->
+	<!-- <NumberChoice text="显示便签丨显示倒计时" id="djsbqxs" default="2" > -->
+    <!-- <Item text="显示便签" value="1" /> -->
+	<!-- <Item text="显示倒计时" value="2" /> -->
+  <!-- </NumberChoice> -->
+<!-- <StringInput text="倒计时名称" summary="默认：2019高考" id="djs_mc" default="2019高考" /> -->
+<!-- <NumberInput text="年" summary="默认：2019" id="djs_n" default="2019" /> -->
+<!-- <NumberInput text="月" summary="默认：6" id="djs_y" default="6" /> -->
+<!-- <NumberInput text="日" summary="默认：7" id="djs_r" default="7" /> -->
+<!-- <NumberInput text="时" id="djs_s" default="9" /> -->
+<!-- <NumberInput text="分" id="djs_f" default="0" /> -->
+
+<!-- </Group> -->
+
+
+
+
+
+<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+	
+	
+	
+
+	<Group text="桌面时钟倒计时设置（备用）">
+	
+	
+		
+<StringInput text="倒计时名称" summary="默认：距离2020高考" id="djs_mc2" default="距离2020高考" />
+<NumberInput text="年" summary="默认：2020" id="djs_n2" default="2020" />
+<NumberInput text="月" summary="默认：6" id="djs_y2" default="6" />
+<NumberInput text="日" summary="默认：7" id="djs_r2" default="7" />
+<NumberInput text="时" summary="默认：9" id="djs_s2" default="9" />
+<NumberInput text="分" summary="默认：0" id="djs_f2" default="0" />
+
+
+</Group>
+	
+	
+	
+	
+	
+	
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<Group text="锁屏音乐播放器">
+		
+		<CheckBox text="音乐频谱显示开\关" default="1" summary="显示频谱" id="ppu" />
+		
+		<!-- <StringChoice text="锁屏歌词颜色选择" summary="默认：黑色" id="wzys5" default="#000000"> -->
+			<!-- <Item value="#ffffff" text="白色"/> -->
+			<!-- <Item value="#95ffffff" text="浅白色"/> -->
+			<!-- <Item value="#000000" text="黑色"/> -->
+			<!-- <Item value="#95000000" text="浅黑色"/> -->
+			<!-- <Item value="#ff0000" text="红色"/> -->
+			<!-- <Item value="#ff9c00" text="橙色"/> -->
+			<!-- <Item value="#fff000" text="黄色"/> -->
+			<!-- <Item value="#00ff00" text="绿色"/> -->
+			<!-- <Item value="#00ffff" text="青色"/> -->
+			<!-- <Item value="#0000ff" text="蓝色"/> -->
+			<!-- <Item value="#00a2ff" text="天蓝色"/> -->
+			<!-- <Item value="#ff00ff" text="紫色"/> -->
+		<!-- </StringChoice> -->
+		
+		<!-- <CheckBox text="音乐频谱显示开\关" default="1" summary="显示频谱" id="ppu" /> -->
+		<CheckBox text="音乐专辑封面显示开\关" default="1" summary="显示封面" id="fm" />
+  
+  <NumberInput text="音乐封面位置高度调节" summary="向下偏移请填正数，向上偏移请填负数" id="fmwz" default="0"/>
+   <NumberInput text="歌词位置高度调节" summary="向下偏移请填正数，向上偏移请填负数" id="gcwz" default="0"/>
+   <NumberInput text="播放按钮位置高度调节" summary="向下偏移请填正数，向上偏移请填负数" id="bfwz" default="50"/>
+   <NumberInput text="音乐频谱位置高度调节" summary="向下偏移请填正数，向上偏移请填负数" id="ppwz" default="0"/>
+	</Group>
+
+	
+	
+
+	
+	
+		<Group text="小屏手机请下调音乐播放按钮，建议100，以免和歌词重叠"></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+	
+	<Group text="锁屏充电显示开关">
+   
+	<CheckBox text="底部充电圆圈动画" summary="默认开启" id="cd1" default="1"/>
+	<CheckBox text="底部充电彩球动画" summary="默认开启" id="cd2" default="1"/>
+	<CheckBox text="底部充电电量" summary="默认开启" id="cd3" default="1"/>
+	<NumberInput text="底部充电彩球位置上下调整" summary="向下偏移请填正数，向上偏移请填负数。" id="cddh" default="0"/>
+	</Group>
+	
+	
+	
+	
+	
+	
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+	
+	
+	
+	
+	<Group text="----墨飞 405880041@qq.com"></Group>
+	<Group text="欢迎加群交流和反馈：">
+		<StringInput text="QQ群号(点击打开后可复制)" default="204879473" summary="墨飞主题反馈群"     />
+	</Group>
+	
+		<Group text=""></Group>
+	<Group text=""></Group>
+	<Group text=""></Group>
+	
+</Config>
