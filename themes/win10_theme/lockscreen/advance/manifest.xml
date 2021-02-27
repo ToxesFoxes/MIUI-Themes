@@ -104,14 +104,6 @@
       </Group>
 
     </Group>
-    <Group x="50" y="1200">
-      <Text x="50" y="400" size="40" color="#FFFFFF" textExp="#app1P"/>
-      <Text x="50" y="440" size="40" color="#FFFFFF" textExp="#app2P"/>
-      <Text x="50" y="480" size="40" color="#FFFFFF" textExp="#app3P"/>
-      <Text x="50" y="520" size="40" color="#FFFFFF" textExp="#app4P"/>
-      <Text x="50" y="560" size="40" color="#FFFFFF" textExp="#app5P"/>
-      <Text x="50" y="600" size="40" color="#FFFFFF" textExp="#app6P"/>
-    </Group>
     <!-- Триггерим открытие настроек -->
     <Button h="#sh" w="#sw" x="0" y="0">
       <Pressed>
