@@ -54,30 +54,34 @@
       <Var expression="ifelse(#app5V, 0-#app4P, #app4P-(#app_w_h))" name="app5P" type="number"/>
       <Var expression="ifelse(#app6V, 0-#app5P, #app5P-(#app_w_h))" name="app6P" type="number"/>
       <!-- Переменные экранных приложений -->
-      <Var name="sys_app1P" type="number[]" values="(#app_w_h/2),0"/>
-      <Var name="sys_app2P" type="number[]" values="(#app_w_h/2), #sys_app1P[1]-#app_w_h"/>
-      <Var name="sys_app3P" type="number[]" values="(#app_w_h/2), #sys_app2P[1]-#app_w_h"/>
-      <Var name="sys_app4P" type="number[]" values="(#app_w_h/2), #sys_app3P[1]-#app_w_h"/>
-      <Var name="sys_app5P" type="number[]" values="(#app_w_h/2), #sys_app4P[1]-#app_w_h"/>
-      <Var name="sys_app6P" type="number[]" values="(#app_w_h/2), #sys_app5P[1]-#app_w_h"/>
+      <Var name="sys_app0P" type="number[]" values="(#app_w_h/2), 0"/>
+      <Var name="sys_app1P" type="number[]" values="(#app_w_h/2), #sys_app0P[1] - #app_w_h"/>
+      <Var name="sys_app2P" type="number[]" values="(#app_w_h/2), #sys_app1P[1] - #app_w_h"/>
+      <Var name="sys_app3P" type="number[]" values="(#app_w_h/2), #sys_app2P[1] - #app_w_h"/>
+      <Var name="sys_app4P" type="number[]" values="(#app_w_h/2), #sys_app3P[1] - #app_w_h"/>
+      <Var name="sys_app5P" type="number[]" values="(#app_w_h/2), #sys_app4P[1] - #app_w_h"/>
+      <Var name="sys_app6P" type="number[]" values="(#app_w_h/2), #sys_app5P[1] - #app_w_h"/>
 
       <Group x="30" y="#sh - (#app_margin * 3)">
-        <Group x="#sys_app1P[0]" y="#sys_app1P[1] - (#app_margin * 0)">
+        <Group x="#sys_app0P[0]" y="#sys_app0P[1] - (#app_margin * 0)">
+          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Windows-light.png"/>
+        </Group>
+        <Group x="#sys_app1P[0]" y="#sys_app1P[1] - (#app_margin * 1)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/User.png"/>
         </Group>
-        <Group x="#sys_app2P[0]" y="#sys_app2P[1] - (#app_margin * 1)">
+        <Group x="#sys_app2P[0]" y="#sys_app2P[1] - (#app_margin * 2)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Settings.png"/>
         </Group>
-        <Group x="#sys_app3P[0]" y="#sys_app3P[1] - (#app_margin * 2)">
+        <Group x="#sys_app3P[0]" y="#sys_app3P[1] - (#app_margin * 3)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Weather.png"/>
         </Group>
-        <Group x="#sys_app4P[0]" y="#sys_app4P[1] - (#app_margin * 3)">
+        <Group x="#sys_app4P[0]" y="#sys_app4P[1] - (#app_margin * 4)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Groove.png"/>
         </Group>
-        <Group x="#sys_app5P[0]" y="#sys_app5P[1] - (#app_margin * 4)">
+        <Group x="#sys_app5P[0]" y="#sys_app5P[1] - (#app_margin * 5)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Calendar.png"/>
         </Group>
-        <Group x="#sys_app6P[0]" y="#sys_app6P[1] - (#app_margin * 5)">
+        <Group x="#sys_app6P[0]" y="#sys_app6P[1] - (#app_margin * 6)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Camera-Icon.png"/>
         </Group>
         <!-- Пользовательские приложения -->
@@ -102,7 +106,6 @@
           </Group>
         </Group>
       </Group>
-
     </Group>
     <!-- Триггерим открытие настроек -->
     <Button h="#sh" w="#sw" x="0" y="0">
