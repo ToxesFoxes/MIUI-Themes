@@ -71,6 +71,19 @@
         </Group>
         <Group x="#sys_app2P[0]" y="#sys_app2P[1] - (#app_margin * 2)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Settings.png"/>
+          <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
+            <Pressed>
+              <Rectangle align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0" fillColor="#000000" alpha="255*0.5"/>
+            </Pressed>
+            <Triggers>
+              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
+                  <Extra expression="'lockstyle'" name="maml_code" type="string"/>
+                </IntentCommand>
+                <ExternCommand command="unlock"/>
+              </Trigger>
+            </Triggers>
+          </Button>
         </Group>
         <Group x="#sys_app3P[0]" y="#sys_app3P[1] - (#app_margin * 3)">
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Weather.png"/>
@@ -107,19 +120,5 @@
         </Group>
       </Group>
     </Group>
-    <!-- Триггерим открытие настроек -->
-    <Button h="#sh" w="#sw" x="0" y="0">
-      <Pressed>
-        <Rectangle h="#sh" w="#sw" x="0" y="0" cornerRadiusExp="50" fillColor="#000000" alpha="255*0.5"/>
-      </Pressed>
-      <Triggers>
-        <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-          <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
-            <Extra expression="'lockstyle'" name="maml_code" type="string"/>
-          </IntentCommand>
-          <ExternCommand command="unlock"/>
-        </Trigger>
-      </Triggers>
-    </Button>
   </Group>
 </Lockscreen>
