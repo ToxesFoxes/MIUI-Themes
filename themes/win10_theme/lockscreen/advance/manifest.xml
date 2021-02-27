@@ -81,7 +81,7 @@
           <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Camera-Icon.png"/>
         </Group>
         <!-- Пользовательские приложения -->
-        <Group y="#sys_app6P[1] - (#app_margin * 7) - #app_w_h">
+        <Group y="#sys_app6P[1] - (#app_margin * 6) - #app_w_h">
           <Group y="#app1P - #app_margin">
             <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app1.package, @app1.class" srcType="ApplicationIcon"/>
           </Group>
