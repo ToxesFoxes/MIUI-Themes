@@ -1,4 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Lockscreen frameRate="60" frameRateBatteryLow="30" frameRateCharging="60" screenWidth="1080" version="1">
+  <!-- Глобальные переменные -->
 
+  <!-- Определение ширины и высоты экрана -->
+  <Var expression="#screen_width" name="sw" type="number"/>
+  <Var expression="#screen_height" name="sh" type="number"/>
+
+  <!-- Инициализаторы -->
+  <ExternalCommands>
+    <Trigger action="resume">
+    </Trigger>
+    <Trigger action="init">
+      <VariableCommand expression="0" name="current_app"/>
+    </Trigger>
+    <Trigger action="resume,pause">
+      <VariableCommand expression="0" name="sidebar_X"/>
+      <VariableCommand expression="0" name="sidebar_Y"/>
+    </Trigger>
+  </ExternalCommands>
+  <!-- Начнём с макета -->
+  <Group h="#sh" layered="true" w="#sw">
+    <!-- Обои во весь экран -->
+    <Wallpaper/>
+
+    <!-- Переменные боковой панели -->
+    <Var expression="156" name="panel_width" type="number"/>
+    <Var expression="(#sw-#panel_width)" name="panel_x" type="number"/>
+    <!-- <Wallpaper alpha="255*0.5" blur="80" pivotX="#sw" pivotY="#sh/2" y="#sh/2"/> -->
+    <!-- Боковая панель -->
+    <Group h="#sh" w="#panel_width" x="#panel_x">
+      <!-- Блюр обоев -->
+      <Group h="#sh"w="#panel_width" x="0" y="0" clip="true">
+        <Wallpaper x="0-#panel_x" blur="50"/>
+        <!-- Затемнение -->
+        <Rectangle fillColor="#000000" h="#sh" w="#panel_width" alpha="255*0.25"/>
+      </Group>
+      <!-- Переменные Приложений -->
+      <!-- Ширина и Высота иконки -->
+      <Var expression="96" name="app_w_h" type="number"/>
+      <!-- Visibility -->
+      <Var expression="strIsEmpty(@app1.package)" name="app1V" type="boolean"/>
+      <Var expression="strIsEmpty(@app2.package)" name="app2V" type="boolean"/>
+      <Var expression="strIsEmpty(@app3.package)" name="app3V" type="boolean"/>
+      <Var expression="strIsEmpty(@app4.package)" name="app4V" type="boolean"/>
+      <Var expression="strIsEmpty(@app5.package)" name="app5V" type="boolean"/>
+      <Var expression="strIsEmpty(@app6.package)" name="app6V" type="boolean"/>
+      <!-- Position Y -->
+      <Var expression="ifelse(#app1V, 0-(#app_w_h*2), 0)" name="app1P" type="number"/>
+      <Var expression="ifelse(#app2V, 0-#app1P, #app1P-(#app_w_h))" name="app2P" type="number"/>
+      <Var expression="ifelse(#app3V, 0-#app2P, #app2P-(#app_w_h))" name="app3P" type="number"/>
+      <Var expression="ifelse(#app4V, 0-#app3P, #app3P-(#app_w_h))" name="app4P" type="number"/>
+      <Var expression="ifelse(#app5V, 0-#app4P, #app4P-(#app_w_h))" name="app5P" type="number"/>
+      <Var expression="ifelse(#app6V, 0-#app5P, #app5P-(#app_w_h))" name="app6P" type="number"/>
+    </Group>
+    <Group x="50" y="1200">
+      <Text x="50" y="400" size="40" color="#FFFFFF" textExp="#app1P"/>
+      <Text x="50" y="440" size="40" color="#FFFFFF" textExp="#app2P"/>
+      <Text x="50" y="480" size="40" color="#FFFFFF" textExp="#app3P"/>
+      <Text x="50" y="520" size="40" color="#FFFFFF" textExp="#app4P"/>
+      <Text x="50" y="560" size="40" color="#FFFFFF" textExp="#app5P"/>
+      <Text x="50" y="600" size="40" color="#FFFFFF" textExp="#app6P"/>
+    </Group>
+
+    <Group x="50" y="#sh-798">
+      <Group y="#app1P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app1.package, @app1.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app1.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app1.class"/>
+      </Group>
+      <Group y="#app2P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app2.package, @app2.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app2.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app2.class"/>
+      </Group>
+      <Group y="#app3P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app3.package, @app3.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app3.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app3.class"/>
+      </Group>
+      <Group y="#app4P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app4.package, @app4.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app4.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app4.class"/>
+      </Group>
+      <Group y="#app5P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app5.package, @app5.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app5.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app5.class"/>
+      </Group>
+      <Group y="#app6P">
+        <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app6.package, @app6.class" srcType="ApplicationIcon"/>
+        <Text x="#app_w_h" y="8" size="40" color="#FFFFFF" textExp="@app6.package"/>
+        <Text x="#app_w_h" y="48" size="40" color="#FFFFFF" textExp="@app6.class"/>
+      </Group>
+    </Group>
+    <!-- Триггерим открытие настроек -->
+    <Button h="#sh" w="#sw" x="0" y="0">
+      <Pressed>
+        <Rectangle h="#sh" w="#sw" x="0" y="0" cornerRadiusExp="50" fillColor="#000000" alpha="255*0.5"/>
+      </Pressed>
+      <Triggers>
+        <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+          <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
+            <Extra expression="'lockstyle'" name="maml_code" type="string"/>
+          </IntentCommand>
+          <ExternCommand command="unlock"/>
+        </Trigger>
+      </Triggers>
+    </Button>
+  </Group>
 </Lockscreen>
