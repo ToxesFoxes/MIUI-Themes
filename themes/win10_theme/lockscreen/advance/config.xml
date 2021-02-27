@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
+	<Group text="Быстрые приложения">
+		<AppPicker id="app1" text="Приложение 1"/>
+		<AppPicker id="app2" text="Приложение 2"/>
+		<AppPicker id="app3" text="Приложение 3"/>
+		<AppPicker id="app4" text="Приложение 4"/>
+		<AppPicker id="app5" text="Приложение 5"/>
+		<AppPicker id="app6" text="Приложение 6"/>
+	</Group>
 </Config>
