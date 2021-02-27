@@ -27,8 +27,17 @@
     <Var expression="156" name="panel_width" type="number"/>
     <Var expression="(#sw-#panel_width)" name="panel_x" type="number"/>
     <!-- <Wallpaper alpha="255*0.5" blur="80" pivotX="#sw" pivotY="#sh/2" y="#sh/2"/> -->
+
+    <!-- Контент панель -->
+    <Group x="0" y="0" h="#sh" w="#sw-#panel_width">
+      <!-- Дата и время -->
+      <Group x="60" y="#sh-275">
+        <DateTime size="150" x="0" y="0" color="#ffffff" format="HH:mm" fontFamily="mitype-clock"/>
+        <DateTime size="65" x="0" y="150" color="#ffffff" format="EEEE, dd MMMM" fontFamily="mitype-clock"/>
+      </Group>
+    </Group>
     <!-- Боковая панель -->
-    <Group h="#sh" w="#panel_width" x="#panel_x">
+    <Group x="#panel_x" h="#sh" w="#panel_width">
       <!-- Блюр обоев -->
       <Group h="#sh"w="#panel_width" x="0" y="0" clip="true">
         <Wallpaper x="0-#panel_x" blur="50"/>
