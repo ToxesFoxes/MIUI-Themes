@@ -19,7 +19,7 @@
     </Trigger>
   </ExternalCommands>
   <!-- Начнём с макета -->
-  <Group h="#sh" layered="true" w="#sw">
+  <Group h="#sh" w="#sw" layered="true">
     <!-- Обои во весь экран -->
     <Wallpaper/>
 
@@ -44,92 +44,110 @@
         <!-- Затемнение -->
         <Rectangle fillColor="#000000" h="#sh" w="#panel_width" alpha="255*0.25"/>
       </Group>
-      <!-- Переменные Пользовательских Приложений -->
+      <!-- Переменные Приложений -->
       <!-- Ширина и Высота иконки -->
       <Var expression="96" name="app_w_h" type="number"/>
       <Var expression="30" name="app_margin" type="number"/>
-      <!-- Visibility -->
+      <!-- Переменные экранных приложений -->
+      <Var name="sys_app0P" type="number" expression="0"/>
+      <Var name="sys_app1P" type="number" expression="#sys_app0P - #app_w_h"/>
+      <Var name="sys_app2P" type="number" expression="#sys_app1P - #app_w_h"/>
+      <Var name="sys_app3P" type="number" expression="#sys_app2P - #app_w_h"/>
+      <Var name="sys_app4P" type="number" expression="#sys_app3P - #app_w_h"/>
+      <Var name="sys_app5P" type="number" expression="#sys_app4P - #app_w_h"/>
+      <Var name="sys_app6P" type="number" expression="#sys_app5P - #app_w_h"/>
+      <!-- Переменные пользовательских приложений -->
+      <!-- Видимость -->
       <Var expression="strIsEmpty(@app1.package)" name="app1V" type="boolean"/>
       <Var expression="strIsEmpty(@app2.package)" name="app2V" type="boolean"/>
       <Var expression="strIsEmpty(@app3.package)" name="app3V" type="boolean"/>
       <Var expression="strIsEmpty(@app4.package)" name="app4V" type="boolean"/>
       <Var expression="strIsEmpty(@app5.package)" name="app5V" type="boolean"/>
       <Var expression="strIsEmpty(@app6.package)" name="app6V" type="boolean"/>
-      <!-- Position Y -->
-      <Var expression="ifelse(#app1V, 0-(#app_w_h*2), 0)" name="app1P" type="number"/>
-      <Var expression="ifelse(#app2V, 0-#app1P, #app1P-(#app_w_h))" name="app2P" type="number"/>
-      <Var expression="ifelse(#app3V, 0-#app2P, #app2P-(#app_w_h))" name="app3P" type="number"/>
-      <Var expression="ifelse(#app4V, 0-#app3P, #app3P-(#app_w_h))" name="app4P" type="number"/>
-      <Var expression="ifelse(#app5V, 0-#app4P, #app4P-(#app_w_h))" name="app5P" type="number"/>
-      <Var expression="ifelse(#app6V, 0-#app5P, #app5P-(#app_w_h))" name="app6P" type="number"/>
-      <!-- Переменные экранных приложений -->
-      <Var name="sys_app0P" type="number[]" values="(#app_w_h/2), 0"/>
-      <Var name="sys_app1P" type="number[]" values="(#app_w_h/2), #sys_app0P[1] - #app_w_h"/>
-      <Var name="sys_app2P" type="number[]" values="(#app_w_h/2), #sys_app1P[1] - #app_w_h"/>
-      <Var name="sys_app3P" type="number[]" values="(#app_w_h/2), #sys_app2P[1] - #app_w_h"/>
-      <Var name="sys_app4P" type="number[]" values="(#app_w_h/2), #sys_app3P[1] - #app_w_h"/>
-      <Var name="sys_app5P" type="number[]" values="(#app_w_h/2), #sys_app4P[1] - #app_w_h"/>
-      <Var name="sys_app6P" type="number[]" values="(#app_w_h/2), #sys_app5P[1] - #app_w_h"/>
+      <!-- Позиция -->
+      <Var name="usr_apps" type="number" expression="#sys_app6P - #app_w_h"/>
+      <Var name="usr_app1P" type="number" expression="ifelse(#app1V, #app_w_h + (#app_margin*1), 0)"/>
+      <Var name="usr_app2P" type="number" expression="ifelse(#app2V, 0, #usr_app1P - (#app_w_h) - (#app_margin*1))"/>
+      <Var name="usr_app3P" type="number" expression="ifelse(#app3V, 0, #usr_app2P - (#app_w_h) - (#app_margin*1))"/>
+      <Var name="usr_app4P" type="number" expression="ifelse(#app4V, 0, #usr_app3P - (#app_w_h) - (#app_margin*1))"/>
+      <Var name="usr_app5P" type="number" expression="ifelse(#app5V, 0, #usr_app4P - (#app_w_h) - (#app_margin*1))"/>
+      <Var name="usr_app6P" type="number" expression="ifelse(#app6V, 0, #usr_app5P - (#app_w_h) - (#app_margin*1))"/>
 
       <Group x="30" y="#sh - (#app_margin * 3)">
-        <Group x="#sys_app0P[0]" y="#sys_app0P[1] - (#app_margin * 0)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Windows-light.png"/>
-          <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
-            <Pressed>
-              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" alpha="255*0.5" align="center" alignV="center" src="resources/apps/windows/Windows-dark.png"/>
-            </Pressed>
-          </Button>
-        </Group>
-        <Group x="#sys_app1P[0]" y="#sys_app1P[1] - (#app_margin * 1)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/User.png"/>
-        </Group>
-        <Group x="#sys_app2P[0]" y="#sys_app2P[1] - (#app_margin * 2)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Settings.png"/>
-          <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
-            <Pressed>
-              <Rectangle align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0" fillColor="#000000" alpha="255*0.5"/>
-            </Pressed>
-            <Triggers>
-              <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-                <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
-                  <Extra expression="'lockstyle'" name="maml_code" type="string"/>
-                </IntentCommand>
-                <ExternCommand command="unlock"/>
-              </Trigger>
-            </Triggers>
-          </Button>
-        </Group>
-        <Group x="#sys_app3P[0]" y="#sys_app3P[1] - (#app_margin * 3)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Weather.png"/>
-        </Group>
-        <Group x="#sys_app4P[0]" y="#sys_app4P[1] - (#app_margin * 4)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Groove.png"/>
-        </Group>
-        <Group x="#sys_app5P[0]" y="#sys_app5P[1] - (#app_margin * 5)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Calendar.png"/>
-        </Group>
-        <Group x="#sys_app6P[0]" y="#sys_app6P[1] - (#app_margin * 6)">
-          <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Camera-Icon.png"/>
-        </Group>
-        <!-- Пользовательские приложения -->
-        <Group y="#sys_app6P[1] - (#app_margin * 6) - #app_w_h">
-          <Group y="#app1P - #app_margin">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app1.package, @app1.class" srcType="ApplicationIcon"/>
+        <Group x="#app_w_h/2">
+          <!-- Windows -->
+          <Group y="#sys_app0P - (#app_margin * 0)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Windows-light.png"/>
+            <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
+              <Pressed>
+                <Image x="0" y="0" h="#app_w_h" w="#app_w_h" alpha="255*0.5" align="center" alignV="center" src="resources/apps/windows/Windows-dark.png"/>
+              </Pressed>
+            </Button>
           </Group>
-          <Group y="#app2P - (#app_margin*2)">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app2.package, @app2.class" srcType="ApplicationIcon"/>
+
+          <!-- User -->
+          <Group y="#sys_app1P - (#app_margin * 1)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/User.png"/>
           </Group>
-          <Group y="#app3P - (#app_margin*3)">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app3.package, @app3.class" srcType="ApplicationIcon"/>
+
+          <!-- Settings -->
+          <Group y="#sys_app2P - (#app_margin * 2)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Settings.png"/>
+            <Button align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0">
+              <Pressed>
+                <Rectangle align="center" alignV="center" h="#app_w_h" w="#app_w_h" x="0" y="0" fillColor="#000000" alpha="255*0.5"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                  <IntentCommand action="android.intent.action.MAIN" class="miui.maml.MamlConfigSettings" package="com.android.thememanager">
+                    <Extra expression="'lockstyle'" name="maml_code" type="string"/>
+                  </IntentCommand>
+                  <ExternCommand command="unlock"/>
+                </Trigger>
+              </Triggers>
+            </Button>
           </Group>
-          <Group y="#app4P - (#app_margin*4)">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app4.package, @app4.class" srcType="ApplicationIcon"/>
+
+          <!-- Weather -->
+          <Group y="#sys_app3P - (#app_margin * 3)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Weather.png"/>
           </Group>
-          <Group y="#app5P - (#app_margin*5)">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app5.package, @app5.class" srcType="ApplicationIcon"/>
+
+          <!-- Groove -->
+          <Group y="#sys_app4P - (#app_margin * 4)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Groove.png"/>
           </Group>
-          <Group y="#app6P - (#app_margin*6)">
-            <Image h="#app_w_h" w="#app_w_h" x="0" y="0" srcFormat="%s,%s" srcParas="@app6.package, @app6.class" srcType="ApplicationIcon"/>
+
+          <!-- Calendar -->
+          <Group y="#sys_app5P - (#app_margin * 5)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Calendar.png"/>
+          </Group>
+
+          <!-- Camera -->
+          <Group y="#sys_app6P - (#app_margin * 6)">
+            <Image x="0" y="0" h="#app_w_h" w="#app_w_h" align="center" alignV="center" src="resources/apps/windows/Camera-Icon.png"/>
+          </Group>
+
+          <!-- Пользовательские приложения -->
+          <Group y="#usr_apps - (#app_margin*7)">
+            <Group y="#usr_app1P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app1.package, @app1.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
+            <Group y="#usr_app2P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app2.package, @app2.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
+            <Group y="#usr_app3P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app3.package, @app3.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
+            <Group y="#usr_app4P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app4.package, @app4.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
+            <Group y="#usr_app5P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app5.package, @app5.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
+            <Group y="#usr_app6P">
+              <Image x="0" y="0" h="#app_w_h" w="#app_w_h" srcParas="@app6.package, @app6.class" align="center" alignV="center" srcFormat="%s,%s" srcType="ApplicationIcon"/>
+            </Group>
           </Group>
         </Group>
       </Group>
