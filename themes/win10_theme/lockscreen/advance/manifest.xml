@@ -29,7 +29,7 @@
     <!-- <Wallpaper alpha="255*0.5" blur="80" pivotX="#sw" pivotY="#sh/2" y="#sh/2"/> -->
 
     <!-- Контент панель -->
-    <Group x="0" y="0" h="#sh" w="#sw-#panel_width">
+    <Group x="0" y="#SLS_moveY" h="#sh" w="#sw-#panel_width">
       <!-- Дата и время -->
       <Group x="60" y="#sh-275">
         <DateTime size="150" x="0" y="0" color="#ffffff" format="HH:mm" fontFamily="mitype-clock"/>
@@ -153,4 +153,100 @@
       </Group>
     </Group>
   </Group>
+  <!-- Жест Разблокировки -->
+  <!-- Максимальная высота -->
+  <Var expression="300" name="unlock_maxH" type="number"/>
+  <!-- Динамическая частота кадров -->
+  <FramerateController initPause="true" loop="false" name="Current_FPS_Anim">
+    <ControlPoint frameRate="60" time="0"/>
+    <ControlPoint frameRate="60" time="2000"/>
+    <ControlPoint frameRate="30" time="2001"/>
+  </FramerateController>
+  <ExternalCommands>
+    <Trigger action="init">
+      <!-- Инициализация состояния разблокировщика -->
+      <VariableCommand expression="1" name="unlockButtonSwitch"/>
+    </Trigger>
+    <Trigger action="resume,pause">
+      <VariableCommand expression="0" name="SLS_moveX"/>
+      <VariableCommand expression="0" name="SLS_moveY"/>
+      <VariableCommand expression="0" name="SLS_moveA"/>
+      <VariableCommand expression="0" name="SLS_moveB"/>
+      <AnimationCommand command="play(0,0)" target="SLS_moveAn"/>
+      <VariableCommand expression="0" name="SLS_unlockA"/>
+      <AnimationCommand command="play(0,0)" target="SLS_unlockAn"/>
+      <VariableCommand expression="0" name="SLS_moveX_SW"/>
+      <VariableCommand expression="0" name="SLS_moveY_SW"/>
+    </Trigger>
+  </ExternalCommands>
+  <!-- <Group>
+    <Text color="#ffffff" textExp="#SLS_moveX" size="50" x="150" y="150"/>
+    <Text color="#ffffff" textExp="#SLS_moveY" size="50" x="150" y="200"/>
+    <Text color="#ffffff" textExp="#SLS_moveA" size="50" x="150" y="250"/>
+    <Text color="#ffffff" textExp="#SLS_moveB" size="50" x="150" y="300"/>
+    <Text color="#ffffff" textExp="#SLS_moveAn" size="50" x="150" y="350"/>
+    <Text color="#ffffff" textExp="#SLS_unlockA" size="50" x="150" y="400"/>
+    <Text color="#ffffff" textExp="#SLS_unlockAn" size="50" x="150" y="450"/>
+    <Text color="#ffffff" textExp="#SLS_moveX_SW" size="50" x="150" y="500"/>
+    <Text color="#ffffff" textExp="#SLS_moveY_SW" size="50" x="150" y="550"/>
+  </Group> -->
+  <Button x="0" y="0" h="#sh" w="#panel_x">
+    <Triggers>
+      <!-- Нажатие : касание -->
+      <Trigger action="down">
+        <AnimationCommand command="play" target="Current_FPS_Anim"/>
+      </Trigger>
+      <!-- Нажатие : движение -->
+      <Trigger action="move">
+        <AnimationCommand command="play" condition="#frame_rate { 55" target="Current_FPS_Anim"/>
+        <MultiCommand condition="#SLS_moveX_SW == 0 ** #SLS_moveY_SW == 0">
+          <VariableCommand condition="(#SLS_moveX_SW == 0) ** ((#touch_y-#touch_begin_y) { -50)" expression="1" name="SLS_moveY_SW"/>
+          <VariableCommand condition="(#SLS_moveY_SW == 0) ** (abs(#touch_begin_x-#touch_x) } 50)" expression="1" name="SLS_moveX_SW"/>
+          <VariableCommand condition="#SLS_moveX_SW" expression="((#touch_x } #touch_begin_x)*2-1)*50" name="nameholder_offsetX"/>
+        </MultiCommand>
+
+        <VariableCommand condition="#SLS_moveY_SW" expression="min(0,int(#touch_y-#touch_begin_y+50))" name="SLS_moveY"/>
+        <MultiCommand condition="#SLS_moveX_SW">
+          <VariableCommand expression="(#touch_begin_y { (#screen_height-(100)*2)+200) ** (int(#SLS_moveAn+#touch_x-(#touch_begin_x+#nameholder_offsetX)) { 0)" name="SLS_leftMoveSW"/>
+          <VariableCommand expression="max(-50,#SLS_leftMoveSW*int(#touch_x-#touch_begin_x+50))" name="nameholder_springingA"/>
+          <VariableCommand expression="int(#touch_x-(#touch_begin_x+#nameholder_offsetX))" name="SLS_moveX"/>
+          <VariableCommand condition="#SLS_leftMoveSW" expression="max(#SLS_moveX,0)" name="SLS_moveX"/>
+        </MultiCommand>
+      </Trigger>
+      <!-- Нажатие : отпускание/отмена -->
+      <Trigger action="up,cancel">
+        <AnimationCommand command="play" target="Current_FPS_Anim"/>
+        <!-- Вертикальная разблокировка -->
+        <MultiCommand condition="#SLS_moveY_SW">
+          <!-- Условие для высоты разблокировки -->
+          <ExternCommand command="unlock" condition="#SLS_moveY {= -#unlock_maxH"/>
+          <VariableCommand expression="#SLS_moveY {= -#unlock_maxH" name="SLS_unlockSW"/>
+          <!-- Запустить экран разблокировки -->
+          <MultiCommand condition="#SLS_moveY } -#unlock_maxH">
+            <VariableCommand expression="#SLS_moveY" name="SLS_unlockA"/>
+            <VariableCommand expression="0" name="SLS_moveY"/>
+            <AnimationCommand command="play" target="SLS_unlockAn"/>
+          </MultiCommand>
+        </MultiCommand>
+
+        <MultiCommand condition="#SLS_moveX_SW">
+          <VariableCommand expression="((#touch_x } #touch_begin_x)*2-1)*(abs(#SLS_moveX) } 200)*(#defaultScreen_x { 1080)*(#defaultScreen_x } -1080)" name="SLS_direction"/>
+          <MultiCommand condition="#SLS_moveX != 0">
+            <VariableCommand expression="#defaultScreen_x" name="SLS_moveA"/>
+            <VariableCommand expression="#SLS_moveB+#SLS_direction*1080" name="SLS_moveB"/>
+            <VariableCommand expression="0" name="SLS_moveX"/>
+            <AnimationCommand command="play" target="SLS_moveAn"/>
+          </MultiCommand>
+          <MultiCommand condition="#SLS_direction == 0 ** #touch_x { #touch_begin_x">
+            <AnimationCommand command="play(1200,0)" target="SLS_hintAn"/>
+            <AnimationCommand command="play" target="SLS_springingAn"/>
+            <VariableCommand expression="0" name="nameholder_springingA"/>
+          </MultiCommand>
+        </MultiCommand>
+        <VariableCommand expression="0" name="nameholder_offsetX"/>
+        <VariableCommand condition="!#SLS_unlockSW" expression="0" name="SLS_moveY_SW"/>
+        <VariableCommand expression="0" name="SLS_moveX_SW"/>
+      </Trigger>
+    </Triggers>
+  </Button>
 </Lockscreen>
