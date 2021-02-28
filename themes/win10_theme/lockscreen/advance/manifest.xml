@@ -306,4 +306,24 @@
       </Trigger>
     </Triggers>
   </Button>
+  <!-- Глобальные анимации -->
+  <Var name="AnimUnlock">
+    <VariableAnimation initPause="true" loop="false">
+      <Item easeType="SineEaseOut" time="0" value="#SLS_unlockA"/>
+      <Item time="200" value="0"/>
+    </VariableAnimation>
+  </Var>
+  <Var name="AnimHint">
+    <VariableAnimation initPause="true" loop="false">
+      <Item time="0" value="0"/>
+      <Item time="300" value="178"/>
+      <Item time="1200" value="178"/>
+    </VariableAnimation>
+  </Var>
+  <Var name="AnimSpringing">
+    <VariableAnimation initPause="true" loop="false">
+      <Item easeType="BounceEaseOut" time="0" value="#nameholder_springingA"/>
+      <Item time="600" value="0"/>
+    </VariableAnimation>
+  </Var>
 </Lockscreen>
