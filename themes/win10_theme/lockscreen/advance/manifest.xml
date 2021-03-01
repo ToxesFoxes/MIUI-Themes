@@ -5,6 +5,8 @@
   <!-- Определение ширины и высоты экрана -->
   <Var expression="#screen_width" name="sw" type="number"/>
   <Var expression="#screen_height" name="sh" type="number"/>
+  <Var expression="max(min(#S_moveX+int(#SLS_moveAn),1080),-1080)" name="dSx"/>
+  <Var expression="max(min(#S_moveY+int(#SLS_moveAn),1080),-1080)" name="dSy"/>
 
   <!-- Инициализаторы -->
   <ExternalCommands>
@@ -29,7 +31,7 @@
     <!-- <Wallpaper alpha="255*0.5" blur="80" pivotX="#sw" pivotY="#sh/2" y="#sh/2"/> -->
 
     <!-- Контент панель -->
-    <Group x="0" y="#SLS_moveY" h="#sh" w="#sw-#panel_width">
+    <Group x="0" y="#S_moveGY" h="#sh" w="#sw">
       <!-- Дата и время -->
       <Group x="60" y="#sh-275">
         <DateTime size="150" x="0" y="0" color="#ffffff" format="HH:mm" fontFamily="mitype-clock"/>
@@ -155,11 +157,11 @@
   </Group>
   <!-- Жест Разблокировки -->
   <!-- Максимальная высота -->
-  <Var expression="300" name="unlock_maxH" type="number"/>
+  <Var expression="300" type="number" name="S_unlock"/>
   <!-- Чувствительность отсчёта -->
   <Var expression="50" type="number" name="S_sensivity"/>
   <!-- Чувствительность отсчёта -->
-  <Var expression="300" type="number" name="S_swipeSensivity"/>
+  <Var expression="150" type="number" name="S_swipeSensivity"/>
   <!-- Динамическая частота кадров -->
   <FramerateController initPause="true" loop="false" name="Current_FPS_Anim">
     <ControlPoint frameRate="60" time="0"/>
@@ -172,8 +174,11 @@
       <VariableCommand expression="1" name="unlockButtonSwitch"/>
     </Trigger>
     <Trigger action="resume,pause">
+      <VariableCommand expression="0" name="S_unlockV"/>
       <VariableCommand expression="0" name="S_moveX"/>
       <VariableCommand expression="0" name="S_moveY"/>
+      <VariableCommand expression="0" name="S_moveGX"/>
+      <VariableCommand expression="0" name="S_moveGY"/>
       <VariableCommand expression="0" name="S_posH"/>
       <VariableCommand expression="0" name="S_posV"/>
       <VariableCommand expression="0" name="S_isMoveX"/>
@@ -184,33 +189,22 @@
       <VariableCommand expression="0" name="S_directionY"/>
     </Trigger>
   </ExternalCommands>
-  <!-- <Group>
-    <Text color="#ffffff" textExp="#SLS_moveX" size="50" x="150" y="150"/>
-    <Text color="#ffffff" textExp="#SLS_moveY" size="50" x="150" y="200"/>
-    <Text color="#ffffff" textExp="#SLS_moveA" size="50" x="150" y="250"/>
-    <Text color="#ffffff" textExp="#SLS_moveB" size="50" x="150" y="300"/>
-    <Text color="#ffffff" textExp="#SLS_moveAn" size="50" x="150" y="350"/>
-    <Text color="#ffffff" textExp="#SLS_unlockA" size="50" x="150" y="400"/>
-    <Text color="#ffffff" textExp="#SLS_unlockAn" size="50" x="150" y="450"/>
-    <Text color="#ffffff" textExp="#SLS_moveX_SW" size="50" x="150" y="500"/>
-    <Text color="#ffffff" textExp="#SLS_moveY_SW" size="50" x="150" y="550"/>
-  </Group> -->
-  <Group x="50">
-    <Text color="#ffffff" textExp="#S_moveX + ' - S_moveX'" size="50" y="150"/>
-    <Text color="#ffffff" textExp="#S_moveY + ' - S_moveY'" size="50" y="200"/>
-    <Text color="#ffffff" textExp="#S_posH + ' - S_posH'" size="50" y="250"/>
-    <Text color="#ffffff" textExp="#S_posV + ' - S_posV'" size="50" y="300"/>
-    <Text color="#ffffff" textExp="#S_isMoveX + ' - S_isMoveX'" size="50" y="350"/>
-    <Text color="#ffffff" textExp="#S_isMoveY + ' - S_isMoveY'" size="50" y="400"/>
-    <Text color="#ffffff" textExp="#S_latestX + ' - S_latestX'" size="50" y="450"/>
-    <Text color="#ffffff" textExp="#S_latestY + ' - S_latestY'" size="50" y="500"/>
-    <Text color="#ffffff" textExp="#S_directionX + ' - S_directionX'" size="50" y="550"/>
-    <Text color="#ffffff" textExp="#S_directionY + ' - S_directionY'" size="50" y="600"/>
-    <Text color="#ffffff" textExp="#S_sensivity + ' - S_sensivity'" size="50" y="650"/>
-    <Text color="#ffffff" textExp="#S_swipeSensivity + ' - S_swipeSensivity'" size="50" y="700"/>
-    <Text color="#ffffff" textExp="#nameholder_offsetX + ' - nameholder_offsetX'" size="50" y="750"/>
-    <Text color="#ffffff" textExp="#t_bx + ' - t_bx'" size="50" y="800"/>
-    <Text color="#ffffff" textExp="#t_by + ' - t_by'" size="50" y="850"/>
+  <Group x="5" y="80">
+    <Text color="#ffffff" textExp="#S_moveX + ' - S_moveX'" size="50" y="100"/>
+    <Text color="#ffffff" textExp="#S_moveY + ' - S_moveY'" size="50" y="150"/>
+    <Text color="#ffffff" textExp="#S_posH + ' - S_posH'" size="50" y="200"/>
+    <Text color="#ffffff" textExp="#S_posV + ' - S_posV'" size="50" y="250"/>
+    <Text color="#ffffff" textExp="#S_isMoveX + ' - S_isMoveX'" size="50" y="300"/>
+    <Text color="#ffffff" textExp="#S_isMoveY + ' - S_isMoveY'" size="50" y="350"/>
+    <Text color="#ffffff" textExp="#S_latestX + ' - S_latestX'" size="50" y="400"/>
+    <Text color="#ffffff" textExp="#S_latestY + ' - S_latestY'" size="50" y="450"/>
+    <Text color="#ffffff" textExp="#S_directionX + ' - S_directionX'" size="50" y="500"/>
+    <Text color="#ffffff" textExp="#S_directionY + ' - S_directionY'" size="50" y="550"/>
+    <Text color="#ffffff" textExp="#S_sensivity + ' - S_sensivity'" size="50" y="600"/>
+    <Text color="#ffffff" textExp="#S_swipeSensivity + ' - S_swipeSensivity'" size="50" y="650"/>
+    <Text color="#ffffff" textExp="#nameholder_offsetX + ' - nameholder_offsetX'" size="50" y="700"/>
+    <Text color="#ffffff" textExp="#t_bx + ' - t_bx'" size="50" y="750"/>
+    <Text color="#ffffff" textExp="#t_by + ' - t_by'" size="50" y="800"/>
   </Group>
   <Button x="0" y="0" h="#sh" w="#panel_x">
     <Triggers>
@@ -227,17 +221,14 @@
       <!-- Нажатие : движение -->
       <Trigger action="move">
         <AnimationCommand command="play" condition="#frame_rate { 55" target="Current_FPS_Anim"/>
-        <MultiCommand condition="#SLS_moveX_SW == 0 ** #SLS_moveY_SW == 0">
-          <VariableCommand condition="(#SLS_moveX_SW == 0) ** ((#touch_y-#touch_begin_y) { -50)" expression="1" name="SLS_moveY_SW"/>
-          <VariableCommand condition="(#SLS_moveY_SW == 0) ** (abs(#touch_y-#touch_begin_y) } 50)" expression="1" name="SLS_moveX_SW"/>
-          <VariableCommand condition="#SLS_moveX_SW" expression="((#touch_x } #touch_begin_x)*2-1)*50" name="nameholder_offsetX"/>
-        </MultiCommand>
         <MultiCommand>
           <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="t_bx"/>
           <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="t_by"/>
 
           <VariableCommand expression="ifelse((#t_bx { 0 - #S_sensivity) || (#t_bx } #S_sensivity), #t_bx, 0)" name="S_moveX"/>
           <VariableCommand expression="ifelse((#t_by { 0 - #S_sensivity) || (#t_by } #S_sensivity), #t_by, 0)" name="S_moveY"/>
+          <VariableCommand expression="#t_bx" name="S_moveGX"/>
+          <VariableCommand expression="#t_by" name="S_moveGY"/>
 
           <VariableCommand condition="#S_moveX { (0 - #S_sensivity)" expression="1" name="S_directionX"/>
           <VariableCommand condition="eq(#S_moveX, 0)" expression="0" name="S_directionX"/>
@@ -246,84 +237,20 @@
           <VariableCommand condition="#S_moveY { (0 - #S_sensivity)" expression="1" name="S_directionY"/>
           <VariableCommand condition="eq(#S_moveY, 0)" expression="0" name="S_directionY"/>
           <VariableCommand condition="#S_moveY } #S_sensivity" expression="-1" name="S_directionY"/>
-        </MultiCommand>
 
-        <VariableCommand condition="#SLS_moveY_SW" expression="min(0,int(#touch_y-#touch_begin_y+50))" name="SLS_moveY"/>
-        <MultiCommand condition="#SLS_moveX_SW">
-          <VariableCommand expression="(#touch_begin_y { (#screen_height-(100)*2)+200) ** (int(#SLS_moveAn+#touch_x-(#touch_begin_x+#nameholder_offsetX)) { 0)" name="SLS_leftMoveSW"/>
-          <VariableCommand expression="max(-50,#SLS_leftMoveSW*int(#touch_x-#touch_begin_x+50))" name="nameholder_springingA"/>
-          <VariableCommand expression="int(#touch_x-(#touch_begin_x+#nameholder_offsetX))" name="SLS_moveX"/>
-          <VariableCommand condition="#SLS_leftMoveSW" expression="max(#SLS_moveX,0)" name="SLS_moveX"/>
+          <VariableCommand expression="max(-50,int(#t_bx+50))" name="nameholder_springingA"/>
         </MultiCommand>
       </Trigger>
       <!-- Нажатие : отпускание/отмена -->
       <Trigger action="up,cancel">
         <AnimationCommand command="play" target="Current_FPS_Anim"/>
-
-        <MultiCommand>
-          <VariableCommand expression="0" name="S_directionX"/>
-          <VariableCommand expression="0" name="S_directionY"/>
-
-          <VariableCommand expression="0" name="S_moveX"/>
-          <VariableCommand expression="0" name="S_moveY"/>
+        <MultiCommand condition="abs(#S_moveX) } #S_swipeSensivity ** abs(#S_moveY) { #S_swipeSensivity">
+          <VariableCommand expression="#S_posH + #S_directionX" name="S_posH"/>
         </MultiCommand>
-
-
-
-
-
-
-        <!-- Вертикальная разблокировка -->
-        <MultiCommand condition="#SLS_moveY_SW">
-          <!-- Условие для высоты разблокировки -->
-          <ExternCommand command="unlock" condition="#SLS_moveY {= -#unlock_maxH"/>
-          <VariableCommand expression="#SLS_moveY {= -#unlock_maxH" name="SLS_unlockSW"/>
-          <!-- Запустить экран разблокировки -->
-          <MultiCommand condition="#SLS_moveY } -#unlock_maxH">
-            <VariableCommand expression="#SLS_moveY" name="SLS_unlockA"/>
-            <VariableCommand expression="0" name="SLS_moveY"/>
-            <AnimationCommand command="play" target="SLS_unlockAn"/>
-          </MultiCommand>
+        <MultiCommand condition="abs(#S_moveY) } #S_swipeSensivity ** abs(#S_moveX) { #S_swipeSensivity">
+          <VariableCommand expression="#S_posV + #S_directionY" name="S_posV"/>
         </MultiCommand>
-
-        <MultiCommand condition="#SLS_moveX_SW">
-          <VariableCommand expression="((#touch_x } #touch_begin_x)*2-1)*(abs(#SLS_moveX) } 200)*(#defaultScreen_x { 1080)*(#defaultScreen_x } -1080)" name="SLS_direction"/>
-          <MultiCommand condition="#SLS_moveX != 0">
-            <VariableCommand expression="#defaultScreen_x" name="SLS_moveA"/>
-            <VariableCommand expression="#SLS_moveB+#SLS_direction*1080" name="SLS_moveB"/>
-            <VariableCommand expression="0" name="SLS_moveX"/>
-            <AnimationCommand command="play" target="SLS_moveAn"/>
-          </MultiCommand>
-          <MultiCommand condition="#SLS_direction == 0 ** #touch_x { #touch_begin_x">
-            <AnimationCommand command="play(1200,0)" target="SLS_hintAn"/>
-            <AnimationCommand command="play" target="SLS_springingAn"/>
-            <VariableCommand expression="0" name="nameholder_springingA"/>
-          </MultiCommand>
-        </MultiCommand>
-        <VariableCommand expression="0" name="nameholder_offsetX"/>
-        <VariableCommand condition="!#SLS_unlockSW" expression="0" name="SLS_moveY_SW"/>
-        <VariableCommand expression="0" name="SLS_moveX_SW"/>
       </Trigger>
     </Triggers>
   </Button>
-  <!-- Глобальные анимации -->
-  <Var name="AnimUnlock">
-    <VariableAnimation initPause="true" loop="false">
-      <Item easeType="SineEaseOut" time="0" value="#SLS_unlockA"/>
-      <Item time="200" value="0"/>
-    </VariableAnimation>
-  </Var>
-  <Var name="AnimHint">
-    <VariableAnimation initPause="true" loop="false">
-      <Item time="0" value="0"/>
-      <Item time="300" value="178"/>
-      <Item time="1200" value="178"/>
-    </VariableAnimation>
-  </Var>
-  <Var name="AnimSpringing">
-    <VariableAnimation initPause="true" loop="false">
-      <Item easeType="BounceEaseOut" time="0" value="#nameholder_springingA"/>
-      <Item time="600" value="0"/>
-    </VariableAnimation>
-  </Var>
 </Lockscreen>
