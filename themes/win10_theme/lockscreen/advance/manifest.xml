@@ -18,6 +18,13 @@
     <Trigger action="resume,pause">
       <VariableCommand expression="0" name="sidebar_X"/>
       <VariableCommand expression="0" name="sidebar_Y"/>
+      <VariableCommand expression="0" name="unlock_screen"/>
+      <Command target="ScreenContent.visibility" value="true"/>
+      <Command target="ScreenUnlock.visibility" value="false"/>
+      <AnimationCommand target="default_content_y" command="play" tags="ScreenCancel"/>
+      <Command target="Global.visibility" value="true"/>
+      <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenNormal"/>
+
     </Trigger>
   </ExternalCommands>
   <!-- Начнём с макета -->
@@ -25,24 +32,58 @@
     <!-- Обои во весь экран -->
     <Wallpaper/>
 
+    <!-- Переменные Разблокировки -->
+    <Var name="unlockPosition" type="number" expression="(#default_content_y/@unlock_height)*(-1)"/>
+    <Var name="unlockProgress" type="number" expression="ifelse(#unlockPosition {= 1, ifelse(#unlockPosition } 0, 1-#unlockPosition, 1), 0)"/>
+    <Var name="unlockProgressInverted" type="number" expression="ifelse(#unlockPosition {= 1, ifelse(#unlockPosition } 0, #unlockPosition, 0), 1)"/>
+    <Var name="user_img" expression="ifelse(strContains(@unlock_user_image,'com.android.fileexplorer'),strReplaceAll(@unlock_user_image,'content://com.android.fileexplorer.myprovider/external_files/','file:///sdcard/'),strContains(@unlock_user_image,'com.miui.gallery'),strReplaceAll(@unlock_user_image,'content://com.miui.gallery.open/raw/%2Fstorage%2Femulated%2F0%2F','file:///sdcard/'),@unlock_user_image)" type="string" const="true"/>
     <!-- Переменные боковой панели -->
     <Var expression="156" name="panel_width" type="number"/>
     <Var expression="(#sw-#panel_width)" name="panel_x" type="number"/>
-    <!-- <Wallpaper alpha="255*0.5" blur="80" pivotX="#sw" pivotY="#sh/2" y="#sh/2"/> -->
 
     <!-- Контент панель -->
-    <Group x="0" y="#S_moveGY" h="#sh" w="#sw">
+    <Group x="0" y="#default_content_y" h="#sh" w="#sw" name="ScreenContent" alpha="255*#unlockProgress" visibility="1">
       <!-- Дата и время -->
-      <Group x="60" y="#sh-275">
+      <Group x="60" y="#sh-350">
         <DateTime size="150" x="0" y="0" color="#ffffff" format="HH:mm" fontFamily="mitype-clock"/>
         <DateTime size="65" x="0" y="150" color="#ffffff" format="EEEE, dd MMMM" fontFamily="mitype-clock"/>
       </Group>
     </Group>
+    <Group x="0" y="0" h="#sh" w="#sw" name="ScreenUnlock" alpha="255*#unlock_screen" visibility="1">
+      <Rectangle align="center" alignV="center" h="#sh" w="#sw" x="#sw/2" y="#sh/2" fillColor="#000000" alpha="255*(#unlock_screen*0.5)"/>
+      <Group y="#unlock_screen_offset_y">
+        <Group x="#sw/2" y="#sh/2" align="center" alignV="center">
+          <Group y="-300">
+            <Image x="0" y="0" h="300" w="300" align="center" src="resources/apps/windows/User.png"/>
+            <Image x="0" y="0" h="300" w="300" align="center" srcExp="@user_img" srcType="Uri"/>
+            <Text x="0" y="350" align="center" color="#ffffff" size="50" textExp="@unlock_user_label" bold="true"/>
+            <!-- Кнопка разблокировки -->
+            <Group y="500">
+              <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" fillColor="#000000" alpha="255*0.25"/>
+              <Text size="50" align="center" alignV="center" color="#ffffff" textExp="'Login'" />
+              <Button align="center" alignV="center" h="100" w="540" x="0" y="0">
+                <Pressed>
+                  <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" strokeColor="#ffffff" weight="4"/>
+                  <VariableCommand name="btn_vis" expression="0"/>
+                </Pressed>
+                <Triggers>
+                  <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                    <ExternCommand command="unlock"/>
+                    <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyOut"/>
+                    <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenUp"/>
+                  </Trigger>
+                </Triggers>
+              </Button>
+            </Group>
+          </Group>
+        </Group>
+      </Group>
+    </Group>
     <!-- Боковая панель -->
-    <Group x="#panel_x" h="#sh" w="#panel_width">
+    <Group x="#panel_x+(#panel_width*#unlockProgressInverted)" h="#sh" w="#panel_width">
       <!-- Блюр обоев -->
-      <Group h="#sh"w="#panel_width" x="0" y="0" clip="true">
-        <Wallpaper x="0-#panel_x" blur="50"/>
+      <Group h="#sh" w="#panel_width" x="0" y="0" clip="true">
+        <Wallpaper x="0-#panel_x-(#panel_width*#unlockProgressInverted)" blur="50"/>
         <!-- Затемнение -->
         <Rectangle fillColor="#000000" h="#sh" w="#panel_width" alpha="255*0.25"/>
       </Group>
@@ -154,6 +195,43 @@
         </Group>
       </Group>
     </Group>
+    <Var name="unlock_screen">
+      <VariableAnimation tag="ScreenTransperencyIn" initPause="true" loop="false">
+        <Item time="0" value="0" easeType="ExpoEaseIn"/>
+        <Item time="300" value="1"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenTransperencyOut" initPause="true" loop="false">
+        <Item time="0" value="1" easeType="ExpoEaseOut"/>
+        <Item time="300" value="0"/>
+      </VariableAnimation>
+    </Var>
+    <Var name="unlock_screen_offset_y">
+      <VariableAnimation tag="ScreenUp" initPause="true" loop="false">
+        <Item time="0" value="0" easeType="ExpoEaseOut"/>
+        <Item time="300" value="-(#sh/4)"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenNormal" initPause="true" loop="false">
+        <Item time="0" value="#sh" easeType="ExpoEaseOut"/>
+        <Item time="300" value="0"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenDown" initPause="true" loop="false">
+        <Item time="0" value="#sh" easeType="ExpoEaseOut"/>
+        <Item time="300" value="0"/>
+      </VariableAnimation>
+    </Var>
+    <Var name="default_content_y">
+      <VariableAnimation tag="ScreenSpringing" initPause="true" loop="false">
+        <Item time="0" value="#Tdfy" easeType="BounceEaseOut"/>
+        <Item time="600" value="0"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenStartUnlock" initPause="true" loop="false">
+        <Item time="0" value="#Tdfy"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenCancel" initPause="true" loop="false">
+        <Item time="0" value="#Tdfy" easeType="ExpoEaseOut"/>
+        <Item time="600" value="0"/>
+      </VariableAnimation>
+    </Var>
   </Group>
   <!-- Жест Разблокировки -->
   <!-- Максимальная высота -->
@@ -171,85 +249,110 @@
   <ExternalCommands>
     <Trigger action="init">
       <!-- Инициализация состояния разблокировщика -->
-      <VariableCommand expression="1" name="unlockButtonSwitch"/>
+      <VariableCommand expression="0" name="unlockButtonSwitch"/>
     </Trigger>
     <Trigger action="resume,pause">
-      <VariableCommand expression="0" name="S_unlockV"/>
-      <VariableCommand expression="0" name="S_moveX"/>
-      <VariableCommand expression="0" name="S_moveY"/>
-      <VariableCommand expression="0" name="S_moveGX"/>
-      <VariableCommand expression="0" name="S_moveGY"/>
-      <VariableCommand expression="0" name="S_posH"/>
-      <VariableCommand expression="0" name="S_posV"/>
-      <VariableCommand expression="0" name="S_isMoveX"/>
-      <VariableCommand expression="0" name="S_isMoveY"/>
-      <VariableCommand expression="0" name="S_latestX"/>
-      <VariableCommand expression="0" name="S_latestY"/>
-      <VariableCommand expression="0" name="S_directionX"/>
-      <VariableCommand expression="0" name="S_directionY"/>
+      <AnimationCommand target="default_content_y" command="play" tags="ScreenCancel" condition="#Tdfy { - @unlock_height"/>
     </Trigger>
   </ExternalCommands>
-  <Group x="5" y="80">
-    <Text color="#ffffff" textExp="#S_moveX + ' - S_moveX'" size="50" y="100"/>
-    <Text color="#ffffff" textExp="#S_moveY + ' - S_moveY'" size="50" y="150"/>
-    <Text color="#ffffff" textExp="#S_posH + ' - S_posH'" size="50" y="200"/>
-    <Text color="#ffffff" textExp="#S_posV + ' - S_posV'" size="50" y="250"/>
-    <Text color="#ffffff" textExp="#S_isMoveX + ' - S_isMoveX'" size="50" y="300"/>
-    <Text color="#ffffff" textExp="#S_isMoveY + ' - S_isMoveY'" size="50" y="350"/>
-    <Text color="#ffffff" textExp="#S_latestX + ' - S_latestX'" size="50" y="400"/>
-    <Text color="#ffffff" textExp="#S_latestY + ' - S_latestY'" size="50" y="450"/>
-    <Text color="#ffffff" textExp="#S_directionX + ' - S_directionX'" size="50" y="500"/>
-    <Text color="#ffffff" textExp="#S_directionY + ' - S_directionY'" size="50" y="550"/>
-    <Text color="#ffffff" textExp="#S_sensivity + ' - S_sensivity'" size="50" y="600"/>
-    <Text color="#ffffff" textExp="#S_swipeSensivity + ' - S_swipeSensivity'" size="50" y="650"/>
-    <Text color="#ffffff" textExp="#nameholder_offsetX + ' - nameholder_offsetX'" size="50" y="700"/>
-    <Text color="#ffffff" textExp="#t_bx + ' - t_bx'" size="50" y="750"/>
-    <Text color="#ffffff" textExp="#t_by + ' - t_by'" size="50" y="800"/>
+  <Group visibility="@dev_mode">
+    <Var expression="150" name="dbgSize" type="number"/>
+    <Var expression="#dbgSize/2" name="dbgSize2p" type="number"/>
+    <Var expression="#dbgSize2p/2" name="dbgSize4p" type="number"/>
+    <Group name="dbgPos" w="#dbgSize" alignV="center" align="center">
+      <Rectangle x="#dbgSize2p" y="0" w="4" h="#dbgSize" align="center" fillColor="#ffffff" />
+      <Rectangle x="#dbgSize2p" y="#dbgSize2p" w="#dbgSize" h="4" align="center" alignV="center" fillColor="#ffffff" />
+      <Circle x="#dbgSize2p" y="#dbgSize2p" r="#dbgSize4p" align="center" alignV="center"fillColor="#ffffff" cap="round"/>
+      <Group x="#dbgSize" y="#dbgSize">
+        <Text y="0+(30*1)" size="30" color="#ffffff" textExp="'Touch dx: ' + #Tx" />
+        <Text y="0+(30*2)" size="30" color="#ffffff" textExp="'Touch y: ' + #Ty" />
+        <Text y="0+(30*3)" size="30" color="#ffffff" textExp="'Touch begin x: ' + #Tbx" />
+        <Text y="0+(30*4)" size="30" color="#ffffff" textExp="'Touch begin y: ' + #Tby" />
+        <Text y="0+(30*5)" size="30" color="#ffffff" textExp="'Latest x: ' + #Lx" />
+        <Text y="0+(30*6)" size="30" color="#ffffff" textExp="'Latest t: ' + #Ly" />
+        <Text y="0+(30*7)" size="30" color="#ffffff" textExp="'Touch distance from x: ' + #Tdfx" />
+        <Text y="0+(30*8)" size="30" color="#ffffff" textExp="'Touch distance from y: ' + #Tdfy" />
+        <Text y="0+(30*9)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockPosition" />
+        <Text y="0+(30*10)" size="30" color="#ffffff" textExp="'Def content y: ' + #default_content_y" />
+        <Text y="0+(30*11)" size="30" color="#ffffff" textExp="'Unlock Height: ' + @unlock_height" />
+        <Text y="0+(30*12)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockProgress" />
+        <Text y="0+(30*13)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*14)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*15)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*16)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*17)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*18)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*19)" size="30" color="#ffffff" textExp="': ' + #" />
+        <Text y="0+(30*20)" size="30" color="#ffffff" textExp="': ' + #" />
+      </Group>
+      <PositionAnimation tag="StartMoveTo" initPause="true" loop="false">
+        <Item y="#Ly-#dbgSize2p" x="#Lx" time="0" easeType="ExpoEaseOut"/>
+        <Item y="#Ty-#dbgSize2p" x="#Tx" time="1000"/>
+      </PositionAnimation>
+      <PositionAnimation tag="moveTo">
+        <Item y="#Ty-#dbgSize2p" x="#Tx"/>
+      </PositionAnimation>
+    </Group>
   </Group>
-  <Button x="0" y="0" h="#sh" w="#panel_x">
+  <Button x="0" y="0" h="#sh" w="#panel_x" name="Global">
     <Triggers>
       <!-- Нажатие : касание -->
       <Trigger action="down">
-        <AnimationCommand command="play" target="Current_FPS_Anim"/>
+
         <MultiCommand>
-          <VariableCommand expression="#touch_x" name="t_x"/>
-          <VariableCommand expression="#touch_begin_x" name="t_bx"/>
-          <VariableCommand expression="#touch_y" name="t_y"/>
-          <VariableCommand expression="#touch_begin_y" name="t_by"/>
+
+          <VariableCommand expression="int(#touch_x)" name="Tx"/>
+          <VariableCommand expression="int(#touch_y)" name="Ty"/>
+          <VariableCommand expression="int(#touch_begin_x)" name="Tbx"/>
+          <VariableCommand expression="int(#touch_begin_y)" name="Tby"/>
+
+          <AnimationCommand target="dbgPos" command="play" tags="StartMoveTo" />
+          <!-- <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/> -->
+
         </MultiCommand>
+
       </Trigger>
       <!-- Нажатие : движение -->
       <Trigger action="move">
-        <AnimationCommand command="play" condition="#frame_rate { 55" target="Current_FPS_Anim"/>
+
         <MultiCommand>
-          <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="t_bx"/>
-          <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="t_by"/>
 
-          <VariableCommand expression="ifelse((#t_bx { 0 - #S_sensivity) || (#t_bx } #S_sensivity), #t_bx, 0)" name="S_moveX"/>
-          <VariableCommand expression="ifelse((#t_by { 0 - #S_sensivity) || (#t_by } #S_sensivity), #t_by, 0)" name="S_moveY"/>
-          <VariableCommand expression="#t_bx" name="S_moveGX"/>
-          <VariableCommand expression="#t_by" name="S_moveGY"/>
+          <VariableCommand expression="int(#touch_x)" name="Tx"/>
+          <VariableCommand expression="int(#touch_y)" name="Ty"/>
 
-          <VariableCommand condition="#S_moveX { (0 - #S_sensivity)" expression="1" name="S_directionX"/>
-          <VariableCommand condition="eq(#S_moveX, 0)" expression="0" name="S_directionX"/>
-          <VariableCommand condition="#S_moveX } #S_sensivity" expression="-1" name="S_directionX"/>
+          <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="Tdfx"/>
+          <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="Tdfy"/>
 
-          <VariableCommand condition="#S_moveY { (0 - #S_sensivity)" expression="1" name="S_directionY"/>
-          <VariableCommand condition="eq(#S_moveY, 0)" expression="0" name="S_directionY"/>
-          <VariableCommand condition="#S_moveY } #S_sensivity" expression="-1" name="S_directionY"/>
-
-          <VariableCommand expression="max(-50,int(#t_bx+50))" name="nameholder_springingA"/>
+          <AnimationCommand target="dbgPos" command="play" tags="moveTo" />
+          <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/>
         </MultiCommand>
+
       </Trigger>
       <!-- Нажатие : отпускание/отмена -->
       <Trigger action="up,cancel">
-        <AnimationCommand command="play" target="Current_FPS_Anim"/>
-        <MultiCommand condition="abs(#S_moveX) } #S_swipeSensivity ** abs(#S_moveY) { #S_swipeSensivity">
-          <VariableCommand expression="#S_posH + #S_directionX" name="S_posH"/>
+
+        <MultiCommand>
+
+          <VariableCommand expression="int(#touch_x)" name="Lx"/>
+          <VariableCommand expression="int(#touch_y)" name="Ly"/>
+
+          <MultiCommand condition="(#Tdfy }= - @unlock_height) ** (#Tdfy {= 0)">
+            <AnimationCommand target="default_content_y" command="play" tags="ScreenSpringing"/>
+          </MultiCommand>
+
+          <MultiCommand condition="#Tdfy {= - @unlock_height">
+            <Command target="ScreenContent.visibility" value="false"/>
+            <Command target="ScreenUnlock.visibility" value="true"/>
+            <Command target="Global.visibility" value="false"/>
+            <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyIn"/>
+            <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenDown"/>
+          </MultiCommand>
+
+          <VariableCommand expression="0" name="Tdfx"/>
+          <VariableCommand expression="0" name="Tdfy"/>
+          <!-- <AnimationCommand target="dbgPos" command="play" tags="EndMoveTo" /> -->
         </MultiCommand>
-        <MultiCommand condition="abs(#S_moveY) } #S_swipeSensivity ** abs(#S_moveX) { #S_swipeSensivity">
-          <VariableCommand expression="#S_posV + #S_directionY" name="S_posV"/>
-        </MultiCommand>
+
       </Trigger>
     </Triggers>
   </Button>
