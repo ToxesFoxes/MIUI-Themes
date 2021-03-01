@@ -63,7 +63,7 @@
             <!-- Кнопка разблокировки -->
             <Group y="500">
               <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" fillColor="#000000" alpha="255*0.25"/>
-              <Text size="50" align="center" alignV="center" color="#ffffff" textExp="'Login'" />
+              <Text size="50" align="center" alignV="center" color="#ffffff" text="@unlock_btn_text" />
               <Button align="center" alignV="center" h="100" w="540" x="0" y="0">
                 <Pressed>
                   <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" strokeColor="#ffffff" weight="4"/>
