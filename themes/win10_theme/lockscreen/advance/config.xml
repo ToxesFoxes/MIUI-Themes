@@ -10,9 +10,12 @@
 	</Group>
 	<Group text="Настройки разблокировки">
 		<StringInput default="350" id="unlock_height" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
-		<StringInput default="Войти" id="unlock_btn_text" text="Текст кнопки разблокировки"/>
-		<ImagePicker default="Стандартная" id="unlock_user_image" summary="Оптимальный размер 300x300 и квадратная форма, иначе значок будет искажен" text="Изображение пользователя"/>
 		<StringInput default="User" id="unlock_user_label" text="Имя пользователя"/>
+		<StringInput default="Войти" id="unlock_btn_text" text="Текст кнопки разблокировки"/>
+		<ImagePicker default="" id="unlock_user_image" summary="Оптимальный размер 1:1, иначе значок будет искажен" text="Изображение пользователя"/>
+		<CheckBox default="1" id="unlock_wallpaper_blur" text="Размывать фон при разблокировке?" summary="Включает размытие фона" />
 	</Group>
-	<CheckBox text="Режим разработчика" summary="Включает отладочную информацию" id="dev_mode" default="0"/>
+	<Group text="Отладка">
+		<CheckBox default="0" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
+	</Group>
 </Config>

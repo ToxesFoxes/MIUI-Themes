@@ -10,8 +10,6 @@
 
   <!-- Инициализаторы -->
   <ExternalCommands>
-    <Trigger action="resume">
-    </Trigger>
     <Trigger action="init">
       <VariableCommand expression="0" name="current_app"/>
     </Trigger>
@@ -22,9 +20,7 @@
       <Command target="ScreenContent.visibility" value="true"/>
       <Command target="ScreenUnlock.visibility" value="false"/>
       <AnimationCommand target="default_content_y" command="play" tags="ScreenCancel"/>
-      <Command target="Global.visibility" value="true"/>
-      <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenNormal"/>
-
+      <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenNormal"/>
     </Trigger>
   </ExternalCommands>
   <!-- Начнём с макета -->
@@ -47,39 +43,6 @@
       <Group x="60" y="#sh-350">
         <DateTime size="150" x="0" y="0" color="#ffffff" format="HH:mm" fontFamily="mitype-clock"/>
         <DateTime size="65" x="0" y="150" color="#ffffff" format="EEEE, dd MMMM" fontFamily="mitype-clock"/>
-      </Group>
-    </Group>
-    <Group x="0" y="0" h="#sh" w="#sw" name="ScreenUnlock" alpha="255*#unlock_screen" visibility="1">
-      <Rectangle align="center" alignV="center" h="#sh" w="#sw" x="#sw/2" y="#sh/2" fillColor="#000000" alpha="255*(#unlock_screen*0.5)"/>
-      <Group y="#unlock_screen_offset_y">
-        <Group x="#sw/2" y="#sh/2" align="center" alignV="center">
-          <Group y="-300">
-            <Image x="0" y="0" h="300" w="300" align="center" src="resources/icons/User.png"/>
-            <Group align="center" layered="true" h="300" w="300">
-              <Image h="300" w="300" srcExp="@user_img" srcType="Uri"/>
-              <Image h="300" w="300" src="resources/icons/Mask.png" xfermode="dst_in"/>
-            </Group>
-            <Text x="0" y="350" align="center" color="#ffffff" size="50" textExp="@unlock_user_label" bold="true"/>
-            <!-- Кнопка разблокировки -->
-            <Group y="500">
-              <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" fillColor="#000000" alpha="255*0.25"/>
-              <Text size="50" align="center" alignV="center" color="#ffffff" text="@unlock_btn_text" />
-              <Button align="center" alignV="center" h="100" w="540" x="0" y="0">
-                <Pressed>
-                  <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" strokeColor="#ffffff" weight="4"/>
-                  <VariableCommand name="btn_vis" expression="0"/>
-                </Pressed>
-                <Triggers>
-                  <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
-                    <ExternCommand command="unlock"/>
-                    <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyOut"/>
-                    <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenUp"/>
-                  </Trigger>
-                </Triggers>
-              </Button>
-            </Group>
-          </Group>
-        </Group>
       </Group>
     </Group>
     <!-- Боковая панель -->
@@ -205,6 +168,44 @@
         </Group>
       </Group>
     </Group>
+    <!-- Динамически размытые обои -->
+    <!-- Экран разблокировки -->
+    <Group x="0" y="0" h="#sh" w="#sw" name="ScreenUnlock" alpha="255*#unlock_screen" visibility="1" clip="true">
+      <Wallpaper blur="100" alpha="255*#blur_wallpaper" visibility="#unlock_wallpaper_blur"/>
+
+      <Rectangle align="center" alignV="center" h="#sh" w="#sw" x="#sw/2" y="#sh/2" fillColor="#000000" alpha="255*(#unlock_screen*0.5)"/>
+      <Group x="#sw/2" y="#sh/2" align="center" alignV="center" scale="#unlock_screen_slide">
+        <Group y="-300">
+          <Image x="0" y="0" h="300" w="300" align="center" src="resources/icons/User.png"/>
+          <Group align="center" layered="true" h="300" w="300">
+            <Image h="300" w="300" srcExp="@user_img" srcType="Uri"/>
+            <Image h="300" w="300" src="resources/icons/Mask.png" xfermode="dst_in"/>
+          </Group>
+          <Text x="0" y="350" align="center" color="#ffffff" size="50" textExp="@unlock_user_label" bold="true"/>
+          <!-- Кнопка разблокировки -->
+          <Group y="500">
+            <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" fillColor="#000000" alpha="255*0.25"/>
+            <Text size="50" align="center" alignV="center" color="#ffffff" text="@unlock_btn_text" />
+            <Button align="center" alignV="center" h="100" w="540" x="0" y="0">
+              <Pressed>
+                <Rectangle align="center" alignV="center" h="100" w="540" x="0" y="0" strokeColor="#ffffff" weight="4"/>
+                <VariableCommand name="btn_vis" expression="0"/>
+              </Pressed>
+              <Triggers>
+                <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                  <ExternCommand command="unlock"/>
+                  <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyOut"/>
+                  <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenHide"/>
+                  <AnimationCommand target="blur_wallpaper" command="play" tags="unblur" delay="650" condition="#blur_wallpaper } 0"/>
+
+                </Trigger>
+              </Triggers>
+            </Button>
+          </Group>
+        </Group>
+      </Group>
+    </Group>
+
     <Var name="unlock_screen">
       <VariableAnimation tag="ScreenTransperencyIn" initPause="true" loop="false">
         <Item time="0" value="0" easeType="ExpoEaseIn"/>
@@ -215,23 +216,23 @@
         <Item time="300" value="0"/>
       </VariableAnimation>
     </Var>
-    <Var name="unlock_screen_offset_y">
-      <VariableAnimation tag="ScreenUp" initPause="true" loop="false">
-        <Item time="0" value="0" easeType="ExpoEaseOut"/>
-        <Item time="300" value="-(#sh/4)"/>
+    <Var name="unlock_screen_slide">
+      <VariableAnimation tag="ScreenShow" initPause="true" loop="false">
+        <Item value="0.5" time="0" easeType="SineEaseIn"/>
+        <Item value="1" time="300"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenNormal" initPause="true" loop="false">
-        <Item time="0" value="#sh" easeType="ExpoEaseOut"/>
+        <Item time="0" value="0" easeType="SineEaseInOut"/>
         <Item time="300" value="0"/>
       </VariableAnimation>
-      <VariableAnimation tag="ScreenDown" initPause="true" loop="false">
-        <Item time="0" value="#sh" easeType="ExpoEaseOut"/>
-        <Item time="300" value="0"/>
+      <VariableAnimation tag="ScreenHide" initPause="true" loop="false">
+        <Item value="1" time="0" easeType="SineEaseOut"/>
+        <Item value="1.5" time="300"/>
       </VariableAnimation>
     </Var>
     <Var name="default_content_y">
       <VariableAnimation tag="ScreenSpringing" initPause="true" loop="false">
-        <Item time="0" value="#Tdfy" easeType="BounceEaseOut"/>
+        <Item time="0" value="#Tdfy" easeType="ExpoEaseOut"/>
         <Item time="600" value="0"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenStartUnlock" initPause="true" loop="false">
@@ -239,6 +240,16 @@
       </VariableAnimation>
       <VariableAnimation tag="ScreenCancel" initPause="true" loop="false">
         <Item time="0" value="#Tdfy" easeType="ExpoEaseOut"/>
+        <Item time="600" value="0"/>
+      </VariableAnimation>
+    </Var>
+    <Var name="blur_wallpaper">
+      <VariableAnimation tag="blur" initPause="true" loop="false">
+        <Item time="0" value="0"/>
+        <Item time="600" value="1"/>
+      </VariableAnimation>
+      <VariableAnimation tag="unblur" initPause="true" loop="false">
+        <Item time="0" value="1"/>
         <Item time="600" value="0"/>
       </VariableAnimation>
     </Var>
@@ -265,36 +276,36 @@
       <AnimationCommand target="default_content_y" command="play" tags="ScreenCancel" condition="#Tdfy { - @unlock_height"/>
     </Trigger>
   </ExternalCommands>
-  <Group visibility="@dev_mode">
+  <Group visibility="#dev_mode">
     <Var expression="150" name="dbgSize" type="number"/>
     <Var expression="#dbgSize/2" name="dbgSize2p" type="number"/>
     <Var expression="#dbgSize2p/2" name="dbgSize4p" type="number"/>
+    <Group x="#dbgSize" y="#dbgSize">
+      <Text y="0+(30*1)" size="30" color="#ffffff" textExp="'Touch dx: ' + #Tx" />
+      <Text y="0+(30*2)" size="30" color="#ffffff" textExp="'Touch y: ' + #Ty" />
+      <Text y="0+(30*3)" size="30" color="#ffffff" textExp="'Touch begin x: ' + #Tbx" />
+      <Text y="0+(30*4)" size="30" color="#ffffff" textExp="'Touch begin y: ' + #Tby" />
+      <Text y="0+(30*5)" size="30" color="#ffffff" textExp="'Latest x: ' + #Lx" />
+      <Text y="0+(30*6)" size="30" color="#ffffff" textExp="'Latest t: ' + #Ly" />
+      <Text y="0+(30*7)" size="30" color="#ffffff" textExp="'Touch distance from x: ' + #Tdfx" />
+      <Text y="0+(30*8)" size="30" color="#ffffff" textExp="'Touch distance from y: ' + #Tdfy" />
+      <Text y="0+(30*9)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockPosition" />
+      <Text y="0+(30*10)" size="30" color="#ffffff" textExp="'Def content y: ' + #default_content_y" />
+      <Text y="0+(30*11)" size="30" color="#ffffff" textExp="'Unlock Height: ' + @unlock_height" />
+      <Text y="0+(30*12)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockProgress" />
+      <Text y="0+(30*13)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*14)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*15)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*16)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*17)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*18)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*19)" size="30" color="#ffffff" textExp="': ' + #" />
+      <Text y="0+(30*20)" size="30" color="#ffffff" textExp="': ' + #" />
+    </Group>
     <Group name="dbgPos" w="#dbgSize" alignV="center" align="center">
       <Rectangle x="#dbgSize2p" y="0" w="4" h="#dbgSize" align="center" fillColor="#ffffff" />
       <Rectangle x="#dbgSize2p" y="#dbgSize2p" w="#dbgSize" h="4" align="center" alignV="center" fillColor="#ffffff" />
       <Circle x="#dbgSize2p" y="#dbgSize2p" r="#dbgSize4p" align="center" alignV="center"fillColor="#ffffff" cap="round"/>
-      <Group x="#dbgSize" y="#dbgSize">
-        <Text y="0+(30*1)" size="30" color="#ffffff" textExp="'Touch dx: ' + #Tx" />
-        <Text y="0+(30*2)" size="30" color="#ffffff" textExp="'Touch y: ' + #Ty" />
-        <Text y="0+(30*3)" size="30" color="#ffffff" textExp="'Touch begin x: ' + #Tbx" />
-        <Text y="0+(30*4)" size="30" color="#ffffff" textExp="'Touch begin y: ' + #Tby" />
-        <Text y="0+(30*5)" size="30" color="#ffffff" textExp="'Latest x: ' + #Lx" />
-        <Text y="0+(30*6)" size="30" color="#ffffff" textExp="'Latest t: ' + #Ly" />
-        <Text y="0+(30*7)" size="30" color="#ffffff" textExp="'Touch distance from x: ' + #Tdfx" />
-        <Text y="0+(30*8)" size="30" color="#ffffff" textExp="'Touch distance from y: ' + #Tdfy" />
-        <Text y="0+(30*9)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockPosition" />
-        <Text y="0+(30*10)" size="30" color="#ffffff" textExp="'Def content y: ' + #default_content_y" />
-        <Text y="0+(30*11)" size="30" color="#ffffff" textExp="'Unlock Height: ' + @unlock_height" />
-        <Text y="0+(30*12)" size="30" color="#ffffff" textExp="'Unlock progress: ' + #unlockProgress" />
-        <Text y="0+(30*13)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*14)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*15)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*16)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*17)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*18)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*19)" size="30" color="#ffffff" textExp="': ' + #" />
-        <Text y="0+(30*20)" size="30" color="#ffffff" textExp="': ' + #" />
-      </Group>
       <PositionAnimation tag="StartMoveTo" initPause="true" loop="false">
         <Item y="#Ly-#dbgSize2p" x="#Lx" time="0" easeType="ExpoEaseOut"/>
         <Item y="#Ty-#dbgSize2p" x="#Tx" time="1000"/>
@@ -304,65 +315,59 @@
       </PositionAnimation>
     </Group>
   </Group>
-  <Button x="0" y="0" h="#sh" w="#panel_x" name="Global">
+  <Button x="0" y="0" h="#sh" w="#panel_x">
     <Triggers>
       <!-- Нажатие : касание -->
       <Trigger action="down">
-
         <MultiCommand>
-
           <VariableCommand expression="int(#touch_x)" name="Tx"/>
           <VariableCommand expression="int(#touch_y)" name="Ty"/>
           <VariableCommand expression="int(#touch_begin_x)" name="Tbx"/>
           <VariableCommand expression="int(#touch_begin_y)" name="Tby"/>
-
-          <AnimationCommand target="dbgPos" command="play" tags="StartMoveTo" />
-          <!-- <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/> -->
-
         </MultiCommand>
-
+        <MultiCommand condition="#dev_mode">
+          <AnimationCommand target="dbgPos" command="play" tags="StartMoveTo"/>
+        </MultiCommand>
       </Trigger>
       <!-- Нажатие : движение -->
       <Trigger action="move">
-
         <MultiCommand>
-
           <VariableCommand expression="int(#touch_x)" name="Tx"/>
           <VariableCommand expression="int(#touch_y)" name="Ty"/>
-
           <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="Tdfx"/>
           <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="Tdfy"/>
-
-          <AnimationCommand target="dbgPos" command="play" tags="moveTo" />
+        </MultiCommand>
+        <MultiCommand condition="#dev_mode">
+          <AnimationCommand target="dbgPos" command="play" tags="moveTo"/>
+        </MultiCommand>
+        <MultiCommand>
           <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/>
         </MultiCommand>
-
       </Trigger>
       <!-- Нажатие : отпускание/отмена -->
       <Trigger action="up,cancel">
-
         <MultiCommand>
-
           <VariableCommand expression="int(#touch_x)" name="Lx"/>
           <VariableCommand expression="int(#touch_y)" name="Ly"/>
+        </MultiCommand>
 
+        <MultiCommand>
           <MultiCommand condition="(#Tdfy }= - @unlock_height) ** (#Tdfy {= 0)">
             <AnimationCommand target="default_content_y" command="play" tags="ScreenSpringing"/>
           </MultiCommand>
-
           <MultiCommand condition="#Tdfy {= - @unlock_height">
             <Command target="ScreenContent.visibility" value="false"/>
             <Command target="ScreenUnlock.visibility" value="true"/>
-            <Command target="Global.visibility" value="false"/>
             <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyIn"/>
-            <AnimationCommand target="unlock_screen_offset_y" command="play" tags="ScreenDown"/>
+            <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenShow"/>
+            <AnimationCommand target="blur_wallpaper" command="play" tags="blur"/>
           </MultiCommand>
-
-          <VariableCommand expression="0" name="Tdfx"/>
-          <VariableCommand expression="0" name="Tdfy"/>
-          <!-- <AnimationCommand target="dbgPos" command="play" tags="EndMoveTo" /> -->
         </MultiCommand>
 
+        <MultiCommand>
+          <VariableCommand expression="0" name="Tdfx"/>
+          <VariableCommand expression="0" name="Tdfy"/>
+        </MultiCommand>
       </Trigger>
     </Triggers>
   </Button>
