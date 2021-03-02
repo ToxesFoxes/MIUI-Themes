@@ -15,7 +15,42 @@
 		<ImagePicker default="" id="unlock_user_image" summary="Оптимальный размер 1:1, иначе значок будет искажен" text="Изображение пользователя"/>
 		<CheckBox default="1" id="unlock_wallpaper_blur" text="Размывать фон при разблокировке?" summary="Включает размытие фона" />
 	</Group>
+	<Group text="Персонализация - Цвета">
+		<StringInput id="color_sidebar_background" default="#000000" summary="По умолчанию #000000" text="Боковая панель - фон"/>
+		<StringInput id="color_sidebar_app_highlight" default="#FFFFFF" summary="По умолчанию #" text="Боковая панель - Активное приложение (подсветка)"/>
+		<StringInput id="color_sidebar_app_line" default="#03AEDA" summary="По умолчанию #03AEDA" text="Боковая панель - Активное приложение (линия)"/>
+		<StringInput id="color_unlock_wallpaper_shading" default="#000000" summary="По умолчанию #000000" text="Экран разблокировки - Затемнение фона"/>
+		<StringInput id="color_unlock_button_background" default="#000000" summary="По умолчанию #000000" text="Экран разблокировки - Фон кнопки"/>
+		<StringInput id="color_unlock_button_background_active" default="#00000000" summary="По умолчанию #00000000" text="Экран разблокировки - Фон кнопки (активно)"/>
+		<StringInput id="color_unlock_button_text" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Экран разблокировки - Текст кнопки"/>
+		<StringInput id="color_unlock_button_text_active" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Экран разблокировки - Текст кнопки (активно)"/>
+		<StringInput id="color_unlock_button_border" default="#00ffffff" summary="По умолчанию #00ffffff" text="Экран разблокировки - Рамка кнопки"/>
+		<StringInput id="color_unlock_button_border_active" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Экран разблокировки - Рамка кнопки (активно)"/>
+		<StringInput id="color_unlock_username" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Экран разблокировки - Имя пользователя"/>
+		<StringInput id="color_unlock_username_active" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Экран разблокировки - Имя пользователя (активно)"/>
+		<StringInput id="color_datetime_time" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Часы - 01:17"/>
+		<StringInput id="color_datetime_day_info" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Часы - Среда, 03 Марта"/>
+		<StringInput id="color_datetime_label" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Часы - Подпись"/>
+	</Group>
+	<Group text="Персонализация - Часы">
+		<StringInput id="string_datetime_format_hour_minute" default="HH:mm" summary="По умолчанию HH:mm" text="Формат - 01:17"/>
+		<StringInput id="string_datetime_format_date" default="EEEE, dd MMMM" summary="По умолчанию EEEE, dd MMMM" text="Формат - Среда, 03 Марта"/>
+		<StringInput id="string_datetime_label" default="" text="Подпись под часами"/>
+	</Group>
+	<Group text="Персонализация - Множитель прозрачности (0-1)">
+		<StringInput default="1" id="opacity_screen_main" summary="По умолчанию 1" text="Главный экран блокировки"/>
+		<StringInput default="0.25" id="opacity_sidebar_background" summary="По умолчанию 0.25" text="Боковая панель - Затемнение фона"/>
+		<StringInput default="0.5" id="opacity_sidebar_icon_pressed" summary="По умолчанию 0.5" text="Боковая панель - Затемнение нажатой иконки"/>
+		<StringInput default="0.1" id="opacity_sidebar_icon_highlight" summary="По умолчанию 0.1" text="Боковая панель - Активное приложение (подсветка)"/>
+		<StringInput default="0.5" id="opacity_sidebar_app_line" summary="По умолчанию 0.5" text="Боковая панель - Активное приложение (линия)"/>
+		<StringInput default="1" id="opacity_screen_unlock" summary="По умолчанию 1" text="Экран разблокировки"/>
+		<StringInput default="1" id="opacity_wallpaper_unlock" summary="По умолчанию 1" text="Экрна разблокировки - Размытые обои"/>
+		<StringInput default="0.5" id="opacity_wallpaper_shading" summary="По умолчанию 0.5" text="Экрна разблокировки - Размытые обои (затемнение)"/>
+		<StringInput default="0.25" id="opacity_unlock_button_border" summary="По умолчанию " text="Экран разблокировки - Рамка кнопки"/>
+		<StringInput default="0.25" id="opacity_unlock_button_border_active" summary="По умолчанию " text="Экран разблокировки - Рамка кнопки (активно)"/>
+	</Group>
 	<Group text="Отладка">
-		<CheckBox default="0" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
+		<StringInput id="color_dbg_items" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Цвета элементов отладки"/>
+		<CheckBox default="1" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
 	</Group>
 </Config>
