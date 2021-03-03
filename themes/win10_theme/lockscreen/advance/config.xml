@@ -51,6 +51,6 @@
 	</Group>
 	<Group text="Отладка">
 		<StringInput id="color_dbg_items" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Цвета элементов отладки"/>
-		<CheckBox default="1" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
+		<CheckBox default="0" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
 	</Group>
 </Config>

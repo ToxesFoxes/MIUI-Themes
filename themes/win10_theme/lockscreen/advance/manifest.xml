@@ -12,52 +12,54 @@
     <!-- Анимация : прозрачности экрана разблокировки -->
     <Var name="unlock_screen">
       <VariableAnimation tag="ScreenTransperencyIn" initPause="true" loop="false">
-        <Item time="0" value="0" easeType="ExpoEaseIn"/>
+        <Item value="0" easeType="ExpoEaseIn"/>
         <Item time="300" value="1"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenTransperencyOut" initPause="true" loop="false">
-        <Item time="0" value="1" easeType="ExpoEaseOut"/>
+        <Item value="1" easeType="ExpoEaseOut"/>
         <Item time="300" value="0"/>
       </VariableAnimation>
     </Var>
     <!-- Анимация : скейлинг контейнера с экрана разблокировки -->
     <Var name="unlock_screen_slide">
       <VariableAnimation tag="ScreenShow" initPause="true" loop="false">
-        <Item value="0.5" time="0" easeType="SineEaseIn"/>
+        <Item value="0.5" easeType="SineEaseIn"/>
         <Item value="1" time="300"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenNormal" initPause="true" loop="false">
-        <Item time="0" value="0" easeType="SineEaseInOut"/>
-        <Item time="300" value="0"/>
+        <Item value="0.5"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenHide" initPause="true" loop="false">
-        <Item value="1" time="0" easeType="SineEaseOut"/>
+        <Item value="1" easeType="SineEaseOut"/>
         <Item value="1.5" time="600"/>
-        <Item value="0"/>
+        <Item value="0.5"/>
       </VariableAnimation>
     </Var>
     <!-- Анимация : Поднимание/опускание экрана -->
     <Var name="default_content_y">
       <VariableAnimation tag="ScreenSpringing" initPause="true" loop="false">
-        <Item time="0" value="#Tdfy" easeType="ExpoEaseOut"/>
+        <Item value="#Tdfy" easeType="ExpoEaseOut"/>
         <Item time="600" value="0"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenStartUnlock" initPause="true" loop="false">
-        <Item time="0" value="#Tdfy"/>
+        <Item value="#Tdfy"/>
+      </VariableAnimation>
+      <VariableAnimation tag="ScreenUnlockNormal" initPause="true" loop="false">
+        <Item value="0"/>
       </VariableAnimation>
       <VariableAnimation tag="ScreenCancel" initPause="true" loop="false">
-        <Item time="0" value="#Tdfy" easeType="ExpoEaseOut"/>
+        <Item value="#Tdfy" easeType="ExpoEaseOut"/>
         <Item time="600" value="0"/>
       </VariableAnimation>
     </Var>
     <!-- Анимация : динамический блюр обоев -->
     <Var name="blur_wallpaper">
       <VariableAnimation tag="blur" initPause="true" loop="false">
-        <Item time="0" value="0"/>
+        <Item value="0"/>
         <Item time="600" value="1"/>
       </VariableAnimation>
       <VariableAnimation tag="unblur" initPause="true" loop="false">
-        <Item time="0" value="1"/>
+        <Item value="1"/>
         <Item time="600" value="0"/>
       </VariableAnimation>
     </Var>
@@ -110,13 +112,16 @@
     <Trigger action="init">
       <VariableCommand expression="0" name="current_app"/>
     </Trigger>
-    <!-- При возвращении/паузе -->
-    <Trigger action="resume,pause">
+    <!-- При возвращении -->
+    <Trigger action="resume">
       <VariableCommand name="unlock_screen" expression="0"/>
       <Command target="ScreenContent.visibility" value="true"/>
       <Command target="ScreenUnlock.visibility" value="false"/>
-      <AnimationCommand target="default_content_y" command="play" tags="ScreenCancel"/>
+      <AnimationCommand target="default_content_y" command="play" tags="ScreenUnlockNormal"/>
       <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenNormal"/>
+      <!-- <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyOut"/>
+      <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenHide"/>
+      <AnimationCommand target="blur_wallpaper" command="play" tags="unblur" delay="650" condition="#blur_wallpaper } 0"/> -->
     </Trigger>
   </ExternalCommands>
   <!-- Конец Внешних команд экрана -->
@@ -359,9 +364,6 @@
             <Triggers>
               <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
                 <ExternCommand command="unlock"/>
-                <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyOut"/>
-                <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenHide"/>
-                <AnimationCommand target="blur_wallpaper" command="play" tags="unblur" delay="650" condition="#blur_wallpaper } 0"/>
               </Trigger>
             </Triggers>
           </Button>
@@ -404,7 +406,7 @@
       <Rectangle x="#dbgSize2p" y="#dbgSize2p" w="#dbgSize" h="4" align="center" alignV="center" fillColor="#FFFFFF" />
       <Circle x="#dbgSize2p" y="#dbgSize2p" r="#dbgSize4p" align="center" alignV="center"fillColor="#FFFFFF" cap="round"/>
       <PositionAnimation tag="StartMoveTo" initPause="true" loop="false">
-        <Item y="#Ly-#dbgSize2p" x="#Lx" time="0" easeType="ExpoEaseOut"/>
+        <Item y="#Ly-#dbgSize2p" x="#Lx" easeType="ExpoEaseOut"/>
         <Item y="#Ty-#dbgSize2p" x="#Tx" time="1000"/>
       </PositionAnimation>
       <PositionAnimation tag="moveTo">
