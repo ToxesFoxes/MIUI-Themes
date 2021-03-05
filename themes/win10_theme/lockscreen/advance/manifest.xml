@@ -436,26 +436,6 @@
       <Array count="100" indexName="__i">
         <Text y="(30* #__i)" textExp="@dbgstrings[#__i]" size="30" color="@color_dbg_items" />
       </Array>
-      <Text visibility="0" y="0+(30*1)" size="30" color="@color_dbg_items" textExp="'Touch x: ' + #Tx" />
-      <Text visibility="0" y="0+(30*2)" size="30" color="@color_dbg_items" textExp="'Touch y: ' + #Ty" />
-      <Text visibility="0" y="0+(30*3)" size="30" color="@color_dbg_items" textExp="'Touch begin x: ' + #Tbx" />
-      <Text visibility="0" y="0+(30*4)" size="30" color="@color_dbg_items" textExp="'Touch begin y: ' + #Tby" />
-      <Text visibility="0" y="0+(30*5)" size="30" color="@color_dbg_items" textExp="'Latest x: ' + #Lx" />
-      <Text visibility="0" y="0+(30*6)" size="30" color="@color_dbg_items" textExp="'Latest t: ' + #Ly" />
-      <Text visibility="0" y="0+(30*7)" size="30" color="@color_dbg_items" textExp="'Touch distance from x: ' + #Tdfx" />
-      <Text visibility="0" y="0+(30*8)" size="30" color="@color_dbg_items" textExp="'Touch distance from y: ' + #Tdfy" />
-      <Text visibility="0" y="0+(30*9)" size="30" color="@color_dbg_items" textExp="'Unlock progress: ' + #unlockPosition" />
-      <Text visibility="0" y="0+(30*10)" size="30" color="@color_dbg_items" textExp="'Def content y: ' + #default_content_y" />
-      <Text visibility="0" y="0+(30*11)" size="30" color="@color_dbg_items" textExp="'Unlock Height: ' + @unlock_height" />
-      <Text visibility="0" y="0+(30*12)" size="30" color="@color_dbg_items" textExp="'Unlock progress: ' + #unlockProgress" />
-      <Text visibility="0" y="0+(30*13)" size="30" color="@color_dbg_items" textExp="'1: ' + #app1V + ifelse(#app1V, ' - ' + @app1.name, '')" />
-      <Text visibility="0" y="0+(30*14)" size="30" color="@color_dbg_items" textExp="'2: ' + #app2V + ifelse(#app2V, ' - ' + @app2.name, '')" />
-      <Text visibility="0" y="0+(30*15)" size="30" color="@color_dbg_items" textExp="'3: ' + #app3V + ifelse(#app3V, ' - ' + @app3.name, '')" />
-      <Text visibility="0" y="0+(30*16)" size="30" color="@color_dbg_items" textExp="'4: ' + #app4V + ifelse(#app4V, ' - ' + @app4.name, '')" />
-      <Text visibility="0" y="0+(30*17)" size="30" color="@color_dbg_items" textExp="'5: ' + #app5V + ifelse(#app5V, ' - ' + @app5.name, '')" />
-      <Text visibility="0" y="0+(30*18)" size="30" color="@color_dbg_items" textExp="'6: ' + #app6V + ifelse(#app6V, ' - ' + @app6.name, '')" />
-      <Text visibility="0" y="0+(30*19)" size="30" color="@color_dbg_items" textExp="'Tcondition: ' + #Tcondition" />
-      <Text visibility="0" y="0+(30*20)" size="30" color="@color_dbg_items" textExp="': ' + #" />
     </Group>
     <Group>
       <Line x="#Tx" y="#Ty" x1="#Tx" y1="#LineY" name="dbgLine" strokeColor="#00FF00" weight="5" cap="round" strokeAlign="center"/>
