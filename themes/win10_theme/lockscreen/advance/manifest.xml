@@ -7,6 +7,8 @@
     <Var name="sw" type="number" expression="#screen_width"/>
     <Var name="sh" type="number" expression="#screen_height"/>
     <Var name="Tcondition" type="number" expression="abs(#Tby-#Ty){50**abs(#Tbx-#Tx){50"/>
+    <VariableCommand expression="'1'" name="CurrentScreen"/>
+    <!-- <Var name="CurrentScreen" type="number" expression="0"/> -->
     <!-- Конец переменных Цветов -->
     <!-- Анимации -->
     <!-- Анимация : прозрачности экрана разблокировки -->
@@ -114,6 +116,7 @@
     </Trigger>
     <!-- При возвращении -->
     <Trigger action="resume">
+      <VariableCommand expression="'0'" name="CurrentScreen"/>
       <VariableCommand name="unlock_screen" expression="0"/>
       <Command target="ScreenContent.visibility" value="true"/>
       <Command target="ScreenUnlock.visibility" value="false"/>
@@ -363,6 +366,7 @@
             </Pressed>
             <Triggers>
               <Trigger action="up" condition="abs(#touch_begin_y-#touch_y){50**abs(#touch_begin_x-#touch_x){50">
+                <VariableCommand expression="'0'" name="CurrentScreen"/>
                 <ExternCommand command="unlock"/>
               </Trigger>
             </Triggers>
@@ -375,36 +379,122 @@
 
   <!-- Режим отладки -->
   <Group visibility="#dev_mode">
-    <Var expression="150" name="dbgSize" type="number"/>
-    <Var expression="#dbgSize/2" name="dbgSize2p" type="number"/>
-    <Var expression="#dbgSize2p/2" name="dbgSize4p" type="number"/>
+    <Var name="dbgSize" expression="150" type="number"/>
+    <Var name="dbgSize2p" expression="#dbgSize/2" type="number"/>
+    <Var name="dbgSize4p" expression="#dbgSize2p/2" type="number"/>
+    <Var name="dbgstrings" values="
+    '',
+    '1: selected=' + #app1V + ifelse(#app1V, ' - ' + @app1.name, ''),
+    '2: selected=' + #app2V + ifelse(#app2V, ' - ' + @app2.name, ''),
+    '3: selected=' + #app3V + ifelse(#app3V, ' - ' + @app3.name, ''),
+    '4: selected=' + #app4V + ifelse(#app4V, ' - ' + @app4.name, ''),
+    '5: selected=' + #app5V + ifelse(#app5V, ' - ' + @app5.name, ''),
+    '6: selected=' + #app6V + ifelse(#app6V, ' - ' + @app6.name, ''),
+    '#CurrentScreen '+#CurrentScreen,
+    '#LineX '+#LineX,
+    '#LineY '+#LineY,
+    '#Tx '+#Tx,
+    '#Ty '+#Ty,
+    '#Lx '+#Lx,
+    '#Ly '+#Ly,
+    '#Tbx '+#Tbx,
+    '#Tby '+#Tby,
+    '#Tcondition '+#Tcondition,
+    '#Tdfx '+#Tdfx,
+    '#Tdfy '+#Tdfy,
+    '#app '+#app,
+    '#app_margin '+#app_margin,
+    '#app_w_h '+#app_w_h,
+    '#blur_wallpaper '+#blur_wallpaper,
+    '#dbgSize '+#dbgSize,
+    '#default_content_y '+#default_content_y,
+    '#dev_mode '+#dev_mode,
+    '#panel_width '+#panel_width,
+    '#panel_x '+#panel_x,
+    '#screen_height '+#screen_height,
+    '#screen_width '+#screen_width,
+    '#sh '+#sh,
+    '#show_date '+#show_date,
+    '#sw '+#sw,
+    '#sys_app '+#sys_app,
+    '#text_size_date '+#text_size_date,
+    '#touch_begin_x '+#touch_begin_x,
+    '#touch_begin_y '+#touch_begin_y,
+    '#touch_x '+#touch_x,
+    '#touch_y '+#touch_y,
+    '#unlockPosition '+#unlockPosition,
+    '#unlockProgress '+#unlockProgress,
+    '#unlockProgressInverted '+#unlockProgressInverted,
+    '#unlock_screen '+#unlock_screen,
+    '#unlock_screen_slide '+#unlock_screen_slide,
+    '#unlock_wallpaper_blur '+#unlock_wallpaper_blur,
+    '#usr_app '+#usr_app,
+    '#usr_apps '+#usr_apps,
+    " type="string[]"/>
+    <Rectangle w="#sw" h="#sh" fillColor="#000000" alpha="255*0.5" />
     <Group x="25" y="115">
-      <Text y="0+(30*1)" size="30" color="#FFFFFF" textExp="'Touch dx: ' + #Tx" />
-      <Text y="0+(30*1)" size="30" color="#FFFFFF" textExp="'Touch dx: ' + #Tx" />
-      <Text y="0+(30*2)" size="30" color="#FFFFFF" textExp="'Touch y: ' + #Ty" />
-      <Text y="0+(30*3)" size="30" color="#FFFFFF" textExp="'Touch begin x: ' + #Tbx" />
-      <Text y="0+(30*4)" size="30" color="#FFFFFF" textExp="'Touch begin y: ' + #Tby" />
-      <Text y="0+(30*5)" size="30" color="#FFFFFF" textExp="'Latest x: ' + #Lx" />
-      <Text y="0+(30*6)" size="30" color="#FFFFFF" textExp="'Latest t: ' + #Ly" />
-      <Text y="0+(30*7)" size="30" color="#FFFFFF" textExp="'Touch distance from x: ' + #Tdfx" />
-      <Text y="0+(30*8)" size="30" color="#FFFFFF" textExp="'Touch distance from y: ' + #Tdfy" />
-      <Text y="0+(30*9)" size="30" color="#FFFFFF" textExp="'Unlock progress: ' + #unlockPosition" />
-      <Text y="0+(30*10)" size="30" color="#FFFFFF" textExp="'Def content y: ' + #default_content_y" />
-      <Text y="0+(30*11)" size="30" color="#FFFFFF" textExp="'Unlock Height: ' + @unlock_height" />
-      <Text y="0+(30*12)" size="30" color="#FFFFFF" textExp="'Unlock progress: ' + #unlockProgress" />
-      <Text y="0+(30*13)" size="30" color="#FFFFFF" textExp="'1: ' + #app1V + ifelse(#app1V, ' - ' + @app1.name, '')" />
-      <Text y="0+(30*14)" size="30" color="#FFFFFF" textExp="'2: ' + #app2V + ifelse(#app2V, ' - ' + @app2.name, '')" />
-      <Text y="0+(30*15)" size="30" color="#FFFFFF" textExp="'3: ' + #app3V + ifelse(#app3V, ' - ' + @app3.name, '')" />
-      <Text y="0+(30*16)" size="30" color="#FFFFFF" textExp="'4: ' + #app4V + ifelse(#app4V, ' - ' + @app4.name, '')" />
-      <Text y="0+(30*17)" size="30" color="#FFFFFF" textExp="'5: ' + #app5V + ifelse(#app5V, ' - ' + @app5.name, '')" />
-      <Text y="0+(30*18)" size="30" color="#FFFFFF" textExp="'6: ' + #app6V + ifelse(#app6V, ' - ' + @app6.name, '')" />
-      <Text y="0+(30*19)" size="30" color="#FFFFFF" textExp="'Tcondition: ' + #Tcondition" />
-      <Text y="0+(30*20)" size="30" color="#FFFFFF" textExp="': ' + #" />
+      <Array count="100" indexName="__i">
+        <Text y="(30* #__i)" textExp="@dbgstrings[#__i]" size="30" color="@color_dbg_items" />
+      </Array>
+      <Text visibility="0" y="0+(30*1)" size="30" color="@color_dbg_items" textExp="'Touch x: ' + #Tx" />
+      <Text visibility="0" y="0+(30*2)" size="30" color="@color_dbg_items" textExp="'Touch y: ' + #Ty" />
+      <Text visibility="0" y="0+(30*3)" size="30" color="@color_dbg_items" textExp="'Touch begin x: ' + #Tbx" />
+      <Text visibility="0" y="0+(30*4)" size="30" color="@color_dbg_items" textExp="'Touch begin y: ' + #Tby" />
+      <Text visibility="0" y="0+(30*5)" size="30" color="@color_dbg_items" textExp="'Latest x: ' + #Lx" />
+      <Text visibility="0" y="0+(30*6)" size="30" color="@color_dbg_items" textExp="'Latest t: ' + #Ly" />
+      <Text visibility="0" y="0+(30*7)" size="30" color="@color_dbg_items" textExp="'Touch distance from x: ' + #Tdfx" />
+      <Text visibility="0" y="0+(30*8)" size="30" color="@color_dbg_items" textExp="'Touch distance from y: ' + #Tdfy" />
+      <Text visibility="0" y="0+(30*9)" size="30" color="@color_dbg_items" textExp="'Unlock progress: ' + #unlockPosition" />
+      <Text visibility="0" y="0+(30*10)" size="30" color="@color_dbg_items" textExp="'Def content y: ' + #default_content_y" />
+      <Text visibility="0" y="0+(30*11)" size="30" color="@color_dbg_items" textExp="'Unlock Height: ' + @unlock_height" />
+      <Text visibility="0" y="0+(30*12)" size="30" color="@color_dbg_items" textExp="'Unlock progress: ' + #unlockProgress" />
+      <Text visibility="0" y="0+(30*13)" size="30" color="@color_dbg_items" textExp="'1: ' + #app1V + ifelse(#app1V, ' - ' + @app1.name, '')" />
+      <Text visibility="0" y="0+(30*14)" size="30" color="@color_dbg_items" textExp="'2: ' + #app2V + ifelse(#app2V, ' - ' + @app2.name, '')" />
+      <Text visibility="0" y="0+(30*15)" size="30" color="@color_dbg_items" textExp="'3: ' + #app3V + ifelse(#app3V, ' - ' + @app3.name, '')" />
+      <Text visibility="0" y="0+(30*16)" size="30" color="@color_dbg_items" textExp="'4: ' + #app4V + ifelse(#app4V, ' - ' + @app4.name, '')" />
+      <Text visibility="0" y="0+(30*17)" size="30" color="@color_dbg_items" textExp="'5: ' + #app5V + ifelse(#app5V, ' - ' + @app5.name, '')" />
+      <Text visibility="0" y="0+(30*18)" size="30" color="@color_dbg_items" textExp="'6: ' + #app6V + ifelse(#app6V, ' - ' + @app6.name, '')" />
+      <Text visibility="0" y="0+(30*19)" size="30" color="@color_dbg_items" textExp="'Tcondition: ' + #Tcondition" />
+      <Text visibility="0" y="0+(30*20)" size="30" color="@color_dbg_items" textExp="': ' + #" />
     </Group>
+    <Group>
+      <Line x="#Tx" y="#Ty" x1="#Tx" y1="#LineY" name="dbgLine" strokeColor="#00FF00" weight="5" cap="round" strokeAlign="center"/>
+      <Line x="#Tx" y="#Ty" x1="#LineX" y1="#Ty" name="dbgLine" strokeColor="#FF0000" weight="5" cap="round" strokeAlign="center"/>
+
+      <Line x="#Tbx" y="#Ty" x1="#Tbx" y1="#LineY" name="dbgLine" strokeColor="#00FF00" weight="5" cap="round" strokeAlign="center"/>
+      <Line x="#Tx" y="#Tby" x1="#LineX" y1="#Tby" name="dbgLine" strokeColor="#FF0000" weight="5" cap="round" strokeAlign="center"/>
+      <Line x="#Tx" y="#Ty" x1="#LineX" y1="#LineY" name="dbgLine" strokeColor="#000FFF" weight="5" cap="round" strokeAlign="center"/>
+
+      <Text x="#LineX + (#Tdfx/2)" y="#Tby-10" size="30" align="center" alignV="bottom" color="@color_dbg_items" textExp="'X: ' + int(#Tdfx)" />
+      <Text x="#Tbx-10" y="#LineY + (#Tdfy/2)" size="30" align="right" alignV="center" color="@color_dbg_items" textExp="'Y: ' + int(#Tdfy)" />
+      <Text x="#Tbx" y="#Tby-10" size="30" align="center" alignV="bottom" color="@color_dbg_items" textExp="'X: ' + int(#Tbx)" />
+      <Text x="#Tbx-10" y="#Tby" size="30" align="right" alignV="center" color="@color_dbg_items" textExp="'Y: ' + int(#Tby)" />
+      <Text x="#Tx+10" y="#Ty-10" size="30" align="left" alignV="bottom" color="@color_dbg_items" textExp="'X: ' + int(#Tx)" />
+      <Text x="#Tx-10" y="#Ty+10" size="30" align="right" alignV="top" color="@color_dbg_items" textExp="'Y: ' + int(#Ty)" />
+      <Var name="LineX">
+        <VariableAnimation tag="LineXMoveTo" initPause="true" loop="false">
+          <Item value="#Tbx"/>
+        </VariableAnimation>
+        <VariableAnimation tag="LineXEndMoveTo" initPause="true" loop="false">
+          <Item value="#Tbx" easeType="ExpoEaseOut"/>
+          <Item time="500" value="#Tx"/>
+        </VariableAnimation>
+      </Var>
+      <Var name="LineY">
+        <VariableAnimation tag="LineYMoveTo" initPause="true" loop="false">
+          <Item value="#Tby"/>
+        </VariableAnimation>
+        <VariableAnimation tag="LineYEndMoveTo" initPause="true" loop="false">
+          <Item value="#Tby" easeType="ExpoEaseOut"/>
+          <Item time="500" value="#Ty"/>
+        </VariableAnimation>
+      </Var>
+    </Group>
+
     <Group name="dbgPos" w="#dbgSize" alignV="center" align="center">
-      <Rectangle x="#dbgSize2p" w="4" h="#dbgSize" align="center" fillColor="#FFFFFF" />
-      <Rectangle x="#dbgSize2p" y="#dbgSize2p" w="#dbgSize" h="4" align="center" alignV="center" fillColor="#FFFFFF" />
-      <Circle x="#dbgSize2p" y="#dbgSize2p" r="#dbgSize4p" align="center" alignV="center"fillColor="#FFFFFF" cap="round"/>
+      <Rectangle x="#dbgSize2p" w="4" h="#dbgSize" align="center" fillColor="@color_dbg_items" />
+      <Rectangle x="#dbgSize2p" y="#dbgSize2p" w="#dbgSize" h="4" align="center" alignV="center" fillColor="@color_dbg_items" />
+      <!-- <Circle x="#dbgSize2p" y="#dbgSize2p" r="#dbgSize4p" align="center" alignV="center" fillColor="@color_dbg_items" cap="round"/> -->
       <PositionAnimation tag="StartMoveTo" initPause="true" loop="false">
         <Item y="#Ly-#dbgSize2p" x="#Lx" easeType="ExpoEaseOut"/>
         <Item y="#Ty-#dbgSize2p" x="#Tx" time="1000"/>
@@ -425,6 +515,8 @@
           <VariableCommand expression="int(#touch_begin_y)" name="Tby"/>
         </MultiCommand>
         <MultiCommand condition="#dev_mode">
+          <AnimationCommand target="LineX" command="play" tags="LineXMoveTo"/>
+          <AnimationCommand target="LineY" command="play" tags="LineYMoveTo"/>
           <AnimationCommand target="dbgPos" command="play" tags="StartMoveTo"/>
         </MultiCommand>
       </Trigger>
@@ -436,9 +528,13 @@
           <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="Tdfx"/>
           <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="Tdfy"/>
         </MultiCommand>
+
         <MultiCommand condition="#dev_mode">
+          <AnimationCommand target="LineX" command="play" tags="LineXMoveTo"/>
+          <AnimationCommand target="LineY" command="play" tags="LineYMoveTo"/>
           <AnimationCommand target="dbgPos" command="play" tags="moveTo"/>
         </MultiCommand>
+
         <MultiCommand>
           <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/>
         </MultiCommand>
@@ -448,9 +544,16 @@
         <MultiCommand>
           <VariableCommand expression="int(#touch_x)" name="Lx"/>
           <VariableCommand expression="int(#touch_y)" name="Ly"/>
+          <VariableCommand expression="int(#Tdfx)" name="Ltdfx"/>
+          <VariableCommand expression="int(#Tdfy)" name="Ltdfy"/>
         </MultiCommand>
 
-        <MultiCommand>
+        <MultiCommand condition="#dev_mode">
+          <AnimationCommand target="LineX" command="play" tags="LineXEndMoveTo"/>
+          <AnimationCommand target="LineY" command="play" tags="LineYEndMoveTo"/>
+        </MultiCommand>
+
+        <MultiCommand condition="eq(#CurrentScreen, '0')">
           <MultiCommand condition="(#Tdfy }= - @unlock_height) ** (#Tdfy {= 0)">
             <AnimationCommand target="default_content_y" command="play" tags="ScreenSpringing"/>
           </MultiCommand>
@@ -460,6 +563,7 @@
             <AnimationCommand target="unlock_screen" command="play" tags="ScreenTransperencyIn"/>
             <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenShow"/>
             <AnimationCommand target="blur_wallpaper" command="play" tags="blur"/>
+            <VariableCommand expression="'1'" name="CurrentScreen"/>
           </MultiCommand>
         </MultiCommand>
 
