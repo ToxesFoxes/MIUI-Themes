@@ -9,11 +9,23 @@
 		<AppPicker id="app6" text="Приложение 6"/>
 	</Group>
 	<Group text="Настройки разблокировки">
-		<StringInput default="350" id="unlock_height" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
-		<StringInput default="User" id="unlock_user_label" text="Имя пользователя"/>
-		<StringInput default="Войти" id="unlock_btn_text" text="Текст кнопки разблокировки"/>
-		<ImagePicker default="" id="unlock_user_image" summary="Оптимальный размер 1:1, иначе значок будет искажен" text="Изображение пользователя"/>
-		<CheckBox default="1" id="unlock_wallpaper_blur" text="Размывать фон при разблокировке?" summary="Включает размытие фона" />
+		<StringInput id="unlock_height" default="350" summary="Высота поднятия экрана для разблокировки, по умолчанию 350" text="Расстояние до разблокировки"/>
+		<StringInput id="unlock_user_label" default="User" text="Имя пользователя"/>
+		<StringInput id="unlock_btn_text" default="Войти" text="Текст кнопки разблокировки"/>
+		<ImagePicker id="unlock_user_image" default="" summary="Оптимальный размер 1:1, иначе значок будет искажен" text="Изображение пользователя"/>
+		<CheckBox id="unlock_wallpaper_blur" default="1" text="Размывать фон при разблокировке?" summary="Включает размытие фона" />
+	</Group>
+	<Group text="Персонализация - Часы" summary="лол">
+		<StringInput id="string_datetime_format_hour_minute" default="HH:mm" summary="По умолчанию HH:mm" text="Формат - 01:17"/>
+		<StringInput id="string_datetime_format_date" default="EEEE, dd MMMM" summary="По умолчанию EEEE, dd MMMM" text="Формат - Среда, 03 Марта"/>
+		<StringInput id="string_datetime_label" default="Время идти нахуй" text="Подпись под часами"/>
+		<NumberChoice id="style_datetime" default="4" text="Стиль часов" summary="В зависимости от типа часов, значения заданные выше могут быть не применимы">
+			<Item value="0" text="Windows"/>
+			<Item value="1" text="Miui Стандартные"/>
+			<Item value="2" text="Miui Сверху слева"/>
+			<Item value="3" text="Miui По центру вертикальные"/>
+			<Item value="4" text="Miui Большие сверху слева"/>
+		</NumberChoice>
 	</Group>
 	<Group text="Персонализация - Цвета">
 		<StringInput id="color_sidebar_background" default="#000000" summary="По умолчанию #000000" text="Боковая панель - фон"/>
@@ -32,25 +44,20 @@
 		<StringInput id="color_datetime_day_info" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Часы - Среда, 03 Марта"/>
 		<StringInput id="color_datetime_label" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Часы - Подпись"/>
 	</Group>
-	<Group text="Персонализация - Часы">
-		<StringInput id="string_datetime_format_hour_minute" default="HH:mm" summary="По умолчанию HH:mm" text="Формат - 01:17"/>
-		<StringInput id="string_datetime_format_date" default="EEEE, dd MMMM" summary="По умолчанию EEEE, dd MMMM" text="Формат - Среда, 03 Марта"/>
-		<StringInput id="string_datetime_label" default="" text="Подпись под часами"/>
-	</Group>
 	<Group text="Персонализация - Множитель прозрачности (0-1)">
-		<StringInput default="1" id="opacity_screen_main" summary="По умолчанию 1" text="Главный экран блокировки"/>
-		<StringInput default="0.25" id="opacity_sidebar_background" summary="По умолчанию 0.25" text="Боковая панель - Затемнение фона"/>
-		<StringInput default="0.5" id="opacity_sidebar_icon_pressed" summary="По умолчанию 0.5" text="Боковая панель - Затемнение нажатой иконки"/>
-		<StringInput default="0.1" id="opacity_sidebar_icon_highlight" summary="По умолчанию 0.1" text="Боковая панель - Активное приложение (подсветка)"/>
-		<StringInput default="0.5" id="opacity_sidebar_app_line" summary="По умолчанию 0.5" text="Боковая панель - Активное приложение (линия)"/>
-		<StringInput default="1" id="opacity_screen_unlock" summary="По умолчанию 1" text="Экран разблокировки"/>
-		<StringInput default="1" id="opacity_wallpaper_unlock" summary="По умолчанию 1" text="Экрна разблокировки - Размытые обои"/>
-		<StringInput default="0.5" id="opacity_wallpaper_shading" summary="По умолчанию 0.5" text="Экрна разблокировки - Размытые обои (затемнение)"/>
-		<StringInput default="0.25" id="opacity_unlock_button_border" summary="По умолчанию " text="Экран разблокировки - Рамка кнопки"/>
-		<StringInput default="0.25" id="opacity_unlock_button_border_active" summary="По умолчанию " text="Экран разблокировки - Рамка кнопки (активно)"/>
+		<StringInput id="opacity_screen_main" default="1" summary="По умолчанию 1" text="Главный экран блокировки"/>
+		<StringInput id="opacity_sidebar_background" default="0.25" summary="По умолчанию 0.25" text="Боковая панель - Затемнение фона"/>
+		<StringInput id="opacity_sidebar_icon_pressed" default="0.5" summary="По умолчанию 0.5" text="Боковая панель - Затемнение нажатой иконки"/>
+		<StringInput id="opacity_sidebar_icon_highlight" default="0.1" summary="По умолчанию 0.1" text="Боковая панель - Активное приложение (подсветка)"/>
+		<StringInput id="opacity_sidebar_app_line" default="0.5" summary="По умолчанию 0.5" text="Боковая панель - Активное приложение (линия)"/>
+		<StringInput id="opacity_screen_unlock" default="1" summary="По умолчанию 1" text="Экран разблокировки"/>
+		<StringInput id="opacity_wallpaper_unlock" default="1" summary="По умолчанию 1" text="Экрна разблокировки - Размытые обои"/>
+		<StringInput id="opacity_wallpaper_shading" default="0.5" summary="По умолчанию 0.5" text="Экрна разблокировки - Размытые обои (затемнение)"/>
+		<StringInput id="opacity_unlock_button_border" default="0.25" summary="По умолчанию 0.25" text="Экран разблокировки - Рамка кнопки"/>
+		<StringInput id="opacity_unlock_button_border_active" default="0.25" summary="По умолчанию 0.25" text="Экран разблокировки - Рамка кнопки (активно)"/>
 	</Group>
 	<Group text="Отладка">
 		<StringInput id="color_dbg_items" default="#FFFFFF" summary="По умолчанию #FFFFFF" text="Цвета элементов отладки"/>
-		<CheckBox default="0" id="dev_mode" text="Режим разработчика" summary="Включает отладочную информацию" />
+		<CheckBox id="dev_mode" default="0" text="Режим разработчика" summary="Включает отладочную информацию" />
 	</Group>
 </Config>

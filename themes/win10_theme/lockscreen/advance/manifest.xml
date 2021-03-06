@@ -137,13 +137,36 @@
 
   <!-- Макет -->
   <Group h="#sh" w="#sw" layered="true">
+
     <!-- Экран : Главный экран блокировки -->
     <Group y="#default_content_y" h="#sh" w="#sw" name="ScreenContent" alpha="255*#unlockProgress*@opacity_screen_main" visibility="1">
       <!-- Виджет : Дата и время -->
-      <Group x="60" y="#sh-350">
+      <Group x="60" y="#sh-400" visibility="eq(#style_datetime, 0)">
         <DateTime size="150" color="@color_datetime_time" format="@string_datetime_format_hour_minute" fontFamily="mitype-clock"/>
-        <DateTime size="65" y="150" color="@color_datetime_day_info" format="@string_datetime_format_date" fontFamily="mitype-clock"/>
-        <Text size="40" y="225" color="@color_datetime_label" textExp="@string_datetime_label" />
+        <DateTime size="65" y="175" color="@color_datetime_day_info" format="@string_datetime_format_date"/>
+        <Text size="35" x="5" y="265" color="@color_datetime_label" textExp="@string_datetime_label" />
+      </Group>
+      <Group x="(#sw-#panel_width)/2" align="center" y="235" visibility="eq(#style_datetime, 1)">
+        <DateTime size="225" align="center" color="@color_datetime_time" format="@string_datetime_format_hour_minute" fontFamily="mitype-clock"/>
+        <DateTime size="35" y="240" align="center" color="@color_datetime_day_info" format="@string_datetime_format_date"/>
+        <Text size="40" y="290" align="center" color="@color_datetime_label" textExp="@string_datetime_label" />
+      </Group>
+      <Group x="70" y="150" visibility="eq(#style_datetime, 2)">
+        <DateTime size="200" color="@color_datetime_time" format="@string_datetime_format_hour_minute" fontFamily="mitype-clock"/>
+        <DateTime size="35" y="250" color="@color_datetime_day_info" format="@string_datetime_format_date"/>
+        <Text size="35" y="310" color="@color_datetime_label" textExp="@string_datetime_label" />
+      </Group>
+      <Group x="(#sw-#panel_width)/2" align="center" y="235" visibility="eq(#style_datetime, 3)">
+        <DateTime size="200" align="center" color="@color_datetime_time" format="HH" fontFamily="mitype-light"/>
+        <DateTime size="200" y="185" align="center" color="@color_datetime_time" format="mm" fontFamily="mitype-light"/>
+        <DateTime size="35" y="415" align="center" color="@color_datetime_day_info" format="@string_datetime_format_date"/>
+        <Text size="35" y="475" align="center" color="@color_datetime_label" textExp="@string_datetime_label" />
+      </Group>
+      <Group x="70" y="150" visibility="eq(#style_datetime, 4)">
+        <DateTime size="200" color="@color_datetime_time" format="@string_datetime_format_hour_minute" fontFamily="mipro-normal"/>
+        <DateTime size="180" y="200" color="@color_datetime_day_info" format="E" fontFamily="mipro-thin"/>
+        <DateTime size="180" y="380" color="@color_datetime_day_info" format="dd.MM" fontFamily="mipro-thin"/>
+        <Text size="35" x="15" y="580" color="@color_datetime_label" textExp="@string_datetime_label" />
       </Group>
     </Group>
 
@@ -395,9 +418,7 @@
     '#unlocker.state '+ #unlocker.state,
     '#CurrentScreen '+ #CurrentScreen,
     '#GestureDirectionX '+ #GestureDirectionX,
-    '@GestureDirectionX '+ @GestureDirectionX,
     '#GestureDirectionY '+ #GestureDirectionY,
-    '@GestureDirectionY '+ @GestureDirectionY,
     '#LineX '+#LineX,
     '#LineY '+#LineY,
     '#Tx '+#Tx,
@@ -437,6 +458,7 @@
     '#unlock_wallpaper_blur '+#unlock_wallpaper_blur,
     '#usr_app '+#usr_app,
     '#usr_apps '+#usr_apps,
+    '#style_datetime '+#style_datetime,
     "/>
     <!-- <Rectangle w="#sw" h="#sh" fillColor="#000000" alpha="255*0.5" /> -->
     <Group x="25" y="115">
@@ -577,7 +599,8 @@
             <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenNormal"/>
           </MultiCommand>
         </MultiCommand>
-        
+        <ExternCommand command="lock" />
+
         <MultiCommand>
           <VariableCommand expression="0" name="Tdfx"/>
           <VariableCommand expression="0" name="Tdfy"/>
