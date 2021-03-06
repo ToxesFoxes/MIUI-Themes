@@ -8,6 +8,8 @@
     <Var name="sh" type="number" expression="#screen_height"/>
     <Var name="Tcondition" type="number" expression="abs(#Tby-#Ty){50**abs(#Tbx-#Tx){50"/>
     <VariableCommand expression="'1'" name="CurrentScreen"/>
+    <VariableCommand expression="0" name="GestureDirectionY"/>
+    <VariableCommand expression="0" name="GestureDirectionX"/>
     <!-- <Var name="CurrentScreen" type="number" expression="0"/> -->
     <!-- Конец переменных Цветов -->
     <!-- Анимации -->
@@ -382,7 +384,7 @@
     <Var name="dbgSize" expression="150" type="number"/>
     <Var name="dbgSize2p" expression="#dbgSize/2" type="number"/>
     <Var name="dbgSize4p" expression="#dbgSize2p/2" type="number"/>
-    <Var name="dbgstrings" values="
+    <Var name="dbgstrings" type="string[]" values="
     '',
     '1: selected=' + #app1V + ifelse(#app1V, ' - ' + @app1.name, ''),
     '2: selected=' + #app2V + ifelse(#app2V, ' - ' + @app2.name, ''),
@@ -390,7 +392,12 @@
     '4: selected=' + #app4V + ifelse(#app4V, ' - ' + @app4.name, ''),
     '5: selected=' + #app5V + ifelse(#app5V, ' - ' + @app5.name, ''),
     '6: selected=' + #app6V + ifelse(#app6V, ' - ' + @app6.name, ''),
-    '#CurrentScreen '+#CurrentScreen,
+    '#unlocker.state '+ #unlocker.state,
+    '#CurrentScreen '+ #CurrentScreen,
+    '#GestureDirectionX '+ #GestureDirectionX,
+    '@GestureDirectionX '+ @GestureDirectionX,
+    '#GestureDirectionY '+ #GestureDirectionY,
+    '@GestureDirectionY '+ @GestureDirectionY,
     '#LineX '+#LineX,
     '#LineY '+#LineY,
     '#Tx '+#Tx,
@@ -430,8 +437,8 @@
     '#unlock_wallpaper_blur '+#unlock_wallpaper_blur,
     '#usr_app '+#usr_app,
     '#usr_apps '+#usr_apps,
-    " type="string[]"/>
-    <Rectangle w="#sw" h="#sh" fillColor="#000000" alpha="255*0.5" />
+    "/>
+    <!-- <Rectangle w="#sw" h="#sh" fillColor="#000000" alpha="255*0.5" /> -->
     <Group x="25" y="115">
       <Array count="100" indexName="__i">
         <Text y="(30* #__i)" textExp="@dbgstrings[#__i]" size="30" color="@color_dbg_items" />
@@ -484,7 +491,8 @@
       </PositionAnimation>
     </Group>
   </Group>
-  <Button h="#sh" w="#panel_x">
+  <!-- Обработка всех жестов и тачей -->
+  <Button h="#sh" w="#sw">
     <Triggers>
       <!-- Нажатие : касание -->
       <Trigger action="down">
@@ -499,6 +507,11 @@
           <AnimationCommand target="LineY" command="play" tags="LineYMoveTo"/>
           <AnimationCommand target="dbgPos" command="play" tags="StartMoveTo"/>
         </MultiCommand>
+        <!-- Обнуление жестов -->
+        <MultiCommand>
+          <VariableCommand expression="0" name="GestureDirectionX"/>
+          <VariableCommand expression="0" name="GestureDirectionY"/>
+        </MultiCommand>
       </Trigger>
       <!-- Нажатие : движение -->
       <Trigger action="move">
@@ -508,6 +521,11 @@
           <VariableCommand expression="int(#touch_x-#touch_begin_x)" name="Tdfx"/>
           <VariableCommand expression="int(#touch_y-#touch_begin_y)" name="Tdfy"/>
         </MultiCommand>
+        <!-- Контроль жестов -->
+        <MultiCommand>
+          <VariableCommand condition="eq(#GestureDirectionX, 0)" expression="ifelse(#Tdfy { -50, 1, ifelse( #Tdfy } 50, -1, 0))" name="GestureDirectionY"/>
+          <VariableCommand condition="eq(#GestureDirectionY, 0)" expression="ifelse(#Tdfx { -50, -1, ifelse( #Tdfx } 50, 1, 0))" name="GestureDirectionX"/>
+        </MultiCommand>
 
         <MultiCommand condition="#dev_mode">
           <AnimationCommand target="LineX" command="play" tags="LineXMoveTo"/>
@@ -515,7 +533,7 @@
           <AnimationCommand target="dbgPos" command="play" tags="moveTo"/>
         </MultiCommand>
 
-        <MultiCommand>
+        <MultiCommand condition="eq(#GestureDirectionX, 0)">
           <AnimationCommand target="default_content_y" command="play" tags="ScreenStartUnlock" condition="#Tdfy {= 0"/>
         </MultiCommand>
       </Trigger>
@@ -533,7 +551,8 @@
           <AnimationCommand target="LineY" command="play" tags="LineYEndMoveTo"/>
         </MultiCommand>
 
-        <MultiCommand condition="eq(#CurrentScreen, '0')">
+        <!-- Разблокировка экрана -->
+        <MultiCommand condition="eq(#CurrentScreen, '0') ** eq(#GestureDirectionX, 0)">
           <MultiCommand condition="(#Tdfy }= - @unlock_height) ** (#Tdfy {= 0)">
             <AnimationCommand target="default_content_y" command="play" tags="ScreenSpringing"/>
           </MultiCommand>
@@ -547,6 +566,18 @@
           </MultiCommand>
         </MultiCommand>
 
+        <!-- Жест назад -->
+        <MultiCommand>
+          <MultiCommand condition="(eq(#GestureDirectionX, 1) ** #Tbx { 50) || (eq(#GestureDirectionX, -1) ** #Tbx } #sw - 50 ** #Tx { #sw - 50)">
+            <VariableCommand expression="'0'" name="CurrentScreen"/>
+            <VariableCommand name="unlock_screen" expression="0"/>
+            <Command target="ScreenContent.visibility" value="true"/>
+            <Command target="ScreenUnlock.visibility" value="false"/>
+            <AnimationCommand target="default_content_y" command="play" tags="ScreenUnlockNormal"/>
+            <AnimationCommand target="unlock_screen_slide" command="play" tags="ScreenNormal"/>
+          </MultiCommand>
+        </MultiCommand>
+        
         <MultiCommand>
           <VariableCommand expression="0" name="Tdfx"/>
           <VariableCommand expression="0" name="Tdfy"/>
