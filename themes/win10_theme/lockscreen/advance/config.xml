@@ -19,7 +19,7 @@
 		<StringInput id="string_datetime_format_hour_minute" default="HH:mm" summary="По умолчанию HH:mm" text="Формат - 01:17"/>
 		<StringInput id="string_datetime_format_date" default="EEEE, dd MMMM" summary="По умолчанию EEEE, dd MMMM" text="Формат - Среда, 03 Марта"/>
 		<StringInput id="string_datetime_label" default="Время приключений" text="Подпись под часами"/>
-		<NumberChoice id="style_datetime" default="4" text="Стиль часов" summary="В зависимости от типа часов, значения заданные выше могут быть не применимы">
+		<NumberChoice id="style_datetime" default="0" text="Стиль часов" summary="В зависимости от типа часов, значения заданные выше могут быть не применимы">
 			<Item value="0" text="Windows"/>
 			<Item value="1" text="Miui Стандартные"/>
 			<Item value="2" text="Miui Сверху слева"/>
