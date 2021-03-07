@@ -1,6 +1,7 @@
 {
 	"additional": {
-		"preview": "preview"
+		"preview": "preview",
+		"wallpaper": "wallpaper"
 	},
 	"description": {
 		"author": "ToxesFoxes",
@@ -21,7 +22,7 @@
 				"value_name": "designer"
 			},
 			"titles": {
-				"en_US": "Material",
+				"en_US": "Windows 10 theme",
 				"value_name": "title"
 			}
 		},
